@@ -38,6 +38,7 @@ package body PRNG_Zoo.xorshift_star is
       for I in p16'Range loop
          G.s(I) := Generate(G64);
       end loop;
+      G.p := 0;
    end Reset;
 
    --------------
@@ -70,6 +71,7 @@ package body PRNG_Zoo.xorshift_star is
       for I in p64'Range loop
          G.s(I) := Generate(G64);
       end loop;
+      G.p := 0;
    end Reset;
 
    --------------
