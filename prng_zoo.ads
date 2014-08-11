@@ -6,7 +6,6 @@
 with Interfaces;
 use all type Interfaces.Unsigned_64;
 
-
 package PRNG_Zoo is
 
    subtype U64 is Interfaces.Unsigned_64;
@@ -14,11 +13,8 @@ package PRNG_Zoo is
    type PRNG_Strength is (Crypto, High, Medium, Low, Dummy);
 
    type PRNG is interface;
-
    function Strength(G: in PRNG) return PRNG_Strength is abstract;
-
    procedure Reset(G: in out PRNG; S: in U64) is abstract;
-
    function Generate(G: in out PRNG) return U64 is abstract;
 
    scale_unsigned_32 : constant := 2.32830_64365_38696_28906_25000E-10;

@@ -1,3 +1,8 @@
+--
+-- PRNG Zoo
+-- Copyright 2014 James Humphry
+--
+
 package body PRNG_Zoo.xorshift_star is
 
 

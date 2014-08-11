@@ -35,14 +35,14 @@ private
       s : U64;
    end record;
 
-   type p16 is mod 16;
+   type p16 is mod 2**4;
    type p16_arrayU64 is array (p16) of U64;
    type xorshift1024_star is new PRNG with record
       s : p16_arrayU64;
       p : p16 := 0;
    end record;
 
-   type p64 is mod 64;
+   type p64 is mod 2**6;
    type p64_arrayU64 is array (p64) of U64;
    type xorshift4096_star is new PRNG with record
       s : p64_arrayU64;
