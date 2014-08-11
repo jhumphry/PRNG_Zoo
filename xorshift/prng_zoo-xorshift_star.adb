@@ -1,13 +1,5 @@
 package body PRNG_Zoo.xorshift_star is
 
-   --------------
-   -- Strength --
-   --------------
-
-   function Strength (G : in xorshift64_star) return PRNG_Strength is
-   begin
-      return Medium;
-   end Strength;
 
    -----------
    -- Reset --
@@ -29,15 +21,6 @@ package body PRNG_Zoo.xorshift_star is
       G.s := G.s xor Shift_Right(G.s, 17);
       return G.s * M32;
    end Generate;
-
-   --------------
-   -- Strength --
-   --------------
-
-   function Strength (G : in xorshift1024_star) return PRNG_Strength is
-   begin
-      return High;
-   end Strength;
 
    -----------
    -- Reset --
@@ -70,15 +53,6 @@ package body PRNG_Zoo.xorshift_star is
 
       return G.s(G.p) * M8;
    end Generate;
-
-   --------------
-   -- Strength --
-   --------------
-
-   function Strength (G : in xorshift4096_star) return PRNG_Strength is
-   begin
-      return High;
-   end Strength;
 
    -----------
    -- Reset --

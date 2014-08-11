@@ -1,14 +1,5 @@
 package body PRNG_Zoo.xorshift_plus is
 
-   --------------
-   -- Strength --
-   --------------
-
-   function Strength (G: in xorshift128_plus) return PRNG_Strength is
-   begin
-     return Medium;
-   end Strength;
-
    -----------
    -- Reset --
    -----------

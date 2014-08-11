@@ -6,17 +6,17 @@
 package PRNG_Zoo.xorshift_star is
 
    type xorshift64_star is new PRNG with private;
-   function Strength (G : in xorshift64_star) return PRNG_Strength;
+   function Strength (G : in xorshift64_star) return PRNG_Strength is (Medium);
    procedure Reset (G : in out xorshift64_star; S : in U64);
    function Generate (G : in out xorshift64_star) return U64;
 
    type xorshift1024_star is new PRNG with private;
-   function Strength (G : in xorshift1024_star) return PRNG_Strength;
+   function Strength (G : in xorshift1024_star) return PRNG_Strength is (High);
    procedure Reset (G : in out xorshift1024_star; S : in U64);
    function Generate (G : in out xorshift1024_star) return U64;
 
    type xorshift4096_star is new PRNG with private;
-   function Strength (G : in xorshift4096_star) return PRNG_Strength;
+   function Strength (G : in xorshift4096_star) return PRNG_Strength is (High);
    procedure Reset (G : in out xorshift4096_star; S : in U64);
    function Generate (G : in out xorshift4096_star) return U64;
 
