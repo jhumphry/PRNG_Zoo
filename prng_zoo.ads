@@ -10,7 +10,11 @@ use all type Interfaces.Unsigned_32;
 package PRNG_Zoo is
 
    subtype U64 is Interfaces.Unsigned_64;
+   subtype U64_Nonzero is
+     Interfaces.Unsigned_64 range 1..Interfaces.Unsigned_64'Last - 1;
    subtype U32 is Interfaces.Unsigned_32;
+   subtype U32_Nonzero is
+     Interfaces.Unsigned_32 range 1..Interfaces.Unsigned_32'Last - 1;
 
    type PRNG_Strength is (Crypto, High, Medium, Low, Dummy);
 
