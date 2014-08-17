@@ -21,6 +21,7 @@ package body MT_Tests is
    procedure Register_Tests (T: in out MT_Test) is
       use AUnit.Test_Cases.Registration;
    begin
+      Register_Routine (T, Sanity_Check'Access, "Basic sanity checks on MT19937 generator.");
       Register_Routine (T, Test_MT19937'Access, "Test MT19937 generator against expected (initial) output");
    end Register_Tests;
 

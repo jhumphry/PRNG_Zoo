@@ -26,6 +26,9 @@ package body Lin_Con_Tests is
    procedure Register_Tests (T: in out Lin_Con_Test) is
       use AUnit.Test_Cases.Registration;
    begin
+      Register_Routine (T, Sanity_Check_MINSTD'Access, "Basic sanity checks on MINSTD generator.");
+      Register_Routine (T, Sanity_Check_MINSTD0'Access, "Basic sanity checks on MINSTD0 generator.");
+      Register_Routine (T, Sanity_Check_RANDU'Access, "Basic sanity checks on RANDU generator.");
       Register_Routine (T, Test_RANDU'Access, "Test RANDU generator against expected (initial) output");
       Register_Routine (T, Test_MINSTD'Access,
                         "Test generic versions of MINSTD and MINSTD0 generators versus parametised version");

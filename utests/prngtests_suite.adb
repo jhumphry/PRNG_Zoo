@@ -5,6 +5,8 @@
 
 with Lin_Con_Tests;
 with MT_Tests;
+with xorshift_star_Tests;
+with xorshift_plus_Tests;
 
 package body PRNGTests_Suite is
    use AUnit.Test_Suites;
@@ -13,6 +15,8 @@ package body PRNGTests_Suite is
 
    Test_Lin_Con : aliased Lin_Con_Tests.Lin_Con_Test;
    Test_MT : aliased MT_Tests.MT_Test;
+   Test_xorshift_star : aliased xorshift_star_Tests.xorshift_star_Test;
+   Test_xorshift_plus : aliased xorshift_plus_Tests.xorshift_plus_Test;
    -----------
    -- Suite --
    -----------
@@ -21,6 +25,8 @@ package body PRNGTests_Suite is
    begin
       Add_Test (Result'Access, Test_Lin_Con'Access);
       Add_Test (Result'Access, Test_MT'Access);
+      Add_Test (Result'Access, Test_xorshift_star'Access);
+      Add_Test (Result'Access, Test_xorshift_plus'Access);
       return Result'Access;
    end Suite;
 
