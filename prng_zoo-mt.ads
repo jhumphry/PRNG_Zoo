@@ -8,6 +8,7 @@ package PRNG_Zoo.MT is
    type MT19937 is new PRNG_32Only with private;
    function Strength(G: in MT19937) return PRNG_Strength is (Medium);
    procedure Reset(G: in out MT19937; S: in U64);
+   procedure Reset(G: in out MT19937; S: in U64_array);
    function Generate(G: in out MT19937) return U32;
 
 private

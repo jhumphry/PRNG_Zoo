@@ -53,10 +53,44 @@ package body PRNG_Zoo.MT is
    begin
       G.s(0) := U32(S and 16#FFFFFFFF#);
       G.p := 0;
-      For I in MT_Index range 1..623 loop
+      For I in MT_Index range 1..MT_Index(N-1) loop
          G.s(I) := 1812433253 * (G.s(I-1) xor Shift_Right(G.s(I-1), 30))
            + U32(I);
       end loop;
+   end Reset;
+
+   procedure Reset (G: in out MT19937; S: in U64_array) is
+      key : U64_array(0..S'Length-1) := S;
+      i : MT_Index;
+      j : Integer;
+   begin
+      Reset(G, U64(19650218));
+
+      i := 1;
+      j := 0;
+
+      for k in reverse 1..(if N > key'Length then N else key'Length) loop
+         G.s(i) := (G.s(i) xor ((G.s(i-1) xor Shift_Right(G.s(i-1), 30)) * 1664525)) +
+           U32(key(j) and 16#FFFFFFFF#) + U32(j);
+         i := i + 1;
+         j := (j + 1) mod key'Length;
+         if i=0 then
+            G.s(0) := G.s(MT_Index(N-1));
+            i := 1;
+         end if;
+      end loop;
+
+      for k in reverse 1..MT_Index(N-1) loop
+         G.s(i) := (G.s(i) xor ((G.s(i-1) xor Shift_Right(G.s(i-1), 30)) * 1566083941))
+           - U32(i);
+         i := i + 1;
+         if i=0 then
+            G.s(0) := G.s(MT_Index(N-1));
+            i := 1;
+         end if;
+      end loop;
+
+      G.s(0) := 16#80000000#;
    end Reset;
 
    --------------

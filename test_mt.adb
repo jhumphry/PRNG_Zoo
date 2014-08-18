@@ -25,5 +25,13 @@ begin
       New_Line;
    end loop;
 
+   Put_Line("Ten outputs from MT19937 generator with seed {0x123, 0x234, 0x345, 0x456}.");
+   Reset(G_MT19937, U64_array'(16#0123#, 16#0234#, 16#0345#, 16#0456#));
+   for I in 1..10 loop
+      Put(I, 2);
+      Put(":");
+      Put(U32'(Generate(G_MT19937)));
+      New_Line;
+   end loop;
 
 end test_mt;
