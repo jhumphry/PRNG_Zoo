@@ -9,7 +9,7 @@ use type Interfaces.Unsigned_64;
 with PRNG_Zoo;
 use PRNG_Zoo;
 
-with PRNG_Zoo.Misc, PRNG_Zoo.Linear_Congruential;
+with PRNG_Zoo.Misc, PRNG_Zoo.Linear_Congruential.Examples;
 with PRNG_Zoo.LFib;
 
 with Ada.Text_IO, Ada.Integer_Text_IO;
@@ -21,9 +21,9 @@ procedure test_misc is
    package U64_IO is new Ada.Text_IO.Modular_IO(Num => U64);
    use U64_IO;
 
-   G_RANDU : Misc.RANDU;
-   G_MINSTD : Misc.MINSTD;
-   G_MINSTD0 : Misc.MINSTD0;
+   G_RANDU : Linear_Congruential.Examples.RANDU;
+   G_MINSTD : Linear_Congruential.Examples.MINSTD;
+   G_MINSTD0 : Linear_Congruential.Examples.MINSTD0;
    G_MINSTD0_Copy : Linear_Congruential.LCG_32Only(Modulus => 2147483647,
                                                    Multiplier => 16807,
                                                    Increment => 0);

@@ -9,12 +9,11 @@ with PRNG_Zoo;
 use PRNG_Zoo;
 use all type PRNG_Zoo.U32;
 
-with PRNG_Zoo.Misc;
-use all type PRNG_Zoo.Misc.RANDU;
-use all type PRNG_Zoo.Misc.MINSTD;
-use all type PRNG_Zoo.Misc.MINSTD0;
-
 with PRNG_Zoo.Linear_Congruential;
+with PRNG_Zoo.Linear_Congruential.Examples;
+use all type PRNG_Zoo.Linear_Congruential.Examples.RANDU;
+use all type PRNG_Zoo.Linear_Congruential.Examples.MINSTD;
+use all type PRNG_Zoo.Linear_Congruential.Examples.MINSTD0;
 use all type PRNG_Zoo.Linear_Congruential.LCG_32Only;
 
 package body Lin_Con_Tests is
@@ -57,7 +56,7 @@ package body Lin_Con_Tests is
    ----------------
 
    procedure Test_RANDU (T : in out Test_Cases.Test_Case'Class) is
-      G : Misc.RANDU;
+      G : Linear_Congruential.Examples.RANDU;
       Expected : U32_Array := (65539, 393225, 1769499, 7077969,
                                26542323, 95552217, 334432395, 1146624417,
                                1722371299, 14608041);
@@ -73,11 +72,11 @@ package body Lin_Con_Tests is
    -----------------
 
    procedure Test_MINSTD (T : in out Test_Cases.Test_Case'Class) is
-      G_MINSTD : Misc.MINSTD;
+      G_MINSTD : Linear_Congruential.Examples.MINSTD;
       G_MINSTD_P : Linear_Congruential.LCG_32Only(Modulus => 2147483647,
                                                   Multiplier => 48271,
                                                   Increment => 0);
-      G_MINSTD0 : Misc.MINSTD0;
+      G_MINSTD0 : Linear_Congruential.Examples.MINSTD0;
       G_MINSTD0_P : Linear_Congruential.LCG_32Only(Modulus => 2147483647,
                                                    Multiplier => 16807,
                                                    Increment => 0);
