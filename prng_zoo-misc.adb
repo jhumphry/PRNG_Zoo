@@ -43,4 +43,33 @@ package body PRNG_Zoo.Misc is
       return Shift_Right(G.s(G.p-1),1);
    end Generate;
 
+   -----------
+   -- Reset --
+   -----------
+
+   procedure Reset (G : in out KISS; S : in U64) is
+      S1 : U32 := U32(S and 16#FFFFFFFF#);
+      S2 : U32 := U32(Shift_Right(S, 32));
+   begin
+      G.z := 362436069 xor S1;
+      G.w := 521288629 xor S2;
+      G.jsr := 123456789 + S1;
+      G.jcong := 380116160 + S2;
+   end Reset;
+
+   --------------
+   -- Generate --
+   --------------
+
+   function Generate (G : in out KISS) return U32 is
+   begin
+      G.z := 36969 * (G.z and 16#FFFF#) + Shift_Right(G.z, 16);
+      G.w := 18000 * (G.w and 16#FFFF#) + Shift_Right(G.w, 16);
+      G.jsr := G.jsr xor Shift_Left(G.jsr, 17);
+      G.jsr := G.jsr xor Shift_Right(G.jsr, 13);
+      G.jsr := G.jsr xor Shift_Left(G.jsr, 5);
+      G.jcong := 69069 * G.jcong + 1234567;
+      return ((Shift_Left(G.z, 16) + G.w) xor G.jcong) + G.jsr;
+   end Generate;
+
 end PRNG_Zoo.Misc;

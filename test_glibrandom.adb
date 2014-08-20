@@ -16,13 +16,14 @@ procedure test_glibrandom is
    G_glibc : Misc.glibc_random;
 begin
 
-   Put_Line("Sixty outputs from glibc generator with default seed 1.");
+   Put_Line("64 outputs from glibc generator with default seed 1.");
    Reset(G_glibc, 1);
-   for I in 0..59 loop
-      Put(I, 2);
-      Put(":");
+   for I in 0..63 loop
       Put(U32'(Generate(G_glibc)));
-      New_Line;
+      Put(",");
+      if I mod 4 = 3 then
+         New_Line;
+      end if;
    end loop;
 
 end test_glibrandom;
