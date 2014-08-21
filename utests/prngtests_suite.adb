@@ -9,6 +9,7 @@ with xorshift_star_Tests;
 with xorshift_plus_Tests;
 with LFib_Tests;
 with Misc_Tests;
+with Dispatcher_Tests;
 
 package body PRNGTests_Suite is
    use AUnit.Test_Suites;
@@ -21,6 +22,7 @@ package body PRNGTests_Suite is
    Test_xorshift_plus : aliased xorshift_plus_Tests.xorshift_plus_Test;
    Test_LFib : aliased LFib_Tests.LFib_Test;
    Test_Misc : aliased Misc_Tests.Misc_Test;
+   Test_Dispatcher : aliased Dispatcher_Tests.Dispatcher_Test;
    -----------
    -- Suite --
    -----------
@@ -33,6 +35,7 @@ package body PRNGTests_Suite is
       Add_Test (Result'Access, Test_xorshift_plus'Access);
       Add_Test (Result'Access, Test_LFib'Access);
       Add_Test (Result'Access, Test_Misc'Access);
+      Add_Test (Result'Access, Test_Dispatcher'Access);
       return Result'Access;
    end Suite;
 

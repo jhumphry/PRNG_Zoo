@@ -16,4 +16,23 @@ package body PRNG_Zoo is
       return Shift_Left(U64(R1), 32) or U64(R2);
    end Generate;
 
+   -----------
+   -- Reset --
+   -----------
+
+   procedure Reset(G: in out Dispatcher; S: in U64) is
+   begin
+      Reset(G.IG.all, S);
+   end Reset;
+
+   -----------
+   -- Reset --
+   -----------
+
+   procedure Reset(G: in out Dispatcher_32; S: in U64) is
+   begin
+      Reset(G.IG.all, S);
+   end Reset;
+
+
 end PRNG_Zoo;
