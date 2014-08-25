@@ -7,6 +7,7 @@ with AUnit; use Aunit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
 with PRNG_Zoo.Misc;
+with Sanity_Checks;
 with Sanity_Checks32;
 
 package Misc_Tests is
@@ -24,5 +25,6 @@ package Misc_Tests is
 
    procedure Sanity_Check_GLib_Random is new Sanity_Checks32(P => PRNG_Zoo.Misc.glibc_random);
    procedure Sanity_Check_KISS is new Sanity_Checks32(P => PRNG_Zoo.Misc.KISS);
+   procedure Sanity_Check_MurmurHash3 is new Sanity_Checks(P => PRNG_Zoo.Misc.MurmurHash3);
 
 end Misc_Tests;

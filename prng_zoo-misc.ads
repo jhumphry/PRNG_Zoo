@@ -25,6 +25,24 @@ package PRNG_Zoo.Misc is
    procedure Reset (G : in out KISS; S : in U64);
    function Generate(G : in out KISS) return U32;
 
+   -- MurmurHash3
+   -- This is the finalisation stage of MurmurHash3
+   -- (https://code.google.com/p/smhasher/wiki/MurmurHash3)
+   -- used iteratively as a PRNG as suggested by S Vigna. He comments:
+
+   -- The multipliers are invertible in Z/2^64Z, and the xor/shifts are
+   -- invertible in (Z/2Z)^64, so you'll never get zero starting from a
+   -- nonzero value. Nonetheless, we have no clue of the period. In
+   -- principle, hitting a bad seed you might get into a very short repeating
+   -- sequence. The interesting thing is that it passes very well the strongest
+   -- statistical tests. It can be useful to scramble user-provided 64-bit
+   -- seeds.
+
+   type MurmurHash3 is new PRNG with private;
+   function Strength (G : in MurmurHash3) return PRNG_Strength is (Medium);
+   procedure Reset (G : in out MurmurHash3; S : in U64);
+   function Generate(G : in out MurmurHash3) return U64;
+
 private
 
    type glibc_random_index is mod 34;
@@ -42,6 +60,11 @@ private
          w : U32 := 521288629;
          jsr : U32 := 123456789;
          jcong : U32 := 380116160;
+      end record;
+
+   type MurmurHash3 is new PRNG with
+      record
+         s : U64 := 314159263;
       end record;
 
 end PRNG_Zoo.Misc;

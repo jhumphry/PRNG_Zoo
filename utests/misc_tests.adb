@@ -25,6 +25,7 @@ package body Misc_Tests is
       Register_Routine (T, Sanity_Check_GLib_Random'Access, "Basic sanity checks on GLib Random() generator.");
       Register_Routine (T, Sanity_Check_KISS'Access, "Basic sanity checks on Marsaglia KISS generator.");
       Register_Routine (T, Test_GLib_Random'Access, "Test GLib Random() generator against expected (initial) output");
+      Register_Routine (T, Sanity_Check_MurmurHash3'Access, "Basic sanity checks on generator based on MurmurHash3.");
    end Register_Tests;
 
    ----------

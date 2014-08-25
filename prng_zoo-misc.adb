@@ -72,4 +72,30 @@ package body PRNG_Zoo.Misc is
       return ((Shift_Left(G.z, 16) + G.w) xor G.jcong) + G.jsr;
    end Generate;
 
+   -----------
+   -- Reset --
+   -----------
+
+   procedure Reset (G : in out MurmurHash3; S : in U64) is
+   begin
+      if S = 0 then
+         raise Constraint_Error with "MurmurHash3 cannot be seeded with zero.";
+      end if;
+      G.s := S;
+   end Reset;
+
+   --------------
+   -- Generate --
+   --------------
+
+   function Generate (G : in out MurmurHash3) return U64 is
+   begin
+      G.s := G.s xor Shift_Right(G.s, 33);
+      G.s := G.s * 16#FF51AFD7ED558CCD#;
+      G.s := G.s xor Shift_Right(G.s, 33);
+      G.s := G.s * 16#C4CEB9FE1A85EC53#;
+      G.s := G.s xor Shift_Right(G.s, 33);
+      return G.s;
+   end Generate;
+
 end PRNG_Zoo.Misc;
