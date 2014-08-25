@@ -3,11 +3,17 @@
 -- Copyright 2014 James Humphry
 --
 
--- Includes material derived from mt19937ar.c
--- The copyright notice of which follows:
+-- Includes material derived from mt19937ar.c:
 
 --     Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
 --     All rights reserved.
+
+-- Includes material derived from mt19937-64.c:
+
+--     Copyright (C) 2004, Makoto Matsumoto and Takuji Nishimura,
+--     All rights reserved.
+
+-- The copyright conditions notice of both follows:
 --
 --     Redistribution and use in source and binary forms, with or without
 --     modification, are permitted provided that the following conditions
@@ -41,9 +47,15 @@ package body PRNG_Zoo.MT is
 
    N : constant := 624;
    M : constant := 397;
-   MATRIX_A : constant := 16#9908B0DF#;
-   UPPER_MASK : constant := 16#80000000#;
-   LOWER_MASK : constant := 16#7FFFFFFF#;
+   MATRIX_A : constant U32 := 16#9908B0DF#;
+   UPPER_MASK : constant U32 := 16#80000000#;
+   LOWER_MASK : constant U32 := 16#7FFFFFFF#;
+
+   NN : constant := 312;
+   MM : constant := 156;
+   MATRIX_A_64 : constant U64 := 16#B5026F5AA96619E9#;
+   UM : constant U64 := 16#FFFFFFFF80000000#;
+   LM : constant U64 := 16#7FFFFFFF#;
 
    -----------
    -- Reset --
@@ -119,5 +131,83 @@ package body PRNG_Zoo.MT is
       return y;
 
    end Generate;
+
+
+   -----------
+   -- Reset --
+   -----------
+
+   procedure Reset (G: in out MT19937_64; S: in U64) is
+   begin
+      G.s(0) := S;
+      G.p := 0;
+      For I in MT_Index_64 range 1..MT_Index_64(NN-1) loop
+         G.s(I) := 6364136223846793005 * (G.s(I-1) xor Shift_Right(G.s(I-1), 62))
+           + U64(I);
+      end loop;
+   end Reset;
+
+   procedure Reset (G: in out MT19937_64; S: in U64_array) is
+      key : U64_array(0..S'Length-1) := S;
+      i : MT_Index_64;
+      j : Integer;
+   begin
+      Reset(G, U64(19650218));
+
+      i := 1;
+      j := 0;
+
+      for k in reverse 1..(if NN > key'Length then NN else key'Length) loop
+         G.s(i) := (G.s(i) xor ((G.s(i-1) xor Shift_Right(G.s(i-1), 62)) * 3935559000370003845)) +
+           key(j) + U64(j);
+         i := i + 1;
+         j := (j + 1) mod key'Length;
+         if i=0 then
+            G.s(0) := G.s(MT_Index_64(NN-1));
+            i := 1;
+         end if;
+      end loop;
+
+      for k in reverse 1..MT_Index_64(NN-1) loop
+         G.s(i) := (G.s(i) xor ((G.s(i-1) xor Shift_Right(G.s(i-1), 62)) * 2862933555777941757))
+           - U64(i);
+         i := i + 1;
+         if i=0 then
+            G.s(0) := G.s(MT_Index_64(NN-1));
+            i := 1;
+         end if;
+      end loop;
+
+      G.s(0) := Shift_Left(U64(1),63);
+   end Reset;
+
+   --------------
+   -- Generate --
+   --------------
+
+   function Generate (G: in out MT19937_64) return U64 is
+         x : U64;
+   begin
+      if G.p = 0 then
+         for I in MT_Index_64'Range loop
+            x := (G.s(I) and UM) or (G.s(I+1) and LM);
+            G.s(I) := G.s(I+MM) xor Shift_Right(x, 1);
+            if (x mod 2) = 1 then
+               G.s(I) := G.s(I) xor MATRIX_A_64;
+            end if;
+         end loop;
+      end if;
+
+      x := G.s(G.p);
+      x := x xor (Shift_Right(x, 29) and 16#5555555555555555#);
+      x := x xor (Shift_Left(x, 17) and 16#71D67FFFEDA60000#);
+      x := x xor (Shift_Left(x, 37) and 16#FFF7EEE000000000#);
+      x := x xor Shift_Right(x, 43);
+      G.p := G.p + 1;
+      return x;
+
+   end Generate;
+
+
 
 end PRNG_Zoo.MT;
