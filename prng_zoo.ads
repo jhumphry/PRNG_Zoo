@@ -56,6 +56,5 @@ package PRNG_Zoo is
      (Generate(G.IG.all));
 
    scale_unsigned_32 : constant := 2.32830_64365_38696_28906_25000E-10;
-   scale_unsigned_64 : constant := 5.42101_08624_27522_17003_72640_04349_70855_71289_06250E-20;
 
 end PRNG_Zoo;
