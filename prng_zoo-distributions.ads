@@ -37,4 +37,10 @@ package PRNG_Zoo.Distributions is
    procedure Reset(D: in out Normal_Box_Mueller);
    function Generate(D: in out Normal_Box_Mueller; G: in out P) return Float_Type;
 
+   type Exponential is new Distribution with
+      record
+         theta : Float_Type := 1.0;
+      end record;
+   function Generate(D: in out Exponential; G: in out P) return Float_Type;
+
 end PRNG_Zoo.Distributions;
