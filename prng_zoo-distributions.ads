@@ -37,6 +37,9 @@ package PRNG_Zoo.Distributions is
    procedure Reset(D: in out Normal_Box_Mueller);
    function Generate(D: in out Normal_Box_Mueller; G: in out P) return Float_Type;
 
+   type Normal_Monty_Python is new Distribution with null record;
+   function Generate(D: in out Normal_Monty_Python; G: in out P) return Float_Type;
+
    type Exponential is new Distribution with
       record
          theta : Float_Type := 1.0;
