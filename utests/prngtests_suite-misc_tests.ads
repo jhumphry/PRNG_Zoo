@@ -7,10 +7,10 @@ with AUnit; use Aunit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
 with PRNG_Zoo.Misc;
-with Sanity_Checks;
-with Sanity_Checks32;
+with PRNGTests_Suite.Sanity_Checks;
+with PRNGTests_Suite.Sanity_Checks32;
 
-package Misc_Tests is
+package PRNGTests_Suite.Misc_Tests is
 
    type Misc_Test is new Test_Cases.Test_Case with null record;
 
@@ -23,8 +23,8 @@ package Misc_Tests is
    -- Test Routines:
    procedure Test_Glib_Random (T : in out Test_Cases.Test_Case'Class);
 
-   procedure Sanity_Check_GLib_Random is new Sanity_Checks32(P => PRNG_Zoo.Misc.glibc_random);
-   procedure Sanity_Check_KISS is new Sanity_Checks32(P => PRNG_Zoo.Misc.KISS);
-   procedure Sanity_Check_MurmurHash3 is new Sanity_Checks(P => PRNG_Zoo.Misc.MurmurHash3);
+   procedure Sanity_Check_GLib_Random is new PRNGTests_Suite.Sanity_Checks32(P => Misc.glibc_random);
+   procedure Sanity_Check_KISS is new PRNGTests_Suite.Sanity_Checks32(P => Misc.KISS);
+   procedure Sanity_Check_MurmurHash3 is new PRNGTests_Suite.Sanity_Checks(P => Misc.MurmurHash3);
 
-end Misc_Tests;
+end PRNGTests_Suite.Misc_Tests;

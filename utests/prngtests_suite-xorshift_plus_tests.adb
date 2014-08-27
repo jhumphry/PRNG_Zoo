@@ -5,10 +5,7 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
 
-with PRNG_Zoo;
-use PRNG_Zoo;
-
-package body xorshift_plus_Tests is
+package body PRNGTests_Suite.xorshift_plus_Tests is
 
    --------------------
    -- Register_Tests --
@@ -38,4 +35,4 @@ package body xorshift_plus_Tests is
       null;
    end Set_Up;
 
-end xorshift_plus_Tests;
+end PRNGTests_Suite.xorshift_plus_Tests;

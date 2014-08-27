@@ -5,16 +5,11 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
 
-with PRNG_Zoo;
-use PRNG_Zoo;
-use all type PRNG_Zoo.U32;
-use all type PRNG_Zoo.U64;
-
 with PRNG_Zoo.MT;
 use all type PRNG_Zoo.MT.MT19937;
 use all type PRNG_Zoo.MT.MT19937_64;
 
-package body MT_Tests is
+package body PRNGTests_Suite.MT_Tests is
 
    --------------------
    -- Register_Tests --
@@ -174,4 +169,4 @@ package body MT_Tests is
 
    end Test_MT19937_64;
 
-end MT_Tests;
+end PRNGTests_Suite.MT_Tests;

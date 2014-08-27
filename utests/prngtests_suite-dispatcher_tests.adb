@@ -5,18 +5,13 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
 
-with PRNG_Zoo;
-use PRNG_Zoo;
-use all type PRNG_Zoo.U64;
-use all type PRNG_Zoo.U32;
-
 with PRNG_Zoo.xorshift_star;
 use all type PRNG_Zoo.xorshift_star.xorshift64_star;
 
 with PRNG_Zoo.Linear_Congruential.Examples;
 use all type PRNG_Zoo.Linear_Congruential.Examples.MINSTD;
 
-package body Dispatcher_Tests is
+package body PRNGTests_Suite.Dispatcher_Tests is
 
    --------------------
    -- Register_Tests --
@@ -101,4 +96,4 @@ package body Dispatcher_Tests is
 
    end Test_Dispatcher_32;
 
-end Dispatcher_Tests;
+end PRNGTests_Suite.Dispatcher_Tests;

@@ -8,9 +8,9 @@ with AUnit.Test_Cases; use AUnit.Test_Cases;
 
 with PRNG_Zoo.Linear_Congruential.Examples;
 
-with Sanity_Checks32;
+with PRNGTests_Suite.Sanity_Checks32;
 
-package Lin_Con_Tests is
+package PRNGTests_Suite.Lin_Con_Tests is
 
    type Lin_Con_Test is new Test_Cases.Test_Case with null record;
 
@@ -22,14 +22,14 @@ package Lin_Con_Tests is
 
    -- Test Routines:
    procedure Sanity_Check_MINSTD is
-     new Sanity_Checks32(P => PRNG_Zoo.Linear_Congruential.Examples.MINSTD);
+     new PRNGTests_Suite.Sanity_Checks32(P => PRNG_Zoo.Linear_Congruential.Examples.MINSTD);
    procedure Sanity_Check_MINSTD0 is
-     new Sanity_Checks32(P => PRNG_Zoo.Linear_Congruential.Examples.MINSTD0);
+     new PRNGTests_Suite.Sanity_Checks32(P => PRNG_Zoo.Linear_Congruential.Examples.MINSTD0);
    procedure Sanity_Check_RANDU is
-     new Sanity_Checks32(P => PRNG_Zoo.Linear_Congruential.Examples.RANDU);
+     new PRNGTests_Suite.Sanity_Checks32(P => PRNG_Zoo.Linear_Congruential.Examples.RANDU);
 
    procedure Test_RANDU (T : in out Test_Cases.Test_Case'Class);
 
    procedure Test_MINSTD (T : in out Test_Cases.Test_Case'Class);
 
-end Lin_Con_Tests;
+end PRNGTests_Suite.Lin_Con_Tests;

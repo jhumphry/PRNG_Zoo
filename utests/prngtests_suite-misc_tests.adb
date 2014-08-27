@@ -5,15 +5,11 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
 
-with PRNG_Zoo;
-use PRNG_Zoo;
-use all type PRNG_Zoo.U32;
-
 with PRNG_Zoo.Misc;
 use all type PRNG_Zoo.Misc.glibc_random;
 use all type PRNG_Zoo.Misc.KISS;
 
-package body Misc_Tests is
+package body PRNGTests_Suite.Misc_Tests is
 
    --------------------
    -- Register_Tests --
@@ -81,4 +77,4 @@ package body Misc_Tests is
 
    end Test_GLib_Random;
 
-end Misc_Tests;
+end PRNGTests_Suite.Misc_Tests;

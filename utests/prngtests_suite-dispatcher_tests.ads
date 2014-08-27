@@ -6,10 +6,7 @@
 with AUnit; use Aunit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
-with PRNG_Zoo;
-with Sanity_Checks;
-
-package Dispatcher_Tests is
+package PRNGTests_Suite.Dispatcher_Tests is
 
    type Dispatcher_Test is new Test_Cases.Test_Case with null record;
 
@@ -23,4 +20,4 @@ package Dispatcher_Tests is
    procedure Test_Dispatcher (T : in out Test_Cases.Test_Case'Class);
    procedure Test_Dispatcher_32 (T : in out Test_Cases.Test_Case'Class);
 
-end Dispatcher_Tests;
+end PRNGTests_Suite.Dispatcher_Tests;

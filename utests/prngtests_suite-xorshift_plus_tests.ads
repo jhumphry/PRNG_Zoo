@@ -7,9 +7,9 @@ with AUnit; use Aunit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
 with PRNG_Zoo.xorshift_plus;
-with Sanity_Checks;
+with PRNGTests_Suite.Sanity_Checks;
 
-package xorshift_plus_Tests is
+package PRNGTests_Suite.xorshift_plus_Tests is
 
    type xorshift_plus_Test is new Test_Cases.Test_Case with null record;
 
@@ -21,6 +21,6 @@ package xorshift_plus_Tests is
 
    -- Test Routines:
    procedure Sanity_Check_xsp128 is
-     new Sanity_Checks(P => PRNG_Zoo.xorshift_plus.xorshift128_plus);
+     new PRNGTests_Suite.Sanity_Checks(P => xorshift_plus.xorshift128_plus);
 
-end xorshift_plus_Tests;
+end PRNGTests_Suite.xorshift_plus_Tests;

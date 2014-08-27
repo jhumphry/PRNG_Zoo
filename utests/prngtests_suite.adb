@@ -3,13 +3,13 @@
 -- Copyright 2014 James Humphry
 --
 
-with Lin_Con_Tests;
-with MT_Tests;
-with xorshift_star_Tests;
-with xorshift_plus_Tests;
-with LFib_Tests;
-with Misc_Tests;
-with Dispatcher_Tests;
+with PRNGTests_Suite.Lin_Con_Tests;
+with PRNGTests_Suite.MT_Tests;
+with PRNGTests_Suite.xorshift_star_Tests;
+with PRNGTests_Suite.xorshift_plus_Tests;
+with PRNGTests_Suite.LFib_Tests;
+with PRNGTests_Suite.Misc_Tests;
+with PRNGTests_Suite.Dispatcher_Tests;
 
 package body PRNGTests_Suite is
    use AUnit.Test_Suites;

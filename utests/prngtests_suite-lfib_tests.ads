@@ -3,16 +3,13 @@
 -- Copyright 2014 James Humphry
 --
 
-with Interfaces;
-use type Interfaces.Unsigned_64;
-
 with AUnit; use Aunit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
 with PRNG_Zoo.LFib;
-with Sanity_Checks;
+with PRNGTests_Suite.Sanity_Checks;
 
-package LFib_Tests is
+package PRNGTests_Suite.LFib_Tests is
 
    type LFib_Test is new Test_Cases.Test_Case with null record;
 
@@ -22,12 +19,12 @@ package LFib_Tests is
 
    procedure Set_Up (T : in out LFib_Test);
 
-   package Example_LFib is new PRNG_Zoo.LFib.Generic_LFib(j => 24,
+   package Example_LFib is new LFib.Generic_LFib(j => 24,
                                                           k => 55,
                                                           Op => "+");
 
    -- Test Routines:
    procedure Sanity_Check_LFib is
-     new Sanity_Checks(P => Example_LFib.LFib);
+     new PRNGTests_Suite.Sanity_Checks(P => Example_LFib.LFib);
 
-end LFib_Tests;
+end PRNGTests_Suite.LFib_Tests;

@@ -13,4 +13,4 @@ generic
    N : Positive := 64;
    seed1 : U64 := 27182818;
    seed2 : U64 := 31415926;
-procedure Sanity_Checks(T : in out Test_Case'Class);
+procedure PRNGTests_Suite.Sanity_Checks32(T : in out Test_Case'Class);

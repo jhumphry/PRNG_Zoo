@@ -5,9 +5,9 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
 
-with PRNG_Zoo;
-use PRNG_Zoo;
-use all type PRNG_Zoo.U32;
+--with PRNG_Zoo;
+--use PRNG_Zoo;
+--use all type PRNG_Zoo.U32;
 
 with PRNG_Zoo.Linear_Congruential;
 with PRNG_Zoo.Linear_Congruential.Examples;
@@ -16,7 +16,7 @@ use all type PRNG_Zoo.Linear_Congruential.Examples.MINSTD;
 use all type PRNG_Zoo.Linear_Congruential.Examples.MINSTD0;
 use all type PRNG_Zoo.Linear_Congruential.LCG_32Only;
 
-package body Lin_Con_Tests is
+package body PRNGTests_Suite.Lin_Con_Tests is
 
    --------------------
    -- Register_Tests --
@@ -97,4 +97,4 @@ package body Lin_Con_Tests is
    end Test_MINSTD;
 
 
-end Lin_Con_Tests;
+end PRNGTests_Suite.Lin_Con_Tests;

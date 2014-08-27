@@ -6,13 +6,9 @@
 with AUnit.Assertions; use AUnit.Assertions;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
-with PRNG_Zoo;
-use PRNG_Zoo;
-use type PRNG_Zoo.U32;
-
-procedure Sanity_Checks32(T : in out Test_Case'Class) is
+procedure PRNGTests_Suite.Sanity_Checks(T : in out Test_Case'Class) is
    G : P;
-   Output : U32_array(1..N);
+   Output : U64_array(1..N);
 begin
 
    Reset(G, seed1);
@@ -28,5 +24,6 @@ begin
 
    Reset(G, seed2);
    Assert((for some I in Output'Range => Output(I) /= Generate(G)),
-          "Different seeds appear to restart the same sequence.");
-end Sanity_Checks32;
+          "Different seeds appear to produce the same sequence.");
+
+end PRNGTests_Suite.Sanity_Checks;
