@@ -16,20 +16,20 @@ package body PRNG_Zoo is
       return Shift_Left(U64(R1), 32) or U64(R2);
    end Generate;
 
+   --------------
+   -- Generate --
+   --------------
+
+   function Generate (G: in out PRNG_64Only) return U32 is
+   begin
+      return U32(U64'(Generate(PRNG_64Only'Class(G))) and 16#FFFFFFFF#);
+   end Generate;
+
    -----------
    -- Reset --
    -----------
 
    procedure Reset(G: in out Dispatcher; S: in U64) is
-   begin
-      Reset(G.IG.all, S);
-   end Reset;
-
-   -----------
-   -- Reset --
-   -----------
-
-   procedure Reset(G: in out Dispatcher_32; S: in U64) is
    begin
       Reset(G.IG.all, S);
    end Reset;

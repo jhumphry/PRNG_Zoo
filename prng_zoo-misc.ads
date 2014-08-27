@@ -38,7 +38,7 @@ package PRNG_Zoo.Misc is
    -- statistical tests. It can be useful to scramble user-provided 64-bit
    -- seeds.
 
-   type MurmurHash3 is new PRNG with private;
+   type MurmurHash3 is new PRNG_64Only with private;
    function Strength (G : in MurmurHash3) return PRNG_Strength is (Medium);
    procedure Reset (G : in out MurmurHash3; S : in U64);
    function Generate(G : in out MurmurHash3) return U64;
@@ -62,7 +62,7 @@ private
          jcong : U32 := 380116160;
       end record;
 
-   type MurmurHash3 is new PRNG with
+   type MurmurHash3 is new PRNG_64Only with
       record
          s : U64 := 314159263;
       end record;

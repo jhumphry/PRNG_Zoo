@@ -13,6 +13,7 @@ package PRNG_Zoo is
    type U64_array is array (Integer range <>) of U64;
    subtype U64_Nonzero is
      Interfaces.Unsigned_64 range 1..Interfaces.Unsigned_64'Last - 1;
+
    subtype U32 is Interfaces.Unsigned_32;
    type U32_array is array (Integer range <>) of U32;
    subtype U32_Nonzero is
@@ -24,17 +25,17 @@ package PRNG_Zoo is
    function Strength(G: in PRNG) return PRNG_Strength is abstract;
    procedure Reset(G: in out PRNG; S: in U64) is abstract;
    function Generate(G: in out PRNG) return U64 is abstract;
+   function Generate(G: in out PRNG) return U32 is abstract;
 
-   type PRNG_32 is interface and PRNG;
-   function Generate(G: in out PRNG_32) return U32 is abstract;
-
-   type PRNG_32Only is abstract new PRNG_32 with null record;
+   type PRNG_32Only is abstract new PRNG with null record;
    function Generate(G: in out PRNG_32Only) return U64;
 
-   type PRNG_Ptr is access all PRNG'Class;
-   type PRNG_32_Ptr is access all PRNG_32'Class;
+   type PRNG_64Only is abstract new PRNG with null record;
+   function Generate(G: in out PRNG_64Only) return U32;
 
-   -- The Dispatcher types exist so that other routines can be written as
+   type PRNG_Ptr is access all PRNG'Class;
+
+   -- The Dispatcher type exists so that other routines can be written as
    -- generics with compile-type polymorphism (for optimum performance in actual
    -- simulations) while still allowing for run-time polymorphism for tests of
    -- statistical quality and relative speed.
@@ -45,14 +46,7 @@ package PRNG_Zoo is
    procedure Reset(G: in out Dispatcher; S: in U64);
    function Generate(G: in out Dispatcher) return U64 is
      (Generate(G.IG.all));
-
-   type Dispatcher_32(IG : access PRNG_32'Class) is new PRNG_32 with null record;
-   function Strength(G: in Dispatcher_32) return PRNG_Strength is
-     (Strength(G.IG.all));
-   procedure Reset(G: in out Dispatcher_32; S: in U64);
-   function Generate(G: in out Dispatcher_32) return U64 is
-     (Generate(G.IG.all));
-   function Generate(G: in out Dispatcher_32) return U32 is
+   function Generate(G: in out Dispatcher) return U32 is
      (Generate(G.IG.all));
 
    scale_unsigned_32 : constant := 2.32830_64365_38696_28906_25000E-10;

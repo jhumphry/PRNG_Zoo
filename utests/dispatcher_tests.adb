@@ -60,13 +60,13 @@ package body Dispatcher_Tests is
       Reset(G, 5489);
       Reset(G2, 5489);
       for I in 1..64 loop
-         Assert(G.Generate = G2.Generate,
+         Assert(U64'(G.Generate) = U64'(G2.Generate),
                 "xorshift64* wrapped in a Dispatcher produces different 64-bit output than plain xorshift64*.");
       end loop;
 
       Reset(G, 5432);
       Reset(G2, 5432);
-      Assert(G.Generate = G2.Generate,
+      Assert(U64'(G.Generate) = U64'(G2.Generate),
              "Resetting a xorshift64* wrapped in a Dispatcher seems different from resetting a plain xorshift64*.");
 
       Assert(G.Strength = G2.Strength,
@@ -81,7 +81,7 @@ package body Dispatcher_Tests is
    procedure Test_Dispatcher_32 (T : in out Test_Cases.Test_Case'Class) is
       G1: aliased Linear_Congruential.Examples.MINSTD;
       G2 : Linear_Congruential.Examples.MINSTD;
-      G : Dispatcher_32(G1'Access);
+      G : Dispatcher(G1'Access);
    begin
 
       Reset(G, 5489);

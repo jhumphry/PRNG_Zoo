@@ -73,7 +73,7 @@ begin
    for I in 1..11 loop
       Put(I, 2);
       Put(":");
-      Put(G_LFib.Generate);
+      Put(U64'(G_LFib.Generate));
       New_Line;
    end loop;
 

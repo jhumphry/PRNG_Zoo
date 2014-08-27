@@ -11,13 +11,13 @@ package PRNG_Zoo.Linear_Congruential is
       Multiplier : U64_Nonzero;
       Increment : U64;
    package Generic_LCG is
-      type LCG is new PRNG with private;
+      type LCG is new PRNG_64Only with private;
       function Strength(G: in LCG) return PRNG_Strength is (Low);
       procedure Reset(G: in out LCG; S: in U64);
       function Generate(G: in out LCG) return U64;
 
    private
-      type LCG is new PRNG with
+      type LCG is new PRNG_64Only with
          record
             s : U64 := 1;
          end record;
@@ -56,7 +56,7 @@ package PRNG_Zoo.Linear_Congruential is
 
 private
 
-   type LCG(Modulus : U64_Nonzero; Multiplier : U64_Nonzero; Increment: U64) is new PRNG with
+   type LCG(Modulus : U64_Nonzero; Multiplier : U64_Nonzero; Increment: U64) is new PRNG_64Only with
       record
          s : U64 := 1;
       end record;

@@ -9,7 +9,7 @@ with PRNG_Zoo;
 use PRNG_Zoo;
 
 generic
-   type P is new PRNG_32 with private;
+   type P is new PRNG with private;
    N : Positive := 64;
    seed1 : U64 := 27182818;
    seed2 : U64 := 31415926;

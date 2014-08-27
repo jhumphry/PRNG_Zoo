@@ -7,17 +7,17 @@ package PRNG_Zoo.xorshift_star is
 
    type xorshift_star is interface and PRNG;
 
-   type xorshift64_star is new xorshift_star with private;
+   type xorshift64_star is new PRNG_64Only and xorshift_star with private;
    function Strength (G : in xorshift64_star) return PRNG_Strength is (Medium);
    procedure Reset (G : in out xorshift64_star; S : in U64);
    function Generate (G : in out xorshift64_star) return U64;
 
-   type xorshift1024_star is new xorshift_star  with private;
+   type xorshift1024_star is new PRNG_64Only and xorshift_star  with private;
    function Strength (G : in xorshift1024_star) return PRNG_Strength is (High);
    procedure Reset (G : in out xorshift1024_star; S : in U64);
    function Generate (G : in out xorshift1024_star) return U64;
 
-   type xorshift4096_star is new xorshift_star  with private;
+   type xorshift4096_star is new PRNG_64Only and xorshift_star  with private;
    function Strength (G : in xorshift4096_star) return PRNG_Strength is (High);
    procedure Reset (G : in out xorshift4096_star; S : in U64);
    function Generate (G : in out xorshift4096_star) return U64;
@@ -33,20 +33,20 @@ package PRNG_Zoo.xorshift_star is
 
 private
 
-   type xorshift64_star is new xorshift_star with record
+   type xorshift64_star is new PRNG_64Only and xorshift_star with record
       s : U64;
    end record;
 
    type p16 is mod 2**4;
    type p16_arrayU64 is array (p16) of U64;
-   type xorshift1024_star is new xorshift_star with record
+   type xorshift1024_star is new PRNG_64Only and xorshift_star with record
       s : p16_arrayU64;
       p : p16 := 0;
    end record;
 
    type p64 is mod 2**6;
    type p64_arrayU64 is array (p64) of U64;
-   type xorshift4096_star is new xorshift_star with record
+   type xorshift4096_star is new PRNG_64Only and xorshift_star with record
       s : p64_arrayU64;
       p : p64 := 0;
    end record;

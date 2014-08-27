@@ -5,7 +5,7 @@
 
 package PRNG_Zoo.xorshift_plus is
 
-   type xorshift128_plus is new PRNG with private;
+   type xorshift128_plus is new PRNG_64Only with private;
 
    function Strength(G: in xorshift128_plus) return PRNG_Strength is (Medium);
 
@@ -15,7 +15,7 @@ package PRNG_Zoo.xorshift_plus is
 
 private
 
-   type xorshift128_plus is new PRNG with
+   type xorshift128_plus is new PRNG_64Only with
       record
          s0, s1: U64;
       end record;
