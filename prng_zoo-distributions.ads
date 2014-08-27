@@ -17,14 +17,14 @@ package PRNG_Zoo.Distributions is
    function Generate(D: in out Distribution; G : in out P) return Float_Type is abstract;
 
    type Uniform01 is new Distribution with null record;
-   function Generate(D: in out Uniform01; G: in out P) return Float_Type;
+   function Generate(D: in out Uniform01; G: in out P) return Float_Type with inline;
 
    type Uniform is new Distribution with
       record
          a : Float_Type := 0.0;
          b : Float_Type := 1.0;
       end record;
-   function Generate(D: in out Uniform; G: in out P) return Float_Type;
+   function Generate(D: in out Uniform; G: in out P) return Float_Type with inline;
 
    type Normal_12_6 is new Distribution with null record;
    function Generate(D: in out Normal_12_6; G: in out P) return Float_Type;
@@ -44,6 +44,6 @@ package PRNG_Zoo.Distributions is
       record
          theta : Float_Type := 1.0;
       end record;
-   function Generate(D: in out Exponential; G: in out P) return Float_Type;
+   function Generate(D: in out Exponential; G: in out P) return Float_Type with inline;
 
 end PRNG_Zoo.Distributions;

@@ -12,7 +12,7 @@ package PRNG_Zoo.Misc is
    type glibc_random is new PRNG_32Only with private;
    function Strength (G : in glibc_random) return PRNG_Strength is (Low);
    procedure Reset (G : in out glibc_random; S : in U64);
-   function Generate(G : in out glibc_random) return U32;
+   function Generate(G : in out glibc_random) return U32 with inline;
 
    -- KISS generator - a combination of a multiply-with-carry, a 3-shift
    -- register and a congruential generator
@@ -23,7 +23,7 @@ package PRNG_Zoo.Misc is
    function Strength (G : in KISS) return PRNG_Strength is (Medium);
    -- S = 0 resets to Marsaglia's suggested starting parameters
    procedure Reset (G : in out KISS; S : in U64);
-   function Generate(G : in out KISS) return U32;
+   function Generate(G : in out KISS) return U32 with inline;
 
    -- MurmurHash3
    -- This is the finalisation stage of MurmurHash3
@@ -41,7 +41,7 @@ package PRNG_Zoo.Misc is
    type MurmurHash3 is new PRNG_64Only with private;
    function Strength (G : in MurmurHash3) return PRNG_Strength is (Medium);
    procedure Reset (G : in out MurmurHash3; S : in U64);
-   function Generate(G : in out MurmurHash3) return U64;
+   function Generate(G : in out MurmurHash3) return U64 with inline;
 
 private
 

@@ -14,7 +14,7 @@ package PRNG_Zoo.Linear_Congruential is
       type LCG is new PRNG_64Only with private;
       function Strength(G: in LCG) return PRNG_Strength is (Low);
       procedure Reset(G: in out LCG; S: in U64);
-      function Generate(G: in out LCG) return U64;
+      function Generate(G: in out LCG) return U64 with inline;
 
    private
       type LCG is new PRNG_64Only with
@@ -33,7 +33,7 @@ package PRNG_Zoo.Linear_Congruential is
       type LCG_32Only is new PRNG_32Only with private;
       function Strength(G: in LCG_32Only) return PRNG_Strength is (Low);
       procedure Reset(G: in out LCG_32Only; S: in U64);
-      function Generate(G: in out LCG_32Only) return U32;
+      function Generate(G: in out LCG_32Only) return U32 with inline;
 
    private
 
@@ -46,13 +46,13 @@ package PRNG_Zoo.Linear_Congruential is
    type LCG(Modulus : U64_Nonzero; Multiplier : U64_Nonzero; Increment: U64) is new PRNG with private;
    function Strength(G: in     LCG) return PRNG_Strength is (Low);
    procedure Reset(G: in out LCG; S: in U64);
-   function Generate(G: in out LCG) return U64;
+   function Generate(G: in out LCG) return U64 with inline;
 
    type LCG_32Only(Modulus : U32_Nonzero; Multiplier : U32_Nonzero; Increment: U32) is
      new PRNG_32Only with private;
    function Strength(G: in LCG_32Only) return PRNG_Strength is (Low);
    procedure Reset(G: in out LCG_32Only; S: in U64);
-   function Generate(G: in out LCG_32Only) return U32;
+   function Generate(G: in out LCG_32Only) return U32 with inline;
 
 private
 

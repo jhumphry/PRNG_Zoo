@@ -28,10 +28,10 @@ package PRNG_Zoo is
    function Generate(G: in out PRNG) return U32 is abstract;
 
    type PRNG_32Only is abstract new PRNG with null record;
-   function Generate(G: in out PRNG_32Only) return U64;
+   function Generate(G: in out PRNG_32Only) return U64 with inline;
 
    type PRNG_64Only is abstract new PRNG with null record;
-   function Generate(G: in out PRNG_64Only) return U32;
+   function Generate(G: in out PRNG_64Only) return U32 with inline;
 
    type PRNG_Ptr is access all PRNG'Class;
 
@@ -45,9 +45,9 @@ package PRNG_Zoo is
      (Strength(G.IG.all));
    procedure Reset(G: in out Dispatcher; S: in U64);
    function Generate(G: in out Dispatcher) return U64 is
-     (Generate(G.IG.all));
+     (Generate(G.IG.all)) with inline;
    function Generate(G: in out Dispatcher) return U32 is
-     (Generate(G.IG.all));
+     (Generate(G.IG.all)) with inline;
 
    scale_unsigned_32 : constant := 2.32830_64365_38696_28906_25000E-10;
 

@@ -12,7 +12,7 @@ package PRNG_Zoo.LFib is
       type LFib is new PRNG_64Only with private;
       function Strength(G: in LFib) return PRNG_Strength is (Low);
       procedure Reset(G: in out LFib; S: in U64);
-      function Generate(G: in out LFib) return U64;
+      function Generate(G: in out LFib) return U64 with inline;
 
    private
       type LFib is new PRNG_64Only with

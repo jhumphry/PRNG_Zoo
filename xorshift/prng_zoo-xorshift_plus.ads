@@ -11,7 +11,7 @@ package PRNG_Zoo.xorshift_plus is
 
    procedure Reset(G: in out xorshift128_plus; S: in U64);
 
-   function Generate(G: in out xorshift128_plus) return U64;
+   function Generate(G: in out xorshift128_plus) return U64 with inline;
 
 private
 

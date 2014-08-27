@@ -9,13 +9,13 @@ package PRNG_Zoo.MT is
    function Strength(G: in MT19937) return PRNG_Strength is (Medium);
    procedure Reset(G: in out MT19937; S: in U64);
    procedure Reset(G: in out MT19937; S: in U64_array);
-   function Generate(G: in out MT19937) return U32;
+   function Generate(G: in out MT19937) return U32 with inline;
 
    type MT19937_64 is new PRNG_64Only with private;
    function Strength(G: in MT19937_64) return PRNG_Strength is (Medium);
    procedure Reset(G: in out MT19937_64; S: in U64);
    procedure Reset(G: in out MT19937_64; S: in U64_array);
-   function Generate(G: in out MT19937_64) return U64;
+   function Generate(G: in out MT19937_64) return U64 with inline;
 
 private
 
