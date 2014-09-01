@@ -9,6 +9,7 @@ use PRNG_Zoo;
 with PRNG_Zoo.xorshift_star, PRNG_Zoo.Linear_Congruential.Examples;
 use all type PRNG_Zoo.xorshift_star.xorshift1024_star;
 use all type PRNG_Zoo.Linear_Congruential.Examples.RANDU;
+use all type PRNG_Zoo.Linear_Congruential.Examples.MINSTD;
 
 with PRNG_Zoo.Tests, PRNG_Zoo.Tests.Bits;
 
@@ -18,6 +19,7 @@ use Ada.Text_IO;
 procedure test_bits is
    G1 : xorshift_star.xorshift1024_star;
    G2 : Linear_Congruential.Examples.RANDU;
+   G3 : Linear_Congruential.Examples.MINSTD;
    BC : Tests.Bits.Bit_Counter;
    TR : Tests.Test_Result_Ptr;
 begin
@@ -39,13 +41,27 @@ begin
    BC.Reset;
    Put_Line("Testing RANDU");
    for I in 1..1_000_000 loop
-      BC.Feed(G2.Generate);
+      BC.Feed(U64(U32'(G2.Generate)));
    end loop;
-   TR := BC.Result;
+   TR := BC.Result(Width => 31);
    if TR.Passed then
       Put_Line("RANDU passed Bit-Counter test");
    else
       Put_Line("RANDU failed Bit-Counter test");
+   end if;
+   Put_Line(TR.Describe); New_Line;
+
+   G3.Reset(9753);
+   BC.Reset;
+   Put_Line("Testing MINSTD");
+   for I in 1..1_000_000 loop
+      BC.Feed(U64(U32'(G3.Generate)));
+   end loop;
+   TR := BC.Result(Width => 31);
+   if TR.Passed then
+      Put_Line("MINSTD passed Bit-Counter test");
+   else
+      Put_Line("MINSTD failed Bit-Counter test");
    end if;
    Put_Line(TR.Describe); New_Line;
 

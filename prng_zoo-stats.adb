@@ -13,9 +13,8 @@ package body PRNG_Zoo.Stats is
 
    function Z_Score
      (Z : Long_Float;
-      alpha : Long_Float := 0.05;
       Two_Tailed: Boolean := True)
-      return Boolean
+      return Long_Float
    is
       lower : Positive := Integer(Long_Float'Floor(abs(Z)*100.0)) + 1;
       upper : Positive := lower + 1;
@@ -23,16 +22,27 @@ package body PRNG_Zoo.Stats is
       sf : Long_Float;
    begin
       if upper > 500 then
-         return False;
+         return 0.0;
       end if;
 
-      sf := (1.0 - residue ) * Tables.Normal(lower) + residue * Tables.Normal(upper);
+      sf := (1.0 - residue) * Tables.Normal(lower) + residue * Tables.Normal(upper);
 
       if Two_Tailed then
          sf := sf * 2.0;
       end if;
 
-      return sf > alpha;
+      return sf;
+   end Z_Score;
+
+
+   function Z_Score
+     (Z : Long_Float;
+      alpha : Long_Float := 0.05;
+      Two_Tailed: Boolean := True)
+      return Boolean
+   is
+   begin
+      return Z_Score(Z, Two_Tailed) > alpha;
    end Z_Score;
 
    ---------------

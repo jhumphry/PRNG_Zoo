@@ -10,13 +10,14 @@ package PRNG_Zoo.Tests.Bits is
      with Default_Component_Value => 0;
 
    type Bit_Counter is new Test with private;
-   procedure Reset(T: in out Bit_Counter);
-   procedure Feed(T: in out Bit_Counter; X : in U64) with Inline;
-   function Result(T: in Bit_Counter; p : in Long_Float := 0.01)
-                   return Test_Result_Ptr;
+   procedure Reset(T : in out Bit_Counter);
+   procedure Feed(T : in out Bit_Counter; X : in U64) with Inline;
+   function Result(T : in Bit_Counter; Width : in Positive) return Test_Result_Ptr;
+   function Result(T : in Bit_Counter) return Test_Result_Ptr is (Result(T, 64));
 
    type Bit_Counter_Result is new Test_Result with private;
-   function Passed(TR : in Bit_Counter_Result) return Boolean;
+   function Passed(TR : in Bit_Counter_Result; p : in Long_Float := 0.01) return Boolean;
+   function p(TR : in Bit_Counter_Result) return Long_Float;
    function Describe(TR : in Bit_Counter_Result) return String;
 
 private
@@ -26,16 +27,15 @@ private
          B : Counter_array(1..64) := (others => 0);
       end record;
 
-   type Pass_Array is array (Integer range 1..64) of Boolean;
+   type p_Array is array (Integer range <>) of Long_Float;
 
    type Bit_Counter_Result is new Test_Result with
       record
-         p : Long_Float;
+         Width : Positive := 64;
          N : Counter;
-         All_Pass : Boolean;
          Total_Bits : Counter;
-         Total_Bits_Pass : Boolean;
-         Each_Bit_Pass : Pass_Array := (others => False); -- LSB is at index 1
+         Total_Bits_p_value : Long_Float;
+         Each_Bit_p_value : p_Array(1..64) := (others => 0.0); -- LSB is at index 1
       end record;
 
 end PRNG_Zoo.Tests.Bits;

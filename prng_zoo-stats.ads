@@ -5,6 +5,11 @@
 
 package PRNG_Zoo.Stats is
 
+   -- Returns the p-value corresponding to the probability of the null
+   -- hypothesis
+   function Z_Score(Z : Long_Float;
+                    Two_Tailed: Boolean := True) return Long_Float;
+
    -- Returns True if the test statistic Z indicates that the null hypothesis
    -- is not ruled out to a confidence level of alpha
    function Z_Score(Z : Long_Float;
