@@ -5,6 +5,9 @@
 
 package PRNG_Zoo.Stats is
 
+   -- Returns the error function
+   function erf(x : Long_Float) return Long_Float;
+
    -- Returns the p-value corresponding to the probability of the null
    -- hypothesis
    function Z_Score(Z : Long_Float;
@@ -21,5 +24,11 @@ package PRNG_Zoo.Stats is
    function Chi2_Test(Chi2 : Long_Float;
                       df : Positive;
                       alpha : Long_Float := 0.05) return Boolean;
+
+   function Chi2_CDF(X : Long_Float;
+                     df : Positive) return Long_Float;
+
+   -- Return the Gamma function for N/2
+   function Gamma_HalfN(N : Positive) return Long_Float;
 
 end PRNG_Zoo.Stats;

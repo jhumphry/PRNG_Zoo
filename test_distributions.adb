@@ -9,13 +9,14 @@ use all type PRNG_Zoo.xorshift_star.xorshift1024_star;
 use all type PRNG_Zoo.MT.MT19937_64;
 
 with PRNG_Zoo.Distributions;
+with PRNG_Zoo.Stats;
 
 with Ada.Text_IO, Ada.Long_Float_Text_IO;
 use Ada.Text_IO,  Ada.Long_Float_Text_IO;
 
 procedure test_distributions is
-   package LFD is new PRNG_Zoo.Distributions(Float_Type => Long_Float,
-                                             P => xorshift_star.xorshift1024_star);
+   package LFD is new Distributions(Float_Type => Long_Float,
+                                    P => xorshift_star.xorshift1024_star);
    use LFD;
    use LFD.EF;
    G : xorshift_star.xorshift1024_star;
@@ -42,6 +43,8 @@ begin
    Put(sx/Long_Float(iterations)); New_line;
    Put("Variance: ");
    Put((sxx-sx*sx/Long_Float(iterations))/Long_Float(iterations-1)); New_line;
+   Put("2-tailed Z-score result: ");
+   Put(Stats.Z_Score(sx/Long_Float(iterations)*sqrt(Long_Float(iterations)), True)); New_line;
    New_Line;
 
    G.Reset(5489);
@@ -57,6 +60,8 @@ begin
    Put(sx/Long_Float(iterations)); New_line;
    Put("Variance: ");
    Put((sxx-sx*sx/Long_Float(iterations))/Long_Float(iterations-1)); New_line;
+   Put("2-tailed Z-score result: ");
+   Put(Stats.Z_Score(sx/Long_Float(iterations)*sqrt(Long_Float(iterations)), True)); New_line;
    New_Line;
 
    G.Reset(5489);
@@ -72,6 +77,8 @@ begin
    Put(sx/Long_Float(iterations)); New_line;
    Put("Variance: ");
    Put((sxx-sx*sx/Long_Float(iterations))/Long_Float(iterations-1)); New_line;
+   Put("2-tailed Z-score result: ");
+   Put(Stats.Z_Score(sx/Long_Float(iterations)*sqrt(Long_Float(iterations)), True)); New_line;
    New_Line;
 
 end test_distributions;
