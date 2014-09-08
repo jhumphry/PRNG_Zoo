@@ -37,6 +37,7 @@ package PRNG_Zoo.Distributions is
    procedure Reset(D: in out Normal_Box_Mueller);
    function Generate(D: in out Normal_Box_Mueller; G: in out P) return Float_Type;
 
+   -- From (Marsaglia and Tsang 1998a) with guidance from (Thomas et al., 2007)
    type Normal_Monty_Python is new Distribution with null record;
    function Generate(D: in out Normal_Monty_Python; G: in out P) return Float_Type;
 

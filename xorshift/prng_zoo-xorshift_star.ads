@@ -5,6 +5,7 @@
 
 package PRNG_Zoo.xorshift_star is
 
+   -- A family of PRNG based on (Vigna, 2014a)
    type xorshift_star is interface and PRNG;
 
    type xorshift64_star is new PRNG_64Only and xorshift_star with private;

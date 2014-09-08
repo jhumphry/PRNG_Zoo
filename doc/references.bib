@@ -1,0 +1,153 @@
+@preamble{ "\makeatletter" }
+@preamble{ "\@ifundefined{url}{\def\url#1{\texttt{#1}}}{}" }
+@preamble{ "\makeatother" }
+
+@article{gaussian_rng,
+    title = "Gaussian Random Number Generators",
+    author = "David B. Thomas and Wayne Luk and Philip H. W. Leong and John D. Villasenor",
+    year = 2007,
+    journal = "ACM Computing Surveys",
+    volume = 39,
+    number = 4,
+    doi = "10.1145/1287620.1287622",
+    url = "http://doi.acm.org/10.1145/1287620.1287622"
+}
+
+@article{xorshift,
+    title = "Xorshift {RNG}s",
+    author = "Marsaglia, George",
+    year = 2003,
+    journal = "Journal of Statistical Software",
+    volume = 8,
+    number = 14,
+    url = "http://www.jstatsoft.org/v08/i14/paper"
+}
+
+@article{xorshift_brent,
+    title = "Note on {M}arsaglia's Xorshift Random Number Generators",
+    author = "Richard P. Brent",
+    year = 2004,
+    journal = "Journal of Statistical Software",
+    volume = 11,
+    number = 5,
+    url = "http://www.jstatsoft.org/v11/i04/paper"
+}
+
+@article{ziggurat,
+    title = "The {Z}iggurat Method for Generating Random Variables",
+    author = "Marsaglia, George and Tsang, Wai Wan",
+    year = 1998,
+    journal = "Journal of Statistical Software",
+    volume = 5,
+    number = 8,
+    url = "http://www.jstatsoft.org/v05/i08/paper"
+}
+
+@article{monty_python,
+    title = "The {M}onty {P}ython Method for Generating Random Variables",
+    author = "Marsaglia, George and Tsang, Wai Wan",
+    year = 1998,
+    journal = "ACM Transactions on Mathematical Software",
+    volume = 23,
+    number = 3,
+    pages = "341-350"
+}
+
+@misc{KISS,
+    title = {Random {N}umbers for {C}: End, at last?},
+    author = "Marsaglia, George",
+    howpublished = "Newsgroup posting to sci.stat.math",
+    year = 1999,
+    url = {http://groups.google.com/groups?selm=36A5BB98.F2561DFF{\%}40stat.fsu.edu},
+    note = "Definition of the KISS generator"
+}
+
+@article{MINSTD,
+    title = "Random Number Generators: Good ones are hard to find",
+    author = "Park, Stephen K. and Miller, Keith W.",
+    year = 1988,
+    journal = "Communications of the ACM",
+    volume = 31,
+    number = 10,
+    pages = "1192-1200"
+}
+
+@article{MT19937,
+    title = "Mersenne {T}wister: A 623-Dimensionally Equidistributed Uniform Pseudo-Random Number Generator",
+    author = "Matsumoto, Makoto and Nishimura, Takuji",
+    year = 1998,
+    journal = "ACM Transactions on Modeling and Computer Simulation",
+    volume = 8,
+    number = 1,
+    pages = "3-30"
+}
+
+@article{xorshift_star,
+    title = "An experimental exploration of {M}arsaglia's xorshift generators, scrambled",
+    author = "Vigna, Sebastiano",
+    year = 2014,
+    journal = {CoRR},
+    volume = {abs/1402.6246},
+    url = "http://vigna.di.unimi.it/ftp/papers/xorshift.pdf"
+}
+
+@article{xorshift_plus,
+    title = "Further scramblings of {M}arsaglia's xorshift generators",
+    author = "Vigna, Sebastiano",
+    year = 2014,
+    journal = {CoRR},
+    volume = {abs/1404.0390},
+    url = "http://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf"
+}
+
+@article{xorgens,
+    author    = {Richard P. Brent},
+    title     = {Some long-period random number generators using shifts and xors},
+    year      = 2010,
+    journal   = {CoRR},
+    volume    = {abs/1004.3115},
+    url       = {http://arxiv.org/abs/1004.3115},
+}
+
+@book{AandS,
+    title = {Handbook of Mathematical Functions, with Formulas, Graphs and Mathematical Tables},
+    author = {Abramowitz, Milton and Stegun, Irene A.},
+    publisher = {National Bureau of Standards},
+    year = 1972,
+    note = "10th edition"
+}
+
+@misc{glibc_random,
+    title = "The {GLIBC} random number generator",
+    author = "Selinger, Peter",
+    url = "http://www.mscs.dal.ca/~selinger/random/",
+    year = 2007
+}
+
+@article{well,
+    title = {Improved Long-Period Generators Based on Linear Recurrences Modulo 2},
+    author = "Panneton, Francois and L'Ecuyer, Pierre and Matsumoto, Makoto",
+    year = 2005,
+    journal = "ACM Transactions on Mathematical Software",
+    volume = 32,
+    number = 1,
+    pages = "1-16"
+}
+
+@article{brent_equidist,
+  author    = {Richard P. Brent},
+  title     = {The myth of equidistribution for high-dimensional simulation},
+  journal   = {CoRR},
+  year      = {2010},
+  volume    = {abs/1005.1320},
+  url       = {http://arxiv.org/abs/1005.1320},
+  timestamp = {Tue, 09 Sep 2014 00:07:36 +0200},
+  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/corr/abs-1005-1320},
+  bibsource = {dblp computer science bibliography, http://dblp.org}
+}
+
+@unpublished{winitzki_erf,
+	author = "Winitzki, Sergei",
+	title = "A handy approximation for the error function and its inverse",
+	year = 2008
+}

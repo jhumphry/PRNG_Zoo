@@ -11,14 +11,14 @@ package PRNG_Zoo.xorshift is
 
    type xorshift is interface and PRNG;
 
-   -- Described as one of Marsaglia's favourites in the 2003 xorshift paper
-   -- and used in several of his other papers as the C macro SHR3
+   -- Described as one of Marsaglia's favourites in the (Marsaglia, 2003)
+   -- xorshift paper and used in several of his other papers as the C macro SHR3
    type SHR3 is new PRNG_32Only and xorshift with private;
    function Strength(G: in SHR3) return PRNG_Strength is (Low);
    procedure Reset(G: in out SHR3; S: in U64);
    function Generate(G: in out SHR3) return U32 with inline;
 
-   -- Suggested for a 64 bit generator in the 2003 xorshift paper
+   -- Suggested for a 64 bit generator in the (Marsaglia, 2003) xorshift paper
    type xor64 is new PRNG_64Only and xorshift with private;
    function Strength(G: in xor64) return PRNG_Strength is (Low);
    procedure Reset(G: in out xor64; S: in U64);

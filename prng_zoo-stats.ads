@@ -6,6 +6,7 @@
 package PRNG_Zoo.Stats is
 
    -- Returns the error function
+   -- Based on (Abramowitz and Stegun, 1972) 7.1.26
    function erf(x : Long_Float) return Long_Float;
 
    -- Returns the p-value corresponding to the probability of the null

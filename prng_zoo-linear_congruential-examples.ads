@@ -6,9 +6,7 @@
 package PRNG_Zoo.Linear_Congruential.Examples is
 
    -- Some C++ compatibility
-   -- Stephen K. Park and Keith W. Miller (1988).
-   -- "Random Number Generators: Good Ones Are Hard To Find".
-   -- Communications of the ACM 31 (10): 1192–1201. doi:10.1145/63039.63042.
+   -- As suggested in (Stephen K. Park and Keith W. Miller 1988).
 
    package MINSTD_package is
      new Linear_Congruential.Generic_LCG_32Only(Modulus => 2**31 - 1,
@@ -24,6 +22,7 @@ package PRNG_Zoo.Linear_Congruential.Examples is
 
 
    -- Now a (really terrible) historical curiosity
+   -- via Wikipedia
    package RANDU_package is
      new Linear_Congruential.Generic_LCG_32Only(Modulus => 2**31,
                                                 Multiplier => 65539,

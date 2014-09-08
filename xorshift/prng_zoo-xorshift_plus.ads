@@ -5,6 +5,7 @@
 
 package PRNG_Zoo.xorshift_plus is
 
+   -- Based on (Vigna, 2014b)
    type xorshift128_plus is new PRNG_64Only with private;
 
    function Strength(G: in xorshift128_plus) return PRNG_Strength is (Medium);

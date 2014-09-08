@@ -5,9 +5,9 @@
 
 package PRNG_Zoo.Misc is
 
-   -- Duplicates glibc's random() function, based on the description:
+   -- Duplicates glibc's random() function, based on the description
    -- http://www.mscs.dal.ca/~selinger/random/
-   -- by Peter Selinger
+   -- (Selinger, 2007)
 
    type glibc_random is new PRNG_32Only with private;
    function Strength (G : in glibc_random) return PRNG_Strength is (Low);
@@ -16,8 +16,7 @@ package PRNG_Zoo.Misc is
 
    -- KISS generator - a combination of a multiply-with-carry, a 3-shift
    -- register and a congruential generator
-   -- Marsaglia G (1999). “Random Numbers for C: End, at last?”
-   -- Posting to sci.stat.math.
+   -- (Marsaglia, 1999)
 
    type KISS is new PRNG_32Only with private;
    function Strength (G : in KISS) return PRNG_Strength is (Medium);
