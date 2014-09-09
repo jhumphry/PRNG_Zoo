@@ -20,5 +20,6 @@ package PRNGTests_Suite.Stats is
 
    procedure Check_Z_Score (T : in out Test_Cases.Test_Case'Class);
    procedure Check_Chi2 (T : in out Test_Cases.Test_Case'Class);
+   procedure Check_Erf (T : in out Test_Cases.Test_Case'Class);
 
 end PRNGTests_Suite.Stats;

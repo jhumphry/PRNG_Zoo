@@ -6,6 +6,7 @@
 with PRNG_Zoo;
 use PRNG_Zoo;
 with PRNG_Zoo.Stats;
+with PRNG_Zoo.Tests;
 
 with Ada.Text_IO;
 with Ada.Long_Float_Text_IO;
@@ -26,6 +27,8 @@ procedure test_stats is
       Put(expect);
       New_Line(2);
    end test_chi2_cdf;
+
+   B : Tests.Binned(4);
 
 begin
    Put_Line("Testing Gamma_Half");
@@ -52,4 +55,21 @@ begin
    Put("Z-Score(0.0) :"); Put(Stats.Z_Score(0.0)); New_Line;
    Put("Z-Score(1.0) :"); Put(Stats.Z_Score(1.0)); New_Line;
    Put("Z-Score(2.0) :"); Put(Stats.Z_Score(2.0)); New_Line;
+   New_Line(2);
+
+   Put("Erf(-0.3) :"); Put(Stats.erf(-0.3)); New_Line;
+   Put("Erfi(Erf(-0.3)) :"); Put(Stats.erfi(Stats.erf(-0.3))); New_Line;
+   New_Line(2);
+
+   Stats.Make_Normal_Bins(B);
+   for I in 1..B.N loop
+      Put((if I=1 then -99.0 else B.Bin_Boundary(I-1)));
+      Put(" to ");
+      Put((if I=B.N then +99.0 else B.Bin_Boundary(I)));
+      Put(" contains: ");
+      Put(B.Bin_Expected(I));
+      New_Line;
+   end loop;
+   New_Line(2);
+
 end test_stats;

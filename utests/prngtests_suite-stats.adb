@@ -14,8 +14,9 @@ package body PRNGTests_Suite.Stats is
    procedure Register_Tests (T: in out Stats_Test) is
       use AUnit.Test_Cases.Registration;
    begin
-      Register_Routine (T, Check_Z_Score'Access, "Check Z-score routine / tables.");
-      Register_Routine (T, Check_Chi2'Access, "Check Chi2 routine / tables.");
+      Register_Routine (T, Check_Z_Score'Access, "Check Z-score routines.");
+      Register_Routine (T, Check_Chi2'Access, "Check Chi2 routines.");
+      Register_Routine (T, Check_Erf'Access, "Check erf/erfi routines.");
    end Register_Tests;
 
    ----------
@@ -104,5 +105,30 @@ package body PRNGTests_Suite.Stats is
              "Chi2 => 149.450 should not pass a 100df Chi2 at alpha => 0.001");
 
    end Check_Chi2;
+
+   ---------------
+   -- Check_Erf --
+   ---------------
+
+   procedure Check_Erf (T : in out Test_Cases.Test_Case'Class) is
+      use PRNG_Zoo.Stats;
+      X : Long_Float;
+   begin
+
+      -- The error function being accurate to 0.002 between -1.6 and +1.6
+      -- is equivalent to the normal distribution CDF and inverse CDF being
+      -- accurate to 0.001 in when applied together between -2.25 and +2.25.
+      -- The inverse function given by Winitzki is only expected to be accurate
+      -- to 0.002 so this is near the limit.
+
+      for I in -8..8 loop
+         X := Long_Float(I)/5.0;
+         Assert(abs(erfi(erf(X))-X) <= 0.002,
+                "abs(erfi(erf(X))-X) > 0.001 for X = " & Long_Float'Image(X) &
+               " with value " & Long_Float'Image(abs(erfi(erf(X))-X)));
+      end loop;
+
+   end Check_Erf;
+
 
 end PRNGTests_Suite.Stats;

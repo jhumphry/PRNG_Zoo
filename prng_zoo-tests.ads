@@ -5,6 +5,19 @@
 
 package PRNG_Zoo.Tests is
 
+   subtype Counter is Integer range 0..Integer'Last;
+   type Counter_array is array (Integer range <>) of Counter
+     with Default_Component_Value => 0;
+   type LF_array is array (Integer range <>) of Long_Float;
+
+   type Binned(N : Positive) is tagged
+      record
+         Bin_Counts : Counter_array(1..N);
+         Bin_Expected : LF_array(1..N);
+         Distribution_DF : Positive;
+         Bin_Boundary : LF_array(1..N);
+      end record;
+
    type Test_Result is interface;
    function Passed(TR : in Test_Result; p : in Long_Float := 0.01)
                    return Boolean is abstract;

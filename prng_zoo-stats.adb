@@ -3,8 +3,8 @@
 -- Copyright 2014 James Humphry
 --
 
-with Ada.Numerics.Long_Elementary_Functions;
-use Ada.Numerics.Long_Elementary_Functions;
+with Ada.Numerics, Ada.Numerics.Long_Elementary_Functions;
+use Ada.Numerics, Ada.Numerics.Long_Elementary_Functions;
 
 package body PRNG_Zoo.Stats is
 
@@ -36,6 +36,19 @@ package body PRNG_Zoo.Stats is
       s := s + a5 * u;
       return Long_Float'Copy_Sign(1.0 - s * exp(-z*z), x);
    end erf;
+
+   ----------
+   -- erfi --
+   ----------
+
+   function erfi(x : Long_Float) return Long_Float is
+      a : constant Long_Float := 0.147;
+      u, v : Long_Float;
+   begin
+      u := 2.0 / (Pi * a) + log(1.0 - x**2) / 2.0;
+      v := u**2 - 1.0/a * log(1.0 - x**2);
+      return Long_Float'Copy_Sign(sqrt(-u + sqrt(v)), x);
+   end erfi;
 
    -------------
    -- Z_Score --
@@ -170,5 +183,71 @@ package body PRNG_Zoo.Stats is
          return sqrt_pi * num / den;
       end if;
    end Gamma_HalfN;
+
+   -------------------
+   -- Chi2_CDF_Bins --
+   -------------------
+   function Chi2_CDF_Bins(B : Tests.Binned) return Long_Float is
+      Total_Count : Long_Float := 0.0;
+      Expected : Long_Float;
+      Z : Long_Float := 0.0;
+   begin
+      for E of B.Bin_Counts loop
+         Total_Count := Total_Count + Long_Float(E);
+      end loop;
+
+      for I in B.Bin_Counts'Range loop
+         Expected := Long_Float(B.Bin_Expected(I)) * Total_Count;
+         Z := Z + ((Long_Float(B.Bin_Counts(I)) - Expected) **2) / Expected;
+      end loop;
+
+      return Chi2_CDF(Z, B.N - B.Distribution_DF);
+
+   end Chi2_CDF_Bins;
+
+   --------------------
+   -- Chi2_Bins_Test --
+   --------------------
+
+   function Chi2_Bins_Test(B : Tests.Binned;
+                           alpha : Long_Float := 0.05) return Boolean is
+      cdf : Long_Float := Chi2_CDF_Bins(B);
+   begin
+      return cdf > alpha and cdf < (1.0-alpha);
+   end Chi2_Bins_Test;
+
+   ----------------------
+   -- Make_Normal_Bins --
+   ----------------------
+
+   procedure Make_Normal_Bins(B : in out Tests.Binned) is
+      sqrt_2 : constant Long_Float := 1.41421_35623_73095_04880;
+      Residual : Long_Float := 1.0;
+   begin
+
+      if B.N < 3 then
+         raise Program_Error with "Not realistic to use less than 3 bins.";
+      end if;
+
+      B.Bin_Counts := (others => 0);
+      B.Distribution_DF := 3;
+      for I in 1..(B.N-1) loop
+         B.Bin_Boundary(I) := sqrt_2 * erfi(-1.0 + Long_Float(2*I) / Long_Float(B.N));
+      end loop;
+
+      -- Rather than assume the expected proportion in each bin will be equal, we
+      -- recalculate using the more accurate erf function
+
+      B.Bin_Expected(1) := 0.5 * (erf(B.Bin_Boundary(1)/sqrt_2) - (-1.0));
+      Residual := Residual - B.Bin_Expected(1);
+
+      for I in 2..(B.N-1) loop
+         B.Bin_Expected(I) := 0.5 * (erf(B.Bin_Boundary(I)/sqrt_2) - erf(B.Bin_Boundary(I-1)/sqrt_2));
+         Residual := Residual - B.Bin_Expected(I);
+      end loop;
+
+      B.Bin_Expected(B.N) := Residual;
+
+   end Make_Normal_Bins;
 
 end PRNG_Zoo.Stats;

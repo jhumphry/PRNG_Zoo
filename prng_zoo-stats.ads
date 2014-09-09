@@ -3,11 +3,18 @@
 -- Copyright 2014 James Humphry
 --
 
+with PRNG_Zoo.Tests;
+
 package PRNG_Zoo.Stats is
 
    -- Returns the error function
    -- Based on (Abramowitz and Stegun, 1972) 7.1.26
    function erf(x : Long_Float) return Long_Float;
+
+   -- Returns the inverse error function
+   -- Based on the note by (Winitzki, 2008)
+   -- Not quite as accurate as the erf function given above
+   function erfi(x : Long_Float) return Long_Float;
 
    -- Returns the p-value corresponding to the probability of the null
    -- hypothesis
@@ -31,5 +38,17 @@ package PRNG_Zoo.Stats is
 
    -- Return the Gamma function for N/2
    function Gamma_HalfN(N : Positive) return Long_Float;
+
+
+   -- Compute the Chi2 test for an array of counters representing the binned
+   -- results of some sort of test
+   function Chi2_CDF_Bins(B : Tests.Binned) return Long_Float;
+
+   function Chi2_Bins_Test(B : Tests.Binned;
+                          alpha : Long_Float := 0.05) return Boolean;
+
+   -- Make a set of bins suitable for testing variates that are supposed to
+   -- be from the normal distribution
+   procedure Make_Normal_Bins(B : in out Tests.Binned);
 
 end PRNG_Zoo.Stats;

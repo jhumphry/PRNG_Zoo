@@ -5,10 +5,6 @@
 
 package PRNG_Zoo.Tests.Bits is
 
-   subtype Counter is Integer range 0..Integer'Last;
-   type Counter_array is array (Integer range <>) of Counter
-     with Default_Component_Value => 0;
-
    type Bit_Counter is new Test with private;
    procedure Reset(T : in out Bit_Counter);
    procedure Feed(T : in out Bit_Counter; X : in U64) with Inline;
