@@ -8,6 +8,7 @@ package PRNG_Zoo.Tests is
    subtype Counter is Integer range 0..Integer'Last;
    type Counter_array is array (Integer range <>) of Counter
      with Default_Component_Value => 0;
+   type Counter_array_ptr is access Counter_array;
    type LF_array is array (Integer range <>) of Long_Float;
 
    type Binned(N : Positive) is tagged
@@ -26,15 +27,15 @@ package PRNG_Zoo.Tests is
 
    type Test_Result_Ptr is access all Test_Result'Class;
 
-   type Test is interface;
+   type Test is limited interface;
    procedure Reset(T : in out Test) is abstract;
    procedure Feed(T : in out Test; X : in U64) is abstract;
    function Result(T : in Test) return Test_Result_Ptr is abstract;
 
-   type Test_32 is interface and Test;
+   type Test_32 is limited interface and Test;
    procedure Feed(T : in out Test_32; X : in U64) is null;
    procedure Feed(T : in out Test_32; X : in U32) is abstract;
 
-   type Test_Ptr is access all Test;
+   type Test_Ptr is access all Test'Class;
 
 end PRNG_Zoo.Tests;
