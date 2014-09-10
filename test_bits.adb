@@ -22,14 +22,14 @@ procedure test_bits is
    G3 : Linear_Congruential.Examples.MINSTD;
    X : U64;
    BC : Tests.Bits.Bit_Counter;
-   ED : Tests.Test_Ptr := Tests.EquiDist.Make_EquiDist(3, 2);
+   ED : Tests.Test_Ptr := Tests.EquiDist.Make_EquiDist(3, 3);
    TR : Tests.Test_Result_Ptr;
 begin
 
    G1.Reset(9753);
    BC.Reset; ED.Reset;
    Put_Line("Testing xorshift1024*");
-   for I in 1..1_000_000 loop
+   for I in 1..10_000_000 loop
       X := G1.Generate;
       BC.Feed(X);
       ED.Feed(X);

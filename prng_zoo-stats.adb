@@ -108,13 +108,14 @@ package body PRNG_Zoo.Stats is
       I : Positive;
       Renorm : Integer;
    begin
-      c := Z ** k * exp(-Z);
+      c := exp(Long_Float(k) * Log(Z) - Z - Log_Gamma_HalfN(df + 2));
       num := 1.0;
-      den := Gamma_HalfN(df + 2);
+      den := 1.0; -- The common denominator factor of Gamma((df/2) + 1) is
+                  -- moved to the constant c to prevent it overflowing
       sum := num / den;
 
       if k_odd then
-         c := c * sqrt(Z);
+         c := c * Sqrt(Z);
          I := 1;
          loop
             num := num * Z * 2.0;
