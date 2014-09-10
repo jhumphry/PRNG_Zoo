@@ -184,6 +184,38 @@ package body PRNG_Zoo.Stats is
       end if;
    end Gamma_HalfN;
 
+   ---------------------
+   -- Log_Gamma_HalfN --
+   ---------------------
+
+   -- Return the Gamma function for N/2
+   function Log_Gamma_HalfN(N : Positive) return Long_Float is
+      Result : Long_Float := 0.0;
+      log_sqrt_pi : constant Long_Float := 0.57236_49429_24700_08707;
+      log_2 : constant Long_Float := 0.69314_71805_59945_30941;
+      num : Long_Float := 0.0;
+      den : Long_Float := log_2;
+   begin
+      if N mod 2 = 0 then
+         -- If N/2 is integral, gamma(N/2) is simply (N/2-1)!
+         for I in Integer range 1..(N/2-1) loop
+            Result := Result + log(Long_Float(I));
+         end loop;
+         return Result;
+      else
+         -- If N/2 is half-integral, we use the formula
+         -- gamma(N + 1/2) = sqrt(pi) * (2n-1)!!/(2**n)
+         if N = 1 then
+            return log_sqrt_pi;
+         end if;
+         den := log_2 * Long_Float(N/2);
+         for I in Integer range 1..(N/2-1) loop
+            num := num + log(2.0 * Long_Float(I) + 1.0);
+         end loop;
+         return log_sqrt_pi + num - den;
+      end if;
+   end Log_Gamma_HalfN;
+
    -------------------
    -- Chi2_CDF_Bins --
    -------------------

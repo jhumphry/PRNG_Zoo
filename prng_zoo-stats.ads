@@ -40,6 +40,9 @@ package PRNG_Zoo.Stats is
    function Gamma_HalfN(N : Positive) return Long_Float;
 
 
+   -- Return the logarithm of the Gamma function for N/2
+   function Log_Gamma_HalfN(N : Positive) return Long_Float;
+
    -- Compute the Chi2 test for an array of counters representing the binned
    -- results of some sort of test
    function Chi2_CDF_Bins(B : Tests.Binned) return Long_Float;
