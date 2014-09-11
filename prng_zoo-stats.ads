@@ -45,6 +45,8 @@ package PRNG_Zoo.Stats is
 
    -- Compute the Chi2 test for an array of counters representing the binned
    -- results of some sort of test
+   function Chi2_Value_Bins(B : Tests.Binned) return Long_Float;
+
    function Chi2_CDF_Bins(B : Tests.Binned) return Long_Float;
 
    function Chi2_Bins_Test(B : Tests.Binned;

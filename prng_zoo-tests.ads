@@ -38,4 +38,11 @@ package PRNG_Zoo.Tests is
 
    type Test_Ptr is access all Test'Class;
 
+   type Test_Distribution is limited interface;
+   procedure Reset(T : in out Test_Distribution) is abstract;
+   procedure Feed(T : in out Test_Distribution; X : in Long_Float) is abstract;
+   function Result(T : in Test_Distribution) return Test_Result_Ptr is abstract;
+
+   type Test_Distribution_Ptr is access all Test_Distribution'Class;
+
 end PRNG_Zoo.Tests;

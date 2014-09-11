@@ -10,6 +10,7 @@ use all type PRNG_Zoo.MT.MT19937_64;
 
 with PRNG_Zoo.Distributions;
 with PRNG_Zoo.Stats;
+with PRNG_Zoo.Tests.NormalDist;
 
 with Ada.Text_IO, Ada.Long_Float_Text_IO;
 use Ada.Text_IO,  Ada.Long_Float_Text_IO;
@@ -23,18 +24,22 @@ procedure test_distributions is
    D_Normal_12_6 : LFD.Normal_12_6;
    D_Normal_BM : LFD.Normal_Box_Mueller;
    D_Normal_MP : LFD.Normal_Monty_Python;
-   iterations : constant := 10_000_000;
+   iterations : constant := 1_000_000;
    x, sx, sxx : Long_Float;
+   NT : Tests.NormalDist.NormalTest(200);
+   TR : Tests.Test_Result_Ptr;
 begin
 
    Put("Standard error at " & Integer'Image(iterations) & " iterations: ");
    Put(1.0 / sqrt(Long_Float(iterations))); New_Line; New_Line;
 
    G.Reset(5489);
+   NT.Reset;
    sx := 0.0;
    sxx := 0.0;
    for I in 1..iterations loop
       x := D_Normal_12_6.Generate(G);
+      NT.Feed(x);
       sx := sx + x;
       sxx := sxx + x*x;
    end loop;
@@ -45,13 +50,23 @@ begin
    Put((sxx-sx*sx/Long_Float(iterations))/Long_Float(iterations-1)); New_line;
    Put("2-tailed Z-score result: ");
    Put(Stats.Z_Score(sx/Long_Float(iterations)*sqrt(Long_Float(iterations)), True)); New_line;
+
+   TR := NT.Result;
+   Put_Line(Tr.Describe);
+   if TR.Passed then
+      Put_Line("Chi2 test for normal distribution passed.");
+   else
+      Put_Line("Chi2 test for normal distribution failed.");
+   end if;
    New_Line;
 
    G.Reset(5489);
+   NT.Reset;
    sx := 0.0;
    sxx := 0.0;
    for I in 1..iterations loop
       x := D_Normal_BM.Generate(G);
+      NT.Feed(x);
       sx := sx + x;
       sxx := sxx + x*x;
    end loop;
@@ -62,13 +77,23 @@ begin
    Put((sxx-sx*sx/Long_Float(iterations))/Long_Float(iterations-1)); New_line;
    Put("2-tailed Z-score result: ");
    Put(Stats.Z_Score(sx/Long_Float(iterations)*sqrt(Long_Float(iterations)), True)); New_line;
+
+   TR := NT.Result;
+   Put_Line(Tr.Describe);
+   if TR.Passed then
+      Put_Line("Chi2 test for normal distribution passed.");
+   else
+      Put_Line("Chi2 test for normal distribution failed.");
+   end if;
    New_Line;
 
    G.Reset(5489);
+   NT.Reset;
    sx := 0.0;
    sxx := 0.0;
    for I in 1..iterations loop
       x := D_Normal_MP.Generate(G);
+      NT.Feed(x);
       sx := sx + x;
       sxx := sxx + x*x;
    end loop;
@@ -79,6 +104,14 @@ begin
    Put((sxx-sx*sx/Long_Float(iterations))/Long_Float(iterations-1)); New_line;
    Put("2-tailed Z-score result: ");
    Put(Stats.Z_Score(sx/Long_Float(iterations)*sqrt(Long_Float(iterations)), True)); New_line;
+
+   TR := NT.Result;
+   Put_Line(Tr.Describe);
+   if TR.Passed then
+      Put_Line("Chi2 test for normal distribution passed.");
+   else
+      Put_Line("Chi2 test for normal distribution failed.");
+   end if;
    New_Line;
 
 end test_distributions;

@@ -217,10 +217,11 @@ package body PRNG_Zoo.Stats is
       end if;
    end Log_Gamma_HalfN;
 
-   -------------------
-   -- Chi2_CDF_Bins --
-   -------------------
-   function Chi2_CDF_Bins(B : Tests.Binned) return Long_Float is
+   ---------------------
+   -- Chi2_Value_Bins --
+   ---------------------
+
+   function Chi2_Value_Bins(B : Tests.Binned) return Long_Float is
       Total_Count : Long_Float := 0.0;
       Expected : Long_Float;
       Z : Long_Float := 0.0;
@@ -234,7 +235,19 @@ package body PRNG_Zoo.Stats is
          Z := Z + ((Long_Float(B.Bin_Counts(I)) - Expected) **2) / Expected;
       end loop;
 
-      return Chi2_CDF(Z, B.N - B.Distribution_DF);
+      return Z;
+
+   end Chi2_Value_Bins;
+
+
+   -------------------
+   -- Chi2_CDF_Bins --
+   -------------------
+
+   function Chi2_CDF_Bins(B : Tests.Binned) return Long_Float is
+   begin
+
+      return Chi2_CDF(Chi2_Value_Bins(B), B.N - B.Distribution_DF);
 
    end Chi2_CDF_Bins;
 
