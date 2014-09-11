@@ -28,7 +28,7 @@ package body PRNG_Zoo.Tests.EquiDist is
       stride : Positive;
       position : Natural;
    begin
-      T.current(T.next_dimension) := Shift_Right(X, 64-T.l);
+      T.current(T.next_dimension) := Shift_Right(X, T.n-T.l);
       if T.next_dimension = T.t then
          stride := 1;
          position := 0;
@@ -70,14 +70,19 @@ package body PRNG_Zoo.Tests.EquiDist is
    -- Make_EquiDist --
    -------------------
 
-   function Make_EquiDist (t, l: Positive) return Test_Ptr is
+   function Make_EquiDist (t, l: Positive; n : Positive := 64) return Test_Ptr is
       Result : access EquiDist;
-      N : Natural := 2**(t * l);
+      Num_Bins : Natural := 2**(t * l);
    begin
-      Result := new EquiDist(t,l);
+      if l >= n then
+         raise Constraint_Error
+           with "Cannot have finer subdivisions per dimension than the number of input bits";
+      end if;
+
+      Result := new EquiDist(t, l, n);
       Result.next_dimension := 1;
       Result.current := (others => 0);
-      Result.bins := new Counter_array(1..N);
+      Result.bins := new Counter_array(1..Num_Bins);
       Result.bins.all := (others => 0);
       return Test_Ptr(Result);
    end Make_EquiDist;
