@@ -19,5 +19,8 @@ package PRNGTests_Suite.Dispatcher_Tests is
    -- Test Routines:
    procedure Test_Dispatcher (T : in out Test_Cases.Test_Case'Class);
    procedure Test_Dispatcher_32 (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Split_32 (T : in out Test_Cases.Test_Case'Class);
+   procedure Test_Bit_Reverse (T : in out Test_Cases.Test_Case'Class);
+
 
 end PRNGTests_Suite.Dispatcher_Tests;
