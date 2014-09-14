@@ -5,6 +5,7 @@
 
 with PRNG_Zoo, PRNG_Zoo.xorshift_star, PRNG_Zoo.MT;
 use PRNG_Zoo;
+use all type PRNG_Zoo.U64;
 use all type PRNG_Zoo.xorshift_star.xorshift1024_star;
 use all type PRNG_Zoo.MT.MT19937_64;
 
@@ -17,7 +18,9 @@ use Ada.Text_IO,  Ada.Long_Float_Text_IO;
 
 procedure test_distributions is
    package LFD is new Distributions(Float_Type => Long_Float,
-                                    P => xorshift_star.xorshift1024_star);
+                                    P => xorshift_star.xorshift1024_star,
+                                    Mod_Type => PRNG_Zoo.U64,
+                                    scale => scale_U64);
    use LFD;
    use LFD.EF;
    G : xorshift_star.xorshift1024_star;

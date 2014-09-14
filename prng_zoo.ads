@@ -49,6 +49,8 @@ package PRNG_Zoo is
    function Generate(G: in out Dispatcher) return U32 is
      (Generate(G.IG.all)) with inline;
 
-   scale_unsigned_32 : constant := 2.32830_64365_38696_28906_25000E-10;
+   scale_U31 : constant := 4.65661_28730_77392_57812_50000E-10;
+   scale_U32 : constant := 2.32830_64365_38696_28906_25000E-10;
+   scale_U64 : constant := 5.42101_08624_27522_17003_72640_04349_70855_71289_06250E-20;
 
 end PRNG_Zoo;

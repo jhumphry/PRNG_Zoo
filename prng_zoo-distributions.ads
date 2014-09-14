@@ -8,6 +8,11 @@ with Ada.Numerics.Generic_Elementary_Functions;
 generic
    type Float_Type is digits <>;
    type P is new PRNG with private;
+   type Mod_Type is mod <>;
+   scale : Float_Type'Base;
+   with function Generate(G: in out P) return Mod_Type is <>;
+   with function Shift_Left(Value : Mod_Type; Amount : Natural) return Mod_Type is <>;
+   with function Shift_Right(Value : Mod_Type; Amount : Natural) return Mod_Type is <>;
 package PRNG_Zoo.Distributions is
    package EF is new Ada.Numerics.Generic_Elementary_Functions(Float_Type => Float_Type);
    use EF;
