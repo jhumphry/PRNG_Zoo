@@ -5,6 +5,8 @@
 
 with PRNG_Zoo.Stats;
 
+with Ada.Characters.Latin_1;
+
 package body PRNG_Zoo.Tests.NormalDist is
 
    -----------
@@ -76,9 +78,10 @@ package body PRNG_Zoo.Tests.NormalDist is
    --------------
 
    function Describe (TR : in NormalTest_Result) return String is
+      LF : Character renames Ada.Characters.Latin_1.LF;
    begin
       return "Normal distribution test for " & Integer'Image(TR.N) &
-        " bins with chi2 value := " & Long_Float'Image(TR.chi2_value) &
+        " bins with chi2 value := " & Long_Float'Image(TR.chi2_value) & LF &
       "corresponding to chi2 CDF := " & Long_Float'Image(TR.chi2_cdf_result);
    end Describe;
 

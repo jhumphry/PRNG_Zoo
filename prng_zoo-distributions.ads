@@ -31,10 +31,12 @@ package PRNG_Zoo.Distributions is
       end record;
    function Generate(D: in out Uniform; G: in out P) return Float_Type with inline;
 
-   type Normal_12_6 is new Distribution with null record;
+   type Normal_Distribution is interface and Distribution;
+
+   type Normal_12_6 is new Normal_Distribution with null record;
    function Generate(D: in out Normal_12_6; G: in out P) return Float_Type;
 
-   type Normal_Box_Mueller is new Distribution with
+   type Normal_Box_Mueller is new Normal_Distribution with
       record
          Loaded : Boolean := False;
          r2 : Float_Type := 0.0;
@@ -43,7 +45,7 @@ package PRNG_Zoo.Distributions is
    function Generate(D: in out Normal_Box_Mueller; G: in out P) return Float_Type;
 
    -- From (Marsaglia and Tsang 1998a) with guidance from (Thomas et al., 2007)
-   type Normal_Monty_Python is new Distribution with null record;
+   type Normal_Monty_Python is new Normal_Distribution with null record;
    function Generate(D: in out Normal_Monty_Python; G: in out P) return Float_Type;
 
    type Exponential is new Distribution with
