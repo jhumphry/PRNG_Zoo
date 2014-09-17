@@ -13,15 +13,15 @@ package body PRNG_Zoo.Tests.Distributions is
    -- Run_Test --
    --------------
 
-   function Run_Test(G : in out Dist.P;
-                     D : in out Dist.Distribution'Class;
-                     T : in out Test_Distribution'Class;
-                     iterations : Positive := 1_000_000) return Test_Result'Class is
+   procedure Run_Test(G : in out Dist.P;
+                      D : in out Dist.Distribution'Class;
+                      T : in out Test_Distribution'Class;
+                      iterations : Positive := 1_000_000) is
    begin
       for I in 1..iterations loop
          T.Feed(D.Generate(G));
       end loop;
-      return T.Result;
+      T.Compute_Result;
    end Run_Test;
 
    -----------
@@ -31,6 +31,7 @@ package body PRNG_Zoo.Tests.Distributions is
    procedure Reset (T : in out NormalChi2) is
    begin
       Stats.Make_Normal_Bins(B => Binned(T));
+      T.chi2_cdf_result := -1.0;
    end Reset;
 
    ----------
@@ -55,52 +56,58 @@ package body PRNG_Zoo.Tests.Distributions is
       end if;
    end Feed;
 
-   ------------
-   -- Result --
-   ------------
+   --------------------
+   -- Compute_Result --
+   --------------------
 
-   function Result (T : in NormalChi2) return Test_Result'Class is
-      Result : NormalChi2_Result;
+   procedure Compute_Result (T : in out NormalChi2) is
    begin
-      Result.N := T.N;
-      Result.chi2_value := Stats.Chi2_Value_Bins(Binned(T));
-      Result.chi2_cdf_result := Stats.Chi2_CDF(Result.chi2_value,
-                                               T.N - T.Distribution_DF);
-      return Result;
-   end Result;
+      T.chi2_value := Stats.Chi2_Value_Bins(Binned(T));
+      T.chi2_cdf_result := Stats.Chi2_CDF(T.chi2_value,
+                                          T.N - T.Distribution_DF);
+   end Compute_Result;
+
+   ------------------
+   -- Result_Ready --
+   ------------------
+
+   function Result_Ready(T: NormalChi2) return Boolean is
+   begin
+      return T.chi2_cdf_result >= 0.0;
+   end Result_Ready;
 
    ------------
    -- Passed --
    ------------
 
    function Passed
-     (TR : in NormalChi2_Result;
+     (T : in NormalChi2;
       p : in Long_Float := 0.01)
       return Boolean
    is
    begin
-      return TR.chi2_cdf_result > p and TR.chi2_cdf_result < (1.0-p);
+      return T.chi2_cdf_result > p and T.chi2_cdf_result < (1.0-p);
    end Passed;
 
    -------
    -- p --
    -------
 
-   function p (TR : in NormalChi2_Result) return Long_Float is
+   function p (T : in NormalChi2) return Long_Float is
    begin
-      return TR.chi2_cdf_result;
+      return T.chi2_cdf_result;
    end p;
 
-   --------------
-   -- Describe --
-   --------------
+   ---------------------
+   -- Describe_Result --
+   ---------------------
 
-   function Describe (TR : in NormalChi2_Result) return String is
+   function Describe_Result (T : in NormalChi2) return String is
       LF : Character renames Ada.Characters.Latin_1.LF;
    begin
-      return "Normal Chi2 distribution test for " & Integer'Image(TR.N) &
-        " bins with chi2 value := " & Long_Float'Image(TR.chi2_value) & LF &
-      "corresponding to chi2 CDF := " & Long_Float'Image(TR.chi2_cdf_result);
-   end Describe;
+      return "Normal Chi2 distribution test for " & Integer'Image(T.N) &
+        " bins with chi2 value := " & Long_Float'Image(T.chi2_value) & LF &
+      "corresponding to chi2 CDF := " & Long_Float'Image(T.chi2_cdf_result);
+   end Describe_Result;
 
 end PRNG_Zoo.Tests.Distributions;

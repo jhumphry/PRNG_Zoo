@@ -29,7 +29,6 @@ procedure test_distributions is
    package LFD_Tests is new PRNG_Zoo.Tests.Distributions(Dist => LFD);
 
 
-
    package LFD_32 is new Distributions(Float_Type => Long_Float,
                                     P => MT.MT19937,
                                     Mod_Type => PRNG_Zoo.U32,
@@ -44,12 +43,10 @@ procedure test_distributions is
    D_Normal_BM : LFD.Normal_Box_Mueller;
    D_Normal_MP : LFD.Normal_Monty_Python;
    T_Chi2Normal : LFD_Tests.NormalChi2(200);
-   TR : LFD_Tests.NormalChi2_Result;
 
    G_32: MT.MT19937;
    D_Normal_MP_32 : LFD_32.Normal_Monty_Python;
    T_Chi2Normal_32 : LFD_32_Tests.NormalChi2(200);
-   TR_32 : LFD_32_Tests.NormalChi2_Result;
 
 begin
 
@@ -61,13 +58,13 @@ begin
    T_Chi2Normal.Reset;
    Put_Line("12-6 method with xorshift1024* generator:");
 
-   TR  := LFD_Tests.NormalChi2_Result(LFD_Tests.Run_Test(G => G,
-                                                         D => D_Normal_12_6,
-                                                         T => T_Chi2Normal,
-                                                         iterations => iterations));
+   LFD_Tests.Run_Test(G => G,
+                      D => D_Normal_12_6,
+                      T => T_Chi2Normal,
+                      iterations => iterations);
 
-   Put_Line("Chi2 test: " & (if TR.Passed then "Passed" else "Failed"));
-   Put(TR.Describe);
+   Put_Line("Chi2 test: " & (if T_Chi2Normal.Passed then "Passed" else "Failed"));
+   Put(T_Chi2Normal.Describe_Result);
    New_Line(2);
 
    G.Reset(5489);
@@ -75,13 +72,13 @@ begin
    T_Chi2Normal.Reset;
    Put_Line("Box-Mueller method with xorshift1024* generator:");
 
-   TR  := LFD_Tests.NormalChi2_Result(LFD_Tests.Run_Test(G => G,
-                                                         D => D_Normal_BM,
-                                                         T => T_Chi2Normal,
-                                                         iterations => iterations));
+   LFD_Tests.Run_Test(G => G,
+                      D => D_Normal_BM,
+                      T => T_Chi2Normal,
+                      iterations => iterations);
 
-   Put_Line("Chi2 test: " & (if TR.Passed then "Passed" else "Failed"));
-   Put(TR.Describe);
+   Put_Line("Chi2 test: " & (if T_Chi2Normal.Passed then "Passed" else "Failed"));
+   Put(T_Chi2Normal.Describe_Result);
    New_Line(2);
 
    G.Reset(5489);
@@ -89,13 +86,13 @@ begin
    T_Chi2Normal.Reset;
    Put_Line("Monty-Python method with xorshift1024* generator:");
 
-   TR  := LFD_Tests.NormalChi2_Result(LFD_Tests.Run_Test(G => G,
-                                                         D => D_Normal_MP,
-                                                         T => T_Chi2Normal,
-                                                         iterations => iterations));
+   LFD_Tests.Run_Test(G => G,
+                      D => D_Normal_MP,
+                      T => T_Chi2Normal,
+                      iterations => iterations);
 
-   Put_Line("Chi2 test: " & (if TR.Passed then "Passed" else "Failed"));
-   Put(TR.Describe);
+   Put_Line("Chi2 test: " & (if T_Chi2Normal.Passed then "Passed" else "Failed"));
+   Put(T_Chi2Normal.Describe_Result);
    New_Line(2);
 
    G_32.Reset(5489);
@@ -103,13 +100,13 @@ begin
    T_Chi2Normal_32.Reset;
    Put_Line("Monty-Python method with 32-bit MT19937 generator:");
 
-   TR_32  := LFD_32_Tests.NormalChi2_Result(LFD_32_Tests.Run_Test(G => G_32,
-                                                                  D => D_Normal_MP_32,
-                                                                  T => T_Chi2Normal_32,
-                                                                  iterations => iterations));
+   LFD_32_Tests.Run_Test(G => G_32,
+                         D => D_Normal_MP_32,
+                         T => T_Chi2Normal_32,
+                         iterations => iterations);
 
-   Put_Line("Chi2 test: " & (if TR_32.Passed then "Passed" else "Failed"));
-   Put(TR_32.Describe);
+   Put_Line("Chi2 test: " & (if T_Chi2Normal_32.Passed then "Passed" else "Failed"));
+   Put(T_Chi2Normal_32.Describe_Result);
    New_Line(2);
 
 end test_distributions;
