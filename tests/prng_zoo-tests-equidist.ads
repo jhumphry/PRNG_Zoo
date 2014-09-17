@@ -9,7 +9,8 @@ package PRNG_Zoo.Tests.EquiDist is
    -- with input of n bits
    type EquiDist(t, l, n : Positive) is limited new PRNG_Test with private;
    procedure Reset(T : in out EquiDist);
-   procedure Feed(T : in out EquiDist; X : in U64) with Inline;
+   procedure Feed(T : in out EquiDist; X : in U64)
+     with Inline;
    procedure Compute_Result(T : in out EquiDist);
    function Result_Ready(T: EquiDist) return Boolean
      with Inline;
@@ -18,7 +19,7 @@ package PRNG_Zoo.Tests.EquiDist is
    function Describe_Result(T : in EquiDist) return String;
 
    function Make_EquiDist(t, l: Positive; n: Positive := 64)
-                          return access EquiDist;
+                          return EquiDist;
 
 private
 

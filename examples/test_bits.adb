@@ -23,8 +23,8 @@ procedure test_bits is
    X : U64;
    BC : Tests.Bits.Bit_Counter(64);
    BC_31 : Tests.Bits.Bit_Counter(31);
-   ED_64 : Tests.PRNG_Test_Ptr := Tests.EquiDist.Make_EquiDist(t => 3, l => 3, n => 64);
-   ED_31 : Tests.PRNG_Test_Ptr := Tests.EquiDist.Make_EquiDist(t => 2, l => 2, n => 31);
+   ED_64 : Tests.EquiDist.EquiDist(3,2,64);
+   ED_31 : Tests.EquiDist.EquiDist(2,2,31);
 begin
 
    G1.Reset(9753);

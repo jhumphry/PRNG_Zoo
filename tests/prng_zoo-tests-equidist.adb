@@ -14,9 +14,26 @@ package body PRNG_Zoo.Tests.EquiDist is
    -----------
 
    procedure Reset (T : in out EquiDist) is
+      Num_Bins : Natural := 2**(T.t * T.l);
    begin
+
+      if T.l >= T.n then
+         raise Constraint_Error
+           with "Cannot have finer subdivisions per dimension than the number of input bits";
+      end if;
+
       T.next_dimension := 1;
       T.current := (others => 0);
+
+      if T.bins = null then
+         T.bins := new Counter_array(1..Num_Bins);
+      end if;
+
+      if T.bins'Length /= Num_Bins then
+         raise Constraint_Error
+           with "Somehow an incorrect number of bins have been allocated.";
+      end if;
+
       T.bins.all := (others => 0);
       T.chi2_cdf_result := -1.0;
    end Reset;
@@ -107,8 +124,7 @@ package body PRNG_Zoo.Tests.EquiDist is
    -- Make_EquiDist --
    -------------------
 
-   function Make_EquiDist (t, l: Positive; n : Positive := 64) return access EquiDist is
-      Result : access EquiDist;
+   function Make_EquiDist (t, l: Positive; n : Positive := 64) return EquiDist is
       Num_Bins : Natural := 2**(t * l);
    begin
       if l >= n then
@@ -116,14 +132,13 @@ package body PRNG_Zoo.Tests.EquiDist is
            with "Cannot have finer subdivisions per dimension than the number of input bits";
       end if;
 
-      Result := new EquiDist(t, l, n);
-      Result.next_dimension := 1;
-      Result.current := (others => 0);
-      Result.bins := new Counter_array(1..Num_Bins);
-      Result.bins.all := (others => 0);
-      Result.chi2_cdf_result := -1.0;
-      return Result;
-
+      return Result: EquiDist(t, l, n) do
+         Result.next_dimension := 1;
+         Result.current := (others => 0);
+         Result.bins := new Counter_array(1..Num_Bins);
+         Result.bins.all := (others => 0);
+         Result.chi2_cdf_result := -1.0;
+      end return;
    end Make_EquiDist;
 
 end PRNG_Zoo.Tests.EquiDist;
