@@ -1,11 +1,13 @@
 --
 -- PRNG Zoo
--- Copyright 2014 James Humphry
+-- Copyright 2014 - 2015 James Humphry
 --
 
 with Interfaces;
 use all type Interfaces.Unsigned_64;
 use all type Interfaces.Unsigned_32;
+
+with Ada.Tags.Generic_Dispatching_Constructor;
 
 package PRNG_Zoo is
 
@@ -21,11 +23,22 @@ package PRNG_Zoo is
 
    type PRNG_Strength is (Crypto, High, Medium, Low, Dummy);
 
+   type PRNG_Parameters is tagged null record;
+   No_Parameters : aliased PRNG_Parameters;
+   Invalid_Parameters : exception;
+
    type PRNG is interface;
    function Strength(G: in PRNG) return PRNG_Strength is abstract;
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return PRNG is abstract;
    procedure Reset(G: in out PRNG; S: in U64) is abstract;
    function Generate(G: in out PRNG) return U64 is abstract;
    function Generate(G: in out PRNG) return U32 is abstract;
+
+   function PRNG_Constructor is new
+     Ada.Tags.Generic_Dispatching_Constructor(T => PRNG,
+                                              Parameters => PRNG_Parameters'Class,
+                                              Constructor => Constructor);
 
    type PRNG_32Only is abstract new PRNG with null record;
    function Generate(G: in out PRNG_32Only) return U64 with inline;
@@ -41,6 +54,9 @@ package PRNG_Zoo is
    -- statistical quality and relative speed.
 
    type Dispatcher(IG : access PRNG'Class) is new PRNG with null record;
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return Dispatcher is
+     (if true then raise Program_Error else raise Program_Error);
    function Strength(G: in Dispatcher) return PRNG_Strength is
      (Strength(G.IG.all));
    procedure Reset(G: in out Dispatcher; S: in U64);

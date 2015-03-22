@@ -11,6 +11,8 @@ package PRNG_Zoo.Misc is
 
    type glibc_random is new PRNG_32Only with private;
    function Strength (G : in glibc_random) return PRNG_Strength is (Low);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return glibc_random;
    procedure Reset (G : in out glibc_random; S : in U64);
    function Generate(G : in out glibc_random) return U32 with inline;
 
@@ -20,6 +22,8 @@ package PRNG_Zoo.Misc is
 
    type KISS is new PRNG_32Only with private;
    function Strength (G : in KISS) return PRNG_Strength is (Medium);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return KISS;
    -- S = 0 resets to Marsaglia's suggested starting parameters
    procedure Reset (G : in out KISS; S : in U64);
    function Generate(G : in out KISS) return U32 with inline;
@@ -39,6 +43,8 @@ package PRNG_Zoo.Misc is
 
    type MurmurHash3 is new PRNG_64Only with private;
    function Strength (G : in MurmurHash3) return PRNG_Strength is (Medium);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return MurmurHash3;
    procedure Reset (G : in out MurmurHash3; S : in U64);
    function Generate(G : in out MurmurHash3) return U64 with inline;
 
@@ -53,6 +59,10 @@ private
          p : glibc_random_index := 0;
       end record;
 
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return glibc_random is
+     (glibc_random'(others => <>));
+
    type KISS is new PRNG_32Only with
       record
          z : U32 := 362436069;
@@ -61,9 +71,17 @@ private
          jcong : U32 := 380116160;
       end record;
 
+    function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return KISS is
+     (KISS'(others => <>));
+
    type MurmurHash3 is new PRNG_64Only with
       record
          s : U64 := 314159263;
       end record;
+
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                            return MurmurHash3 is
+     (MurmurHash3'(others => <>));
 
 end PRNG_Zoo.Misc;

@@ -10,16 +10,22 @@ package PRNG_Zoo.xorshift_star is
 
    type xorshift64_star is new PRNG_64Only and xorshift_star with private;
    function Strength (G : in xorshift64_star) return PRNG_Strength is (Medium);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return xorshift64_star;
    procedure Reset (G : in out xorshift64_star; S : in U64);
    function Generate (G : in out xorshift64_star) return U64 with inline;
 
    type xorshift1024_star is new PRNG_64Only and xorshift_star  with private;
    function Strength (G : in xorshift1024_star) return PRNG_Strength is (High);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return xorshift1024_star;
    procedure Reset (G : in out xorshift1024_star; S : in U64);
    function Generate (G : in out xorshift1024_star) return U64 with inline;
 
    type xorshift4096_star is new PRNG_64Only and xorshift_star  with private;
    function Strength (G : in xorshift4096_star) return PRNG_Strength is (High);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return xorshift4096_star;
    procedure Reset (G : in out xorshift4096_star; S : in U64);
    function Generate (G : in out xorshift4096_star) return U64 with inline;
 
@@ -38,6 +44,10 @@ private
       s : U64;
    end record;
 
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return xorshift64_star is
+     (xorshift64_star'(others => <>));
+
    type p16 is mod 2**4;
    type p16_arrayU64 is array (p16) of U64;
    type xorshift1024_star is new PRNG_64Only and xorshift_star with record
@@ -45,11 +55,19 @@ private
       p : p16 := 0;
    end record;
 
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return xorshift1024_star is
+     (xorshift1024_star'(others => <>));
+
    type p64 is mod 2**6;
    type p64_arrayU64 is array (p64) of U64;
    type xorshift4096_star is new PRNG_64Only and xorshift_star with record
       s : p64_arrayU64;
       p : p64 := 0;
    end record;
+
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                        return xorshift4096_star is
+     (xorshift4096_star'(others => <>));
 
 end PRNG_Zoo.xorshift_star;

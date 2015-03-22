@@ -83,6 +83,25 @@ package body PRNG_Zoo.xorshift is
       return G.s;
    end Generate;
 
+   -----------------
+   -- Constructor --
+   -----------------
+
+   function Constructor(Params : not null access PRNG_Parameters'Class) return xorshift_array_32 is
+      P : xorshift_array_32_Parameters;
+   begin
+      if Params.all in xorshift_array_32_Parameters then
+         P := xorshift_array_32_Parameters(Params.all);
+         return xorshift_array_32'(N => P.N,
+                                   a => P.a,
+                                   b => P.b,
+                                   c => P.c,
+                                   others => <>);
+      else
+         raise Invalid_Parameters;
+      end if;
+   end Constructor;
+
    -----------
    -- Reset --
    -----------

@@ -76,11 +76,16 @@ package body PRNGTests_Suite.Lin_Con_Tests is
       G_MINSTD_P : Linear_Congruential.LCG_32Only(Modulus => 2147483647,
                                                   Multiplier => 48271,
                                                   Increment => 0);
+      G_MINSTD_Dynamic : PRNG'Class :=
+        PRNG_Constructor(The_Tag => Linear_Congruential.LCG_32Only'Tag,
+                         Params => Linear_Congruential.Examples.MINSTD_Parameters'Access);
       G_MINSTD0 : Linear_Congruential.Examples.MINSTD0;
       G_MINSTD0_P : Linear_Congruential.LCG_32Only(Modulus => 2147483647,
                                                    Multiplier => 16807,
                                                    Increment => 0);
-
+      G_MINSTD0_Dynamic : PRNG'Class :=
+        PRNG_Constructor(The_Tag => Linear_Congruential.LCG_32Only'Tag,
+                         Params => Linear_Congruential.Examples.MINSTD0_Parameters'Access);
    begin
       Reset(G_MINSTD, 1);
       Reset(G_MINSTD_P, 1);
@@ -94,6 +99,20 @@ package body PRNGTests_Suite.Lin_Con_Tests is
          Assert(U32'(Generate(G_MINSTD0)) = U32'(Generate(G_MINSTD0_P)),
                 "MINSTD0 outputs from generic LCG don't match that from parametised LCG.");
       end loop;
+
+      Reset(G_MINSTD, 1);
+      Reset(G_MINSTD_Dynamic, 1);
+      Reset(G_MINSTD0, 1);
+      Reset(G_MINSTD0_Dynamic, 1);
+
+      for I In 1..1024 loop
+         Assert(U32'(Generate(G_MINSTD)) = U32'(Generate(G_MINSTD_Dynamic)),
+                "MINSTD outputs from generic LCG don't match that from dynamically constructed LCG.");
+
+         Assert(U32'(Generate(G_MINSTD0)) = U32'(Generate(G_MINSTD0_Dynamic)),
+                "MINSTD0 outputs from generic LCG don't match that from dynamically constructed LCG.");
+      end loop;
+
    end Test_MINSTD;
 
 

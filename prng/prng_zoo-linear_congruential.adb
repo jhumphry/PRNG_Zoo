@@ -54,6 +54,24 @@ package body PRNG_Zoo.Linear_Congruential is
 
    end Generic_LCG_32Only;
 
+   -----------------
+   -- Constructor --
+   -----------------
+
+   function Constructor(Params : not null access PRNG_Parameters'Class) return LCG is
+      P : LCG_Parameters;
+   begin
+      if Params.all in LCG_Parameters then
+         P := LCG_Parameters(Params.all);
+         return LCG'(Modulus    => P.Modulus,
+                     Multiplier => P.Multiplier,
+                     Increment  => P.Increment,
+                     s          => P.s);
+      else
+         raise Invalid_Parameters;
+      end if;
+   end Constructor;
+
    -----------
    -- Reset --
    -----------
@@ -72,6 +90,24 @@ package body PRNG_Zoo.Linear_Congruential is
       G.s := (G.s * G.Multiplier + G.Increment) mod G.Modulus;
       return G.s;
    end Generate;
+
+   -----------------
+   -- Constructor --
+   -----------------
+
+   function Constructor(Params : not null access PRNG_Parameters'Class) return LCG_32Only is
+      P : LCG_32Only_Parameters;
+   begin
+      if Params.all in LCG_32Only_Parameters then
+         P := LCG_32Only_Parameters(Params.all);
+         return LCG_32Only'(Modulus    => P.Modulus,
+                            Multiplier => P.Multiplier,
+                            Increment  => P.Increment,
+                            s          => P.s);
+      else
+         raise Invalid_Parameters;
+      end if;
+   end Constructor;
 
    -----------
    -- Reset --

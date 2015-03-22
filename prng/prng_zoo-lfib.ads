@@ -11,6 +11,7 @@ package PRNG_Zoo.LFib is
    package Generic_LFib is
       type LFib is new PRNG_64Only with private;
       function Strength(G: in LFib) return PRNG_Strength is (Low);
+      function Constructor(Params : not null access PRNG_Parameters'Class) return LFib;
       procedure Reset(G: in out LFib; S: in U64);
       function Generate(G: in out LFib) return U64 with inline;
 
@@ -20,6 +21,11 @@ package PRNG_Zoo.LFib is
             s : U64_array(0..k-1);
             p : Integer := 0;
          end record;
+
+      function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return LFib is
+         (LFib'(others => <>));
+
    end Generic_LFib;
 
 end PRNG_Zoo.LFib;

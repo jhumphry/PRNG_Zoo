@@ -8,12 +8,16 @@ package PRNG_Zoo.MT is
    -- Based on (Matsumoto and Nishimura, 1998)
    type MT19937 is new PRNG_32Only with private;
    function Strength(G: in MT19937) return PRNG_Strength is (Medium);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return MT19937;
    procedure Reset(G: in out MT19937; S: in U64);
    procedure Reset(G: in out MT19937; S: in U64_array);
    function Generate(G: in out MT19937) return U32 with inline;
 
    type MT19937_64 is new PRNG_64Only with private;
    function Strength(G: in MT19937_64) return PRNG_Strength is (Medium);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return MT19937_64;
    procedure Reset(G: in out MT19937_64; S: in U64);
    procedure Reset(G: in out MT19937_64; S: in U64_array);
    function Generate(G: in out MT19937_64) return U64 with inline;
@@ -28,6 +32,10 @@ private
          p : MT_Index;
       end record;
 
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                              return MT19937 is
+     (MT19937'(others => <>));
+
    type MT_Index_64 is mod 312;
    type MT_State_64 is array (MT_Index_64) of U64;
    type MT19937_64 is new PRNG_64Only with
@@ -35,5 +43,9 @@ private
          s : MT_State_64;
          p : MT_Index_64;
       end record;
+
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                              return MT19937_64 is
+     (MT19937_64'(others => <>));
 
 end PRNG_Zoo.MT;

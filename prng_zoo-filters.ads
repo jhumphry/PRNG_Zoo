@@ -16,11 +16,17 @@ package PRNG_Zoo.Filters is
          Loaded : Boolean := False;
          Next_Value : U32;
       end record;
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return Split_32 is
+     (if true then raise Program_Error else raise Program_Error);
    function Generate(G: in out Split_32) return U32;
 
    -- This reverses the bit-order in the returned value
    -- Some tests are more sensitive to the lower than the upper bits or vice-versa
    type Bit_Reverse(IG : access PRNG'Class) is new Dispatcher(IG) with null record;
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return Bit_Reverse is
+     (if true then raise Program_Error else raise Program_Error);
    function Generate(G: in out Bit_Reverse) return U64;
    function Generate(G: in out Bit_Reverse) return U32;
 
@@ -31,6 +37,9 @@ package PRNG_Zoo.Filters is
          incr : U64 := 1;
       end record;
    function Strength(G: in Incrementer) return PRNG_Strength is (Dummy);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return Incrementer is
+     (Incrementer'(others => <>));
    procedure Reset(G: in out Incrementer; S: in U64);
    function Generate(G: in out Incrementer) return U64 with inline;
    function Generate(G: in out Incrementer) return U32 with inline;
