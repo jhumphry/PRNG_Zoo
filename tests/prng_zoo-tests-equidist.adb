@@ -46,7 +46,7 @@ package body PRNG_Zoo.Tests.EquiDist is
       stride : Positive;
       position : Natural;
    begin
-      T.current(T.next_dimension) := Shift_Right(X, T.n-T.l);
+      T.current(T.next_dimension) := Shift_Right((X and T.mask), T.n-T.l);
       if T.next_dimension = T.t then
          stride := 1;
          position := 0;

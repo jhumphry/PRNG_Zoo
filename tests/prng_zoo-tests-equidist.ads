@@ -25,6 +25,7 @@ private
 
    type EquiDist(t, l, n: Positive) is limited new PRNG_Test with
       record
+         mask : U64 := 2**n-1;
          next_dimension : Positive;
          current : U64_array(1..t);
          bins : Counter_array_ptr;
