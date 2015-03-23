@@ -4,6 +4,8 @@
 --
 
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Fixed;
+use Ada.Strings.Fixed;
 
 with PRNG_Zoo.LFib;
 with PRNG_Zoo.Linear_Congruential, PRNG_Zoo.Linear_Congruential.Examples;
@@ -17,15 +19,38 @@ package body PRNG_Zoo.Register is
 
    package LFIB_107_378 is new LFIB.Generic_LFib(107,378,"+");
 
-   procedure Display_Register is
-      I : PRNG_Registries.Cursor;
+   procedure PRNG_Column_Widths(Names, Descriptions : in out Natural) is
+      I : Register_Cursor;
    begin
-      Put ("PRNG"); Set_Col (16); Put ("| Description");
+      Names := 0;
+      Descriptions := 0;
+      for I in Register.Iterate loop
+         if PRNG_Registries.Key(I)'Length > Names then
+            Names := PRNG_Registries.Key(I)'Length;
+         end if;
+         if Length(PRNG_Registries.Element (I).Description) > Descriptions then
+            Descriptions := Length(PRNG_Registries.Element (I).Description);
+         end if;
+      end loop;
+   end PRNG_Column_Widths;
+
+
+   procedure Display_Register is
+      I : Register_Cursor;
+      Names, Descriptions : Natural := 0;
+   begin
+      PRNG_Column_Widths(Names, Descriptions);
+
+      Put ("PRNG"); Set_Col (Ada.Text_IO.Count(Names + 1)); Put ("| Description");
       New_Line;
-      Put_Line ("---------------+------------");
+      Put(Names * "-");
+      Put("+");
+      Put((Descriptions+1) * "-");
+      New_Line;
+
       for I in Register.Iterate loop
          Put (PRNG_Registries.Key (I));
-         Set_Col (16);
+         Set_Col (Ada.Text_IO.Count(Names + 1));
          Put ("| " & To_String (PRNG_Registries.Element (I).Description));
          New_Line;
       end loop;

@@ -24,11 +24,13 @@ package PRNG_Zoo.Register is
    package PRNG_Registries is
      new Ada.Containers.Indefinite_Ordered_Maps(Key_Type     => String,
                                                 Element_Type => PRNG_Details);
-
+   subtype Register_Cursor is PRNG_Registries.Cursor;
    Register : PRNG_Registries.Map;
 
    function PRNG_Exists(Name : String) return Boolean is
      (Register.Contains(Name));
+
+   procedure PRNG_Column_Widths(Names, Descriptions : in out Natural);
 
    function Make_PRNG(Name : String) return PRNG'Class is
       (PRNG_Constructor(Register(Name).Tag, Register(Name).Params));
