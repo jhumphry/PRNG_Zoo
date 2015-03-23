@@ -24,7 +24,7 @@ package PRNG_Zoo is
    type PRNG_Strength is (Crypto, High, Medium, Low, Dummy);
 
    type PRNG_Parameters is tagged null record;
-   No_Parameters : aliased PRNG_Parameters;
+   No_Parameters : aliased PRNG_Parameters := (others => <>);
    Invalid_Parameters : exception;
 
    type PRNG is interface;
@@ -54,11 +54,11 @@ package PRNG_Zoo is
    -- statistical quality and relative speed.
 
    type Dispatcher(IG : access PRNG'Class) is new PRNG with null record;
+   function Strength(G: in Dispatcher) return PRNG_Strength is
+     (Strength(G.IG.all));
    function Constructor(Params : not null access PRNG_Parameters'Class)
                         return Dispatcher is
      (if true then raise Program_Error else raise Program_Error);
-   function Strength(G: in Dispatcher) return PRNG_Strength is
-     (Strength(G.IG.all));
    procedure Reset(G: in out Dispatcher; S: in U64);
    function Generate(G: in out Dispatcher) return U64 is
      (Generate(G.IG.all)) with inline;
