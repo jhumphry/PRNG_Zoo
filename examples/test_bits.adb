@@ -1,15 +1,12 @@
 --
 -- PRNG Zoo
--- Copyright 2014 James Humphry
+-- Copyright 2014 - 2015 James Humphry
 --
 
 with PRNG_Zoo;
 use PRNG_Zoo;
 
-with PRNG_Zoo.xorshift_star, PRNG_Zoo.Linear_Congruential.Examples;
-use all type PRNG_Zoo.xorshift_star.xorshift1024_star;
-use all type PRNG_Zoo.Linear_Congruential.Examples.RANDU;
-use all type PRNG_Zoo.Linear_Congruential.Examples.MINSTD;
+with PRNG_Zoo.Register;
 
 with PRNG_Zoo.Tests, PRNG_Zoo.Tests.Bits, PRNG_Zoo.Tests.EquiDist;
 
@@ -22,24 +19,26 @@ procedure test_bits is
    AP : Parse_Args.Argument_Parser;
    Seed : PRNG_Zoo.U64;
    Iterations : Natural;
-
-   G1 : xorshift_star.xorshift1024_star;
-   G2 : Linear_Congruential.Examples.RANDU;
-   G3 : Linear_Congruential.Examples.MINSTD;
    X : U64;
-   BC : Tests.Bits.Bit_Counter(64);
-   BC_31 : Tests.Bits.Bit_Counter(31);
-   ED_64 : Tests.EquiDist.EquiDist(3,2,64);
-   ED_31 : Tests.EquiDist.EquiDist(2,2,31);
+
 begin
 
-   AP.Set_Prologue("A simple demonstration of the Parse_Args library.");
+   AP.Set_Prologue("Test bit distributions of PRNG.");
    AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "help", 'h',
                  Usage => "Display this help text");
+   AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "list-prng", 'p',
+                 Usage => "List available PRNG");
    AP.Add_Option(Parse_Args.Make_Natural_Option(9753), "seed", 's',
-                 Usage => "Specify a seed for the generators");
+                 Usage => "Specify a seed for the generators (default 9753)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(1), "iterations", 'i',
-                 Usage => "Specify iterations (in millions)");
+                 Usage => "Specify iterations (in millions) (default 1)");
+   AP.Add_Option(Parse_Args.Make_Natural_Option(64), "output-width", 'w',
+                 Usage => "Number of bits of output to test (default 64)");
+   AP.Add_Option(Parse_Args.Make_Natural_Option(2), "dimensions", 't',
+                 Usage => "Log_{2} Dimensionality of equidistribution test (default 2)");
+   AP.Add_Option(Parse_Args.Make_Natural_Option(2), "divisions", 'l',
+                 Usage => "Log_{2} Divisions in each dimension (default 2)");
+   AP.Append_Positional(Parse_Args.Make_String_Option(""), "PRNG");
    AP.Parse_Command_Line;
 
    if not AP.Parse_Success then
@@ -48,85 +47,52 @@ begin
    elsif AP.Boolean_Value("help") then
       AP.Usage;
       goto Finish;
+   elsif AP.Boolean_Value("list-prng") then
+      PRNG_Zoo.Register.Display_Register;
+      goto Finish;
+   elsif AP.String_Value("PRNG") = "" then
+      Put_Line("A PRNG must be specified.");
+      goto Finish;
+   elsif not PRNG_Zoo.Register.PRNG_Exists(AP.String_Value("PRNG")) then
+      Put_Line("No such PRNG: '" & AP.String_Value("PRNG") & "'");
+      goto Finish;
    end if;
 
    Seed := PRNG_Zoo.U64(AP.Natural_Value("seed"));
    Iterations := AP.Natural_Value("iterations") * 1_000_000;
 
-   G1.Reset(Seed);
-   BC.Reset; ED_64.Reset;
-   Put_Line("Testing xorshift1024*");
-   for I in 1..Iterations loop
-      X := G1.Generate;
-      BC.Feed(X);
-      ED_64.Feed(X);
-   end loop;
-   BC.Compute_Result;
-   if BC.Passed then
-      Put_Line("xorshift1024* passed Bit-Counter test");
-   else
-      Put_Line("xorshift1024* failed Bit-Counter test");
-   end if;
-   Put_Line(BC.Describe_Result); New_Line;
+   declare
+      G : PRNG'Class := Register.Make_PRNG(AP.String_Value("PRNG"));
+      BC : Tests.Bits.Bit_Counter(AP.Natural_Value("output-width"));
+      ED : Tests.EquiDist.EquiDist(t => AP.Natural_Value("dimensions"),
+                                   l => AP.Natural_Value("divisions"),
+                                   n => AP.Natural_Value("output-width"));
+   begin
+      G.Reset(Seed);
+      BC.Reset;
+      ED.Reset;
+      Put_Line("Testing " & AP.String_Value("PRNG"));
+      New_Line;
 
-   ED_64.Compute_Result;
-   if ED_64.Passed then
-      Put_Line("xorshift1024* passed Equidistribution test");
-   else
-      Put_Line("xorshift1024* failed Equidistribution test");
-   end if;
+      for I in 1..Iterations loop
+         X := G.Generate;
+         BC.Feed(X);
+         ED.Feed(X);
+      end loop;
 
-   Put_Line(ED_64.Describe_Result); New_Line;
+      BC.Compute_Result;
+      Put_Line(AP.String_Value("PRNG") &
+               (if BC.Passed then " passed " else " failed " ) &
+                 "Bit-Counter test");
+      Put_Line(BC.Describe_Result); New_Line;
 
-   G2.Reset(Seed);
-   BC_31.Reset; ED_31.Reset;
-   Put_Line("Testing RANDU");
-   for I in 1..Iterations loop
-      X := U64(U32'(G2.Generate));
-      BC_31.Feed(X);
-      ED_31.Feed(X);
-   end loop;
-   BC_31.Compute_Result;
-   if BC_31.Passed then
-      Put_Line("RANDU passed Bit-Counter test");
-   else
-      Put_Line("RANDU failed Bit-Counter test");
-   end if;
-   Put_Line(BC_31.Describe_Result); New_Line;
+      ED.Compute_Result;
+      Put_Line(AP.String_Value("PRNG") &
+               (if ED.Passed then " passed " else " failed " ) &
+                 "Equidistribution test");
+      Put_Line(ED.Describe_Result); New_Line;
 
-   ED_31.Compute_Result;
-   if ED_31.Passed then
-      Put_Line("RANDU passed Equidistribution test");
-   else
-      Put_Line("RANDU failed Equidistribution test");
-   end if;
-
-   Put_Line(ED_31.Describe_Result); New_Line;
-
-   G3.Reset(Seed);
-   BC_31.Reset; ED_31.Reset;
-   Put_Line("Testing MINSTD");
-   for I in 1..Iterations loop
-      X := U64(U32'(G3.Generate));
-      BC_31.Feed(X);
-      ED_31.Feed(X);
-   end loop;
-   BC_31.Compute_Result;
-   if BC_31.Passed then
-      Put_Line("MINSTD passed Bit-Counter test");
-   else
-      Put_Line("MINSTD failed Bit-Counter test");
-   end if;
-   Put_Line(BC_31.Describe_Result); New_Line;
-
-   ED_31.Compute_Result;
-   if ED_31.Passed then
-      Put_Line("MINSTD passed Equidistribution test");
-   else
-      Put_Line("MINSTD failed Equidistribution test");
-   end if;
-
-   Put_Line(ED_31.Describe_Result); New_Line;
+   end;
 
    <<Finish>>
    null;
