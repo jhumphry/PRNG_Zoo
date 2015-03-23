@@ -132,7 +132,7 @@ package body PRNG_Zoo.Tests.Bits is
 
       return "Bit Counter with width " & Integer'Image(T.Width) & ":" & LF &
         Totals &  " bits set in total for a Z-Score: " & Total_Result & LF &
-        "Individual bit Z-score results MSB -> LSB, failures ranked a (@ 5%) to d (@ 1E-6): "
+        "Individual bit Z-score results MSB->LSB, failures ranked a (@ 5%) to d (@ 1E-6): "
         & LF & Bits;
    end Describe_Result;
 

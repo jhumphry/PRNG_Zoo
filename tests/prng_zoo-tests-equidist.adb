@@ -69,7 +69,6 @@ package body PRNG_Zoo.Tests.EquiDist is
       N : Positive := 2 ** (T.t * T.l);
       Expected : Long_Float := 1.0 / Long_Float(N);
       B : Binned(N);
-      use Ada.Text_IO;
    begin
       B.Bin_Counts := T.bins.all;
       B.Bin_Expected := (others => Expected);
