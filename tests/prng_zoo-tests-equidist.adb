@@ -83,7 +83,7 @@ package body PRNG_Zoo.Tests.EquiDist is
 
    function Result_Ready(T: EquiDist) return Boolean is
    begin
-      return T.chi2_cdf_result >= 0.0;
+      return T.chi2_cdf_result /= -1.0;
    end Result_Ready;
 
    ------------
