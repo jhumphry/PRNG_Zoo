@@ -32,8 +32,6 @@ begin
                  Usage => "Specify a seed for the generators (default 9753)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(1), "iterations", 'i',
                  Usage => "Specify iterations (in millions) (default 1)");
-   AP.Add_Option(Parse_Args.Make_Natural_Option(64), "output-width", 'w',
-                 Usage => "Number of bits of output to test (default 64)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(2), "dimensions", 't',
                  Usage => "Log_{2} Dimensionality of equidistribution test (default 2)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(2), "divisions", 'l',
@@ -48,10 +46,10 @@ begin
 
       declare
          G : PRNG'Class := Register.Make_PRNG(Name);
-         BC : Tests.Bits.Bit_Counter(AP.Natural_Value("output-width"));
+         BC : Tests.Bits.Bit_Counter(G.Width);
          ED : Tests.EquiDist.EquiDist(t => AP.Natural_Value("dimensions"),
                                       l => AP.Natural_Value("divisions"),
-                                      n => AP.Natural_Value("output-width"));
+                                      n => G.Width);
       begin
          G.Reset(Seed);
          BC.Reset;
