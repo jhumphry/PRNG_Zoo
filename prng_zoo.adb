@@ -16,6 +16,24 @@ package body PRNG_Zoo is
       return Shift_Left(U64(R1), 32) or U64(R2);
    end Generate;
 
+   ---------------------
+   -- Generate_Padded --
+   ---------------------
+
+   function Generate_Padded (G: in out PRNG_32Only) return U64 is
+   begin
+      return U64(U32'(Generate(PRNG_32Only'Class(G))));
+   end Generate_Padded;
+
+   ---------------------
+   -- Generate_Padded --
+   ---------------------
+
+   function Generate_Padded (G: in out PRNG_64Only) return U64 is
+   begin
+      return U64'(Generate(PRNG_64Only'Class(G)));
+   end Generate_Padded;
+
    --------------
    -- Generate --
    --------------

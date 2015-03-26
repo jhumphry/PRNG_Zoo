@@ -80,7 +80,7 @@ begin
 
          Start_Time := Ada.Execution_Time.Clock;
          for I in 1..Iterations loop
-            X := G.Generate;
+            X := G.Generate_Padded;
          end loop;
          End_Time := Ada.Execution_Time.Clock;
       end;

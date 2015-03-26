@@ -16,9 +16,12 @@ package PRNG_Zoo.Filters is
          Loaded : Boolean := False;
          Next_Value : U32;
       end record;
+   function Width(G: in Split_32) return Positive is (32);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return Split_32 is
      (if true then raise Program_Error else raise Program_Error);
+   function Generate_Padded(G: in out Split_32) return U64 is
+      (U64(U32'(Generate(G)))) with inline;
    function Generate(G: in out Split_32) return U32;
 
    -- This reverses the bit-order in the returned value
@@ -28,6 +31,7 @@ package PRNG_Zoo.Filters is
                            return Bit_Reverse is
      (if true then raise Program_Error else raise Program_Error);
    function Generate(G: in out Bit_Reverse) return U64;
+   function Generate_Padded(G: in out Bit_Reverse) return U64;
    function Generate(G: in out Bit_Reverse) return U32;
 
    -- Simple linear increment 'generator'.
@@ -37,11 +41,13 @@ package PRNG_Zoo.Filters is
          incr : U64 := 1;
       end record;
    function Strength(G: in Incrementer) return PRNG_Strength is (Dummy);
+   function Width(G: in Incrementer) return Positive is (64);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return Incrementer is
      (Incrementer'(others => <>));
    procedure Reset(G: in out Incrementer; S: in U64);
    function Generate(G: in out Incrementer) return U64 with inline;
+   function Generate_Padded(G : in out Incrementer) return U64 renames Generate;
    function Generate(G: in out Incrementer) return U32 with inline;
 
 end PRNG_Zoo.Filters;

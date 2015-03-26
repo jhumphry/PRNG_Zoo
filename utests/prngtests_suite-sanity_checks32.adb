@@ -9,6 +9,7 @@ with AUnit.Test_Cases; use AUnit.Test_Cases;
 procedure PRNGTests_Suite.Sanity_Checks32(T : in out Test_Case'Class) is
    G : P;
    Output : U32_array(1..N);
+   Mask : U64 := Shift_Left(16#FFFFFFFF#, G.Width);
 begin
 
    Reset(G, seed1);
@@ -25,4 +26,9 @@ begin
    Reset(G, seed2);
    Assert((for some I in Output'Range => Output(I) /= Generate(G)),
           "Different seeds appear to restart the same sequence.");
+
+   Reset(G, seed1);
+   Assert((for all I in 1..100 => ((Generate_Padded(G) + U64(I)) and Mask) = 0),
+          "Declared generator width not consistent with output.");
+
 end PRNGTests_Suite.Sanity_Checks32;

@@ -29,10 +29,12 @@ package PRNG_Zoo is
 
    type PRNG is interface;
    function Strength(G: in PRNG) return PRNG_Strength is abstract;
+   function Width(G: in PRNG) return Positive is abstract;
    function Constructor(Params : not null access PRNG_Parameters'Class)
                         return PRNG is abstract;
    procedure Reset(G: in out PRNG; S: in U64) is abstract;
    function Generate(G: in out PRNG) return U64 is abstract;
+   function Generate_Padded(G: in out PRNG) return U64 is abstract;
    function Generate(G: in out PRNG) return U32 is abstract;
 
    function PRNG_Constructor is new
@@ -41,9 +43,17 @@ package PRNG_Zoo is
                                               Constructor => Constructor);
 
    type PRNG_32Only is abstract new PRNG with null record;
+   function Width(G: in PRNG_32Only) return Positive is (32);
    function Generate(G: in out PRNG_32Only) return U64 with inline;
+   function Generate_Padded(G: in out PRNG_32Only) return U64 with inline;
 
+   -- While it would be purer to implement Generate_Padded as a simple renaming,
+   -- this would not be inherited and would need repeating for each derived
+   -- type. In speed-optimised uses the simple inline function should be
+   -- optimised away.
    type PRNG_64Only is abstract new PRNG with null record;
+   function Width(G: in PRNG_64Only) return Positive is (64);
+   function Generate_Padded(G: in out PRNG_64Only) return U64 with inline;
    function Generate(G: in out PRNG_64Only) return U32 with inline;
 
    type PRNG_Ptr is access all PRNG'Class;
@@ -56,12 +66,16 @@ package PRNG_Zoo is
    type Dispatcher(IG : access PRNG'Class) is new PRNG with null record;
    function Strength(G: in Dispatcher) return PRNG_Strength is
      (Strength(G.IG.all));
+   function Width(G: in Dispatcher) return Positive is
+     (Width(G.IG.all));
    function Constructor(Params : not null access PRNG_Parameters'Class)
                         return Dispatcher is
      (if true then raise Program_Error else raise Program_Error);
    procedure Reset(G: in out Dispatcher; S: in U64);
    function Generate(G: in out Dispatcher) return U64 is
      (Generate(G.IG.all)) with inline;
+   function Generate_Padded(G: in out Dispatcher) return U64 is
+     (Generate_Padded(G.IG.all)) with inline;
    function Generate(G: in out Dispatcher) return U32 is
      (Generate(G.IG.all)) with inline;
 

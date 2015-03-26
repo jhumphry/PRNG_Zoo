@@ -45,6 +45,28 @@ package body PRNG_Zoo.Filters is
       return V;
    end Generate;
 
+   ---------------------
+   -- Generate_Padded --
+   ---------------------
+
+   function Generate_Padded (G: in out Bit_Reverse) return U64 is
+     V : U64;
+   begin
+      V := G.IG.Generate_Padded;
+      V := (Shift_Right(V, 1) and 16#5555555555555555#)
+        or Shift_Left((V and 16#5555555555555555#), 1);
+      V := (Shift_Right(V, 2) and 16#3333333333333333#)
+        or Shift_Left((V and 16#3333333333333333#), 2);
+      V := (Shift_Right(V, 4) and 16#0F0F0F0F0F0F0F0F#)
+        or Shift_Left((V and 16#0F0F0F0F0F0F0F0F#), 4);
+      V := (Shift_Right(V, 8) and 16#00FF00FF00FF00FF#)
+        or Shift_Left((V and 16#00FF00FF00FF00FF#), 8);
+      V := (Shift_Right(V, 16) and 16#0000FFFF0000FFFF#)
+        or Shift_Left((V and 16#0000FFFF0000FFFF#), 16);
+      V := Shift_Right(V, 32)  or Shift_Left(V, 32);
+      return V;
+   end Generate_Padded;
+
    --------------
    -- Generate --
    --------------

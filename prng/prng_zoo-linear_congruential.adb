@@ -63,10 +63,11 @@ package body PRNG_Zoo.Linear_Congruential is
    begin
       if Params.all in LCG_Parameters then
          P := LCG_Parameters(Params.all);
-         return LCG'(Modulus    => P.Modulus,
-                     Multiplier => P.Multiplier,
-                     Increment  => P.Increment,
-                     s          => P.s);
+         return LCG'(Modulus      => P.Modulus,
+                     Multiplier   => P.Multiplier,
+                     Increment    => P.Increment,
+                     Usable_Width => P.Usable_Width,
+                     s            => P.s);
       else
          raise Invalid_Parameters;
       end if;
@@ -100,10 +101,11 @@ package body PRNG_Zoo.Linear_Congruential is
    begin
       if Params.all in LCG_32Only_Parameters then
          P := LCG_32Only_Parameters(Params.all);
-         return LCG_32Only'(Modulus    => P.Modulus,
-                            Multiplier => P.Multiplier,
-                            Increment  => P.Increment,
-                            s          => P.s);
+         return LCG_32Only'(Modulus      => P.Modulus,
+                            Multiplier   => P.Multiplier,
+                            Increment    => P.Increment,
+                            Usable_Width => P.Usable_Width,
+                            s            => P.s);
       else
          raise Invalid_Parameters;
       end if;

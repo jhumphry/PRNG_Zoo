@@ -75,14 +75,16 @@ package body PRNGTests_Suite.Lin_Con_Tests is
       G_MINSTD : Linear_Congruential.Examples.MINSTD;
       G_MINSTD_P : Linear_Congruential.LCG_32Only(Modulus => 2147483647,
                                                   Multiplier => 48271,
-                                                  Increment => 0);
+                                                  Increment => 0,
+                                                  Usable_Width => 31);
       G_MINSTD_Dynamic : PRNG'Class :=
         PRNG_Constructor(The_Tag => Linear_Congruential.LCG_32Only'Tag,
                          Params => Linear_Congruential.Examples.MINSTD_Parameters'Access);
       G_MINSTD0 : Linear_Congruential.Examples.MINSTD0;
       G_MINSTD0_P : Linear_Congruential.LCG_32Only(Modulus => 2147483647,
                                                    Multiplier => 16807,
-                                                   Increment => 0);
+                                                   Increment => 0,
+                                                   Usable_Width => 31);
       G_MINSTD0_Dynamic : PRNG'Class :=
         PRNG_Constructor(The_Tag => Linear_Congruential.LCG_32Only'Tag,
                          Params => Linear_Congruential.Examples.MINSTD0_Parameters'Access);
