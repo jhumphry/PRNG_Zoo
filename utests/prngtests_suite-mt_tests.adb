@@ -8,6 +8,7 @@ with AUnit.Assertions; use AUnit.Assertions;
 with PRNG_Zoo.MT;
 use all type PRNG_Zoo.MT.MT19937;
 use all type PRNG_Zoo.MT.MT19937_64;
+use all type PRNG_Zoo.MT.TinyMT_64;
 
 package body PRNGTests_Suite.MT_Tests is
 
@@ -19,9 +20,11 @@ package body PRNGTests_Suite.MT_Tests is
       use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Sanity_Check_MT19937'Access, "Basic sanity checks on MT19937 generator.");
-      Register_Routine (T, Sanity_Check_MT19937_64'Access, "Basic sanity checks on MT19937-64 generator.");
+      Register_Routine (T, Sanity_Check_MT19937_64'Access, "Basic sanity checks on MT19937_64 generator.");
+      Register_Routine (T, Sanity_Check_TinyMT_64'Access, "Basic sanity checks on TinyMT_64 generator.");
       Register_Routine (T, Test_MT19937'Access, "Test MT19937 generator against expected (initial) output");
-      Register_Routine (T, Test_MT19937_64'Access, "Test MT19937-64 generator against expected (initial) output");
+      Register_Routine (T, Test_MT19937_64'Access, "Test MT19937_64 generator against expected (initial) output");
+      Register_Routine (T, Test_TinyMT_64'Access, "Test TinyMT_64 generator against expected (initial) output");
    end Register_Tests;
 
    ----------
@@ -168,5 +171,40 @@ package body PRNGTests_Suite.MT_Tests is
       end loop;
 
    end Test_MT19937_64;
+
+   --------------------
+   -- Test_TinyMT_64 --
+   --------------------
+
+   procedure Test_TinyMT_64 (T : in out Test_Cases.Test_Case'Class) is
+      G : MT.TinyMT_64;
+
+      -- This array was generated from a quick C program using the
+      -- canonical C version of TinyMT-64 (2011 version) with initial seed
+      -- of 1, as used in the demonstration code (check64.c) from the authors
+
+      Expected_Array : constant U64_Array := (
+                                              15503804787016557143,17280942441431881838, 2177846447079362065,
+                                              10087979609567186558, 8925138365609588954,13030236470185662861,
+                                              4821755207395923002,11414418928600017220,18168456707151075513,
+                                              1749899882787913913, 2383809859898491614, 4819668342796295952,
+                                              11996915412652201592,11312565842793520524,  995000466268691999,
+                                              6363016470553061398, 7460106683467501926,  981478760989475592,
+                                              11852898451934348777, 5976355772385089998,16662491692959689977,
+                                              4997134580858653476,11142084553658001518,12405136656253403414,
+                                              10700258834832712655,13440132573874649640,15190104899818839732,
+                                              14179849157427519166,10328306841423370385, 9266343271776906817
+                                             );
+
+
+   begin
+
+      Reset(G, U64(1));
+      for E of Expected_Array loop
+         Assert(Generate(G) = E,
+                "TinyMT_64 implementation produces unexpected result for seed 1");
+      end loop;
+
+   end Test_TinyMT_64;
 
 end PRNGTests_Suite.MT_Tests;

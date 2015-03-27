@@ -42,20 +42,61 @@
 --     NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 --     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+-- Includes material derived from tinymt64.h and tinymt64.c:
+
+--    Copyright (C) 2011, 2013 Mutsuo Saito, Makoto Matsumoto,
+--    Hiroshima University and The University of Tokyo.
+
+--     Redistribution and use in source and binary forms, with or without
+--     modification, are permitted provided that the following conditions are
+--     met:
+--
+--         * Redistributions of source code must retain the above copyright
+--           notice, this list of conditions and the following disclaimer.
+--         * Redistributions in binary form must reproduce the above
+--           copyright notice, this list of conditions and the following
+--           disclaimer in the documentation and/or other materials provided
+--           with the distribution.
+--         * Neither the name of the Hiroshima University nor the names of
+--           its contributors may be used to endorse or promote products
+--           derived from this software without specific prior written
+--           permission.
+--
+--     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+--     "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+--     LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+--     A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+--     OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+--     SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+--     LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+--     DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+--     THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+--     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+--     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package body PRNG_Zoo.MT is
 
+
+   -- Mersenne Twister constants
    N : constant := 624;
    M : constant := 397;
    MATRIX_A : constant U32 := 16#9908B0DF#;
    UPPER_MASK : constant U32 := 16#80000000#;
    LOWER_MASK : constant U32 := 16#7FFFFFFF#;
 
+   -- Mersenne Twister 64-bit constants
    NN : constant := 312;
    MM : constant := 156;
    MATRIX_A_64 : constant U64 := 16#B5026F5AA96619E9#;
    UM : constant U64 := 16#FFFFFFFF80000000#;
    LM : constant U64 := 16#7FFFFFFF#;
+
+   -- TinyMT 64-bit constants
+   TINYMT64_MEXP : constant := 127;
+   TINYMT64_SH0 : constant := 12;
+   TINYMT64_SH1 : constant := 11;
+   TINYMT64_SH8 : constant := 8;
+   TINYMT64_MASK : constant U64 := 16#7fffffffffffffff#;
 
    -----------
    -- Reset --
@@ -208,6 +249,67 @@ package body PRNG_Zoo.MT is
 
    end Generate;
 
+   -----------
+   -- Reset --
+   -----------
 
+
+   procedure Reset(G: in out TinyMT_64; S: in U64) is
+      MIN_LOOP : constant := 8;
+
+      procedure period_certification(random : in out TinyMT_64) is
+      begin
+         if ((random.status(0) and TINYMT64_MASK) = 0) and (random.status(1) = 0) then
+            random.status(0) := Character'Pos('T');
+            random.status(1) := Character'Pos('M');
+         end if;
+      end period_certification;
+
+   begin
+      G.status(0) := S xor Shift_Left(U64(G.mat1), 32);
+      G.status(1) := U64(G.mat2) xor G.tmat;
+      for I in U64 range 1..(MIN_LOOP-1) loop
+         G.status(I and 1) := G.status(I and 1) xor
+           (I + U64'(6364136223846793005) *
+            (G.status((I-1) and 1) xor Shift_Right(G.status((I-1) and 1), 62)));
+      end loop;
+      period_certification(G);
+   end Reset;
+
+   --procedure Reset(G: in out TinyMT_64; S: in U64_array);  -- TODO
+
+   --------------
+   -- Generate --
+   --------------
+
+   function Generate(G: in out TinyMT_64) return U64 is
+      procedure tinymt64_next_state(random : in out TinyMT_64) with inline is
+         x : U64;
+      begin
+         random.status(0) := random.status(0) and TINYMT64_MASK;
+         x := random.status(0) xor random.status(1);
+         x := x xor Shift_Left(x, TINYMT64_SH0);
+         x := x xor Shift_Right(x, 32);
+         x := x xor Shift_Left(x, 32);
+         x := x xor Shift_Left(x, TINYMT64_SH1);
+         random.status(0) := random.status(1);
+         random.status(1) := x;
+         random.status(0) := random.status(0) xor (if (x and 1)=1 then U64(random.mat1) else 0);
+         random.status(1) := random.status(1) xor (if (x and 1)=1 then Shift_Left(U64(random.mat2),32) else 0);
+      end tinymt64_next_state;
+
+      function tinymt64_temper(random : in TinyMT_64) return U64 with inline is
+         x : U64;
+      begin
+         x := random.status(0) + random.status(1);
+         x := x xor Shift_Right(random.status(0), TINYMT64_SH8);
+         x := x xor (if (x and 1)=1 then random.tmat else 0);
+         return x;
+      end tinymt64_temper;
+
+   begin
+      tinymt64_next_state(G);
+      return tinymt64_temper(G);
+   end Generate;
 
 end PRNG_Zoo.MT;

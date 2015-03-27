@@ -113,6 +113,12 @@ begin
        Description => To_Bounded_String ("64-bit varient of the Mersenne Twister (mt19937_64)")));
 
    Register.Insert
+   ("TinyMT64", PRNG_Details'
+      (Tag         => MT.TinyMT_64'Tag,
+       Params      => No_Parameters'Access,
+       Description => To_Bounded_String ("64-bit varient of the TinyMT generator")));
+
+   Register.Insert
    ("SHR3", PRNG_Details'
       (Tag         => xorshift.SHR3'Tag,
        Params      => No_Parameters'Access,
