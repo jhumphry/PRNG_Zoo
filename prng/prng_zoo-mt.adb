@@ -76,7 +76,6 @@
 
 package body PRNG_Zoo.MT is
 
-
    -- Mersenne Twister constants
    N : constant := 624;
    M : constant := 397;
@@ -97,6 +96,7 @@ package body PRNG_Zoo.MT is
    TINYMT64_SH1 : constant := 11;
    TINYMT64_SH8 : constant := 8;
    TINYMT64_MASK : constant U64 := 16#7fffffffffffffff#;
+   MIN_LOOP : constant := 8;
 
    -----------
    -- Reset --
@@ -253,18 +253,15 @@ package body PRNG_Zoo.MT is
    -- Reset --
    -----------
 
+   procedure period_certification(random : in out TinyMT_64) is
+   begin
+      if ((random.status(0) and TINYMT64_MASK) = 0) and (random.status(1) = 0) then
+         random.status(0) := Character'Pos('T');
+         random.status(1) := Character'Pos('M');
+      end if;
+   end period_certification;
 
    procedure Reset(G: in out TinyMT_64; S: in U64) is
-      MIN_LOOP : constant := 8;
-
-      procedure period_certification(random : in out TinyMT_64) is
-      begin
-         if ((random.status(0) and TINYMT64_MASK) = 0) and (random.status(1) = 0) then
-            random.status(0) := Character'Pos('T');
-            random.status(1) := Character'Pos('M');
-         end if;
-      end period_certification;
-
    begin
       G.status(0) := S xor Shift_Left(U64(G.mat1), 32);
       G.status(1) := U64(G.mat2) xor G.tmat;
@@ -276,7 +273,63 @@ package body PRNG_Zoo.MT is
       period_certification(G);
    end Reset;
 
-   --procedure Reset(G: in out TinyMT_64; S: in U64_array);  -- TODO
+   procedure Reset(G: in out TinyMT_64; S: in U64_array) is
+      function ini_func1(x : U64) return U64 is
+        ((x xor Shift_Right(x, 59)) * U64(2173292883993));
+
+      function ini_func2(x : U64) return U64 is
+        ((x xor Shift_Right(x, 59)) * U64(58885565329898161));
+
+      lag : constant := 1;
+      mid : constant := 1;
+      size : constant := 4;
+      type i_type is mod(size);
+      i : i_type;
+      count : Integer;
+      r : U64;
+      st : array (i_type) of U64 := (0, U64(G.mat1), U64(G.mat2), G.tmat);
+
+   begin
+      count := Integer'Max(S'Length + 1, MIN_LOOP);
+      r := ini_func1(st(0) xor st(mid) xor st(i_type(size-1)));
+      st(mid) := st(mid) + r;
+      r := r + S'Length;
+      st(mid + lag) := st(mid + lag) + r;
+      st(0) := r;
+      count := count - 1;
+
+      i := 1;
+      for j in 0..(Integer'Min(count,S'Length)-1) loop
+         r := ini_func1(st(i) xor st(i + mid) xor st(i + i_type(size-1)));
+         st(i + mid) := st(i + mid) + r;
+         r := r + S(S'First + j) + U64(i);
+         st(i+mid+lag) := st(i+mid+lag) + r;
+         st(i) := r;
+         i := (i + 1);
+      end loop;
+
+      for j in S'Length .. (count-1) loop
+         r := ini_func1(st(i) xor st(i + mid) xor st(i + i_type(size-1)));
+         st(i + mid) := st(i + mid) + r;
+         r := r + U64(i);
+         st(i+mid+lag) := st(i+mid+lag) + r;
+         st(i) := r;
+         i := (i + 1);
+      end loop;
+
+      for j in 0..(size - 1) loop
+         r := ini_func2(st(i) + st(i + mid) + st(i + i_type(size-1)));
+         st(i + mid) := st(i + mid) xor r;
+         r := r - U64(i);
+         st(i+mid+lag) := st(i+mid+lag) xor r;
+         st(i) := r;
+         i := (i + 1);
+      end loop;
+
+      G.status(0) := st(0) xor st(1);
+      G.status(1) := st(2) xor st(3);
+      period_certification(G);
+   end Reset;
 
    --------------
    -- Generate --

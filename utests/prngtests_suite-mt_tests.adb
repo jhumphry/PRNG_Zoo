@@ -181,8 +181,10 @@ package body PRNGTests_Suite.MT_Tests is
 
       -- This array was generated from a quick C program using the
       -- canonical C version of TinyMT-64 (2011 version) with initial seed
-      -- of 1, as used in the demonstration code (check64.c) from the authors
+      -- of 1, and parameters 0xfa051f40 0xffd0fff4 0x58d02ffeffbfffbc
+      -- as used in the demonstration code (check64.c) from the authors
 
+      Seed : constant U64 := 1;
       Expected_Array : constant U64_Array := (
                                               15503804787016557143,17280942441431881838, 2177846447079362065,
                                               10087979609567186558, 8925138365609588954,13030236470185662861,
@@ -196,13 +198,32 @@ package body PRNGTests_Suite.MT_Tests is
                                               14179849157427519166,10328306841423370385, 9266343271776906817
                                              );
 
+      Seed_Array : constant U64_array(0..0) := (others => 1);
+      Expected_Array_2 : constant U64_Array := (
+                                                2316304586286922237, 15094277089150361724,  5685675787316092711,
+                                                15229481068059623199,  4714098425347676722, 16281862982583854132,
+                                                3901922025624662484,  5886484389080126014, 16107583395258923453,
+                                                13952088220369493459, 17758435316338264754,  2351799565271811353,
+                                                12362529980853249542,  1719516909033106250,  8766952554732792269,
+                                                7859523628104690493, 15389348425598624967,  5147268256773563271,
+                                                9499111560078684970,   667293060984396585, 16412518715911243540,
+                                                4644561915126619944,  7147182560776836637,  1588726635616164641,
+                                                14118193191231902733, 10534117574818039474,  5944505171977344673,
+                                                443288919934395040,  1633068730058384525, 17771926205819909233
+                                               );
 
    begin
 
-      Reset(G, U64(1));
+      Reset(G, Seed);
       for E of Expected_Array loop
          Assert(Generate(G) = E,
                 "TinyMT_64 implementation produces unexpected result for seed 1");
+      end loop;
+
+      Reset(G, Seed_Array);
+       for E of Expected_Array_2 loop
+         Assert(Generate(G) = E,
+                "TinyMT_64 implementation produces unexpected result for array seed (1)");
       end loop;
 
    end Test_TinyMT_64;
