@@ -20,10 +20,11 @@ begin
 
    PRNG_Names := Parse_Args.String_Doubly_Linked_Lists.Empty_List;
 
-   AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "help", 'h',
-                 Usage => "Display this help text");
    AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "list-prng", 'p',
-                 Usage => "List available PRNG");
+                 Usage => "List available PRNG", Prepend_Usage => True);
+   AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "help", 'h',
+                 Usage => "Display this help text", Prepend_Usage => True);
+
    AP.Allow_Tail_Arguments;
 
    AP.Parse_Command_Line;
