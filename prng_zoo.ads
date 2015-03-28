@@ -42,6 +42,9 @@ package PRNG_Zoo is
                                               Parameters => PRNG_Parameters'Class,
                                               Constructor => Constructor);
 
+   type PRNG_Seed_From_Array is interface;
+   procedure Reset(G: in out PRNG_Seed_From_Array; S: in U64_array) is abstract;
+
    type PRNG_32Only is abstract new PRNG with null record;
    function Width(G: in PRNG_32Only) return Positive is (32);
    function Generate(G: in out PRNG_32Only) return U64 with inline;

@@ -33,7 +33,7 @@ procedure sample_output is
    Seed : PRNG_Zoo.U64;
    Number : Natural;
    Columns : Natural;
-   Generate_32bit : Boolean;
+   Generate_32bit, Seed_From_Array : Boolean;
 
 begin
 
@@ -47,6 +47,8 @@ begin
                  Usage => "Specify number of output columns (default 2)");
    AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "generate-32bit", 'g',
                  Usage => "Generate 32-bit outputs (default false)");
+   AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "seed-from-array", '-',
+                 Usage => "Seed using a one-element array, where applicable");
 
    Common_CLI(AP, PRNG_Names);
 
@@ -58,13 +60,18 @@ begin
    Number := AP.Natural_Value("number");
    Columns := AP.Natural_Value("columns");
    Generate_32bit := AP.Boolean_Value("generate-32bit");
+   Seed_From_Array := AP.Boolean_Value("seed-from-array");
 
    for Name of PRNG_Names loop
       declare
          G : PRNG'Class := Register.Make_PRNG(Name);
-
+         Seed_Array : U64_array(0..0) := (others => Seed);
       begin
-         G.Reset(Seed);
+         if Seed_From_Array and G in PRNG_Seed_From_Array'Class then
+            PRNG_Seed_From_Array'Class(G).Reset(Seed_Array);
+         else
+            G.Reset(Seed);
+         end if;
 
          Put(Number);
          Put(" outputs from ");
