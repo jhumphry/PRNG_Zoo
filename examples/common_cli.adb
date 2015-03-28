@@ -25,7 +25,7 @@ begin
    AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "help", 'h',
                  Usage => "Display this help text", Prepend_Usage => True);
 
-   AP.Allow_Tail_Arguments;
+   AP.Allow_Tail_Arguments("PRNG");
 
    AP.Parse_Command_Line;
 

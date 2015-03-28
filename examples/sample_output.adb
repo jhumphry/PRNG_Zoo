@@ -37,7 +37,7 @@ procedure sample_output is
 
 begin
 
-   AP.Set_Prologue("Generate sample output from different different PRNG.");
+   AP.Set_Prologue("Generate samples of the output from different PRNG.");
 
    AP.Add_Option(Parse_Args.Make_Natural_Option(9753), "seed", 's',
                  Usage => "Specify a seed for the generators (default 9753)");
