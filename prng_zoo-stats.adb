@@ -154,34 +154,39 @@ package body PRNG_Zoo.Stats is
 
    -- Return the Gamma function for N/2
    function Gamma_HalfN(N : Positive) return Long_Float is
-      Result : Long_Float := 1.0;
       sqrt_pi : constant Long_Float := 1.77245_38509_05516_02729;
-      num : Long_Float := 1.0;
-      den : Long_Float := 2.0;
-      renorm : Integer;
    begin
-      if N mod 2 = 0 then
-         -- If N/2 is integral, gamma(N/2) is simply (N/2-1)!
-         for I in Integer range 1..(N/2-1) loop
-            Result := Result * Long_Float(I);
-         end loop;
-         return Result;
+      if N = 1 then
+         return sqrt_pi;
+      elsif N mod 2 = 0 then
+            -- If N/2 is integral, gamma(N/2) is simply (N/2-1)!
+         declare
+            Result : Long_Float := 1.0;
+         begin
+            for I in Integer range 1..(N/2-1) loop
+               Result := Result * Long_Float(I);
+            end loop;
+            return Result;
+         end;
       else
          -- If N/2 is half-integral, we use the formula
          -- gamma(N + 1/2) = sqrt(pi) * (2n-1)!!/(2**n)
-         if N = 1 then
-            return sqrt_pi;
-         end if;
-         for I in Integer range 1..(N/2-1) loop
-            num := num * (2.0 * Long_Float(I) + 1.0);
-            den := den * 2.0;
-
-            -- renormalise the fraction to prevent overflow
-            renorm := Integer'Min(Long_Float'Exponent(den),Long_Float'Exponent(num));
-            num := Long_Float'Scaling(num, -renorm);
-            den := Long_Float'Scaling(den, -renorm);
-         end loop;
-         return sqrt_pi * num / den;
+         declare
+            num : Long_Float := 1.0;
+            den : Long_Float := 2.0;
+            rescale : Integer;
+         begin
+            for I in Integer range 1..(N/2-1) loop
+               num := num * (2.0 * Long_Float(I) + 1.0);
+               den := den * 2.0;
+               -- rescale the numerator and denominator to prevent overflow
+               rescale := Integer'Min(Long_Float'Exponent(den),
+                                      Long_Float'Exponent(num));
+               num := Long_Float'Scaling(num, -rescale);
+               den := Long_Float'Scaling(den, -rescale);
+            end loop;
+            return sqrt_pi * num / den;
+         end;
       end if;
    end Gamma_HalfN;
 
@@ -191,29 +196,33 @@ package body PRNG_Zoo.Stats is
 
    -- Return the Gamma function for N/2
    function Log_Gamma_HalfN(N : Positive) return Long_Float is
-      Result : Long_Float := 0.0;
       log_sqrt_pi : constant Long_Float := 0.57236_49429_24700_08707;
       log_2 : constant Long_Float := 0.69314_71805_59945_30941;
-      num : Long_Float := 0.0;
-      den : Long_Float := log_2;
+
    begin
-      if N mod 2 = 0 then
+      if N = 1 then
+         return log_sqrt_pi;
+      elsif N mod 2 = 0 then
          -- If N/2 is integral, gamma(N/2) is simply (N/2-1)!
-         for I in Integer range 1..(N/2-1) loop
-            Result := Result + log(Long_Float(I));
-         end loop;
-         return Result;
+         declare
+            Result : Long_Float := 0.0;
+         begin
+            for I in Integer range 1..(N/2-1) loop
+               Result := Result + log(Long_Float(I));
+            end loop;
+            return Result;
+         end;
       else
          -- If N/2 is half-integral, we use the formula
          -- gamma(N + 1/2) = sqrt(pi) * (2n-1)!!/(2**n)
-         if N = 1 then
-            return log_sqrt_pi;
-         end if;
-         den := log_2 * Long_Float(N/2);
-         for I in Integer range 1..(N/2-1) loop
-            num := num + log(2.0 * Long_Float(I) + 1.0);
-         end loop;
-         return log_sqrt_pi + num - den;
+         declare
+            num : Long_Float := 0.0;
+         begin
+            for I in Integer range 1..(N/2-1) loop
+               num := num + log(2.0 * Long_Float(I) + 1.0);
+            end loop;
+            return log_sqrt_pi + num - log_2 * Long_Float(N/2);
+         end;
       end if;
    end Log_Gamma_HalfN;
 
