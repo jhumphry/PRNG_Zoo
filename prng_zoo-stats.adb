@@ -99,51 +99,44 @@ package body PRNG_Zoo.Stats is
 
    function Chi2_CDF(X : Long_Float;
                      df : Positive) return Long_Float is
-
-      Z : Long_Float := X / 2.0;
-      k : Natural := df / 2;
-      k_odd : Boolean := ((df mod 2)=1);
+      X_2 : Long_Float := X / 2.0;
+      df_2 : Long_Float := Long_Float(df) / 2.0;
       c : Long_Float;
-      num, den, sum : Long_Float;
-      I : Positive;
-      Renorm : Integer;
+      num, den : Long_Float := 1.0;
+      sum : Long_Float := 1.0;
+      rescale : Integer;
    begin
-      c := exp(Long_Float(k) * Log(Z) - Z - Log_Gamma_HalfN(df + 2));
-      num := 1.0;
-      den := 1.0; -- The common denominator factor of Gamma((df/2) + 1) is
-                  -- moved to the constant c to prevent it overflowing
-      sum := num / den;
+      -- leading constant term is computed this way to prevent overflow.
+      c := exp(df_2 * Log(X_2) - X_2 - Log_Gamma_HalfN(df + 2));
 
-      if k_odd then
-         c := c * Sqrt(Z);
-         I := 1;
-         loop
-            num := num * Z * 2.0;
-            den := den * (2.0 * Long_Float(I + k) + 1.0);
+      if ((df mod 2)=1) then
+         -- df is odd
+         for N in 1..Integer'Max(df, 25) loop
+            num := num * X_2 * 2.0;
+            den := den * (2.0 * (Long_Float(N) + Long_Float'Floor(df_2)) + 1.0);
             sum := sum + num / den;
-            exit when I > df and I > 25;
-            I := I + 1;
 
-            -- renormalise the fraction to prevent overflow
-            renorm := Integer'Min(Long_Float'Exponent(den),Long_Float'Exponent(num));
-            num := Long_Float'Scaling(num, -renorm);
-            den := Long_Float'Scaling(den, -renorm);
+            -- rescale the numerator and denominator to prevent overflow
+            rescale := Integer'Min(Long_Float'Exponent(den),
+                                   Long_Float'Exponent(num));
+            num := Long_Float'Scaling(num, -rescale);
+            den := Long_Float'Scaling(den, -rescale);
          end loop;
       else
-         I := 1;
-         loop
-            num := num * Z;
-            den := den * Long_Float(I + k);
+         -- df is even
+         for N in 1..Integer'Max(df, 25) loop
+            num := num * X_2;
+            den := den * (Long_Float(N) + df_2);
             sum := sum + num / den;
-            exit when I > df and I > 25;
-            I := I + 1;
 
-            -- renormalise the fraction to prevent overflow
-            renorm := Integer'Min(Long_Float'Exponent(den),Long_Float'Exponent(num));
-            num := Long_Float'Scaling(num, -renorm);
-            den := Long_Float'Scaling(den, -renorm);
+            -- rescale the numerator and denominator to prevent overflow
+            rescale := Integer'Min(Long_Float'Exponent(den),
+                                   Long_Float'Exponent(num));
+            num := Long_Float'Scaling(num, -rescale);
+            den := Long_Float'Scaling(den, -rescale);
          end loop;
       end if;
+
       return c * sum;
    end Chi2_CDF;
 
