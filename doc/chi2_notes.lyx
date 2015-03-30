@@ -1,0 +1,865 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass book
+\use_default_options true
+\maintain_unincluded_children false
+\language british
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Notes on algorithms for calculating statistical functions
+\end_layout
+
+\begin_layout Author
+J Humphry
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Notes on 
+\begin_inset Formula $\chi_{k}^{2}$
+\end_inset
+
+ calculation for large 
+\begin_inset Formula $k$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Given a set of 
+\begin_inset Formula $k$
+\end_inset
+
+ random variables 
+\begin_inset Formula $Z_{i}\sim N\left(0,1\right)$
+\end_inset
+
+ the sum of the squares will be distributed according to the 
+\begin_inset Formula $\chi_{k}^{2}$
+\end_inset
+
+ function:
+\begin_inset Formula 
+\begin{equation}
+\sum_{i=1}^{k}Z_{k}^{2}\sim\chi_{k}^{2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+The 
+\begin_inset Formula $\chi_{k}^{2}$
+\end_inset
+
+ distribution is the basis of much routine statistical testing, where 
+\begin_inset Formula $k$
+\end_inset
+
+ represents the number of degrees of freedom in a system and the null hypothesis
+ is that deviations in a sample versus expectations are standard normally-distri
+buted random fluctuations.
+ However, easily available material on calculating the 
+\begin_inset Formula $\chi^{2}$
+\end_inset
+
+ distribution function tends either to refer the reader to existing statistical
+ tools, or to focus on the calculation for general 
+\begin_inset Formula $k\in\mathrm{R}$
+\end_inset
+
+, which introduces much unnecessary complication.
+ These notes contain no new results, but provide a pared-down guide to the
+ derivation of an efficient and relatively simple algorithm for calculating
+ the distribution function which can provide accurate results up to several
+ hundred degrees of freedom.
+\end_layout
+
+\begin_layout Standard
+For statistical use, the cumulative distribution function 
+\begin_inset Formula $P\left(x,k\right)$
+\end_inset
+
+ is of more use than the probability density function.
+ The cumulative distribution function is given in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "AandS"
+
+\end_inset
+
+ 26.4.19 as:
+\begin_inset Formula 
+\begin{equation}
+P\left(x,k\right)=\frac{\gamma\left(\frac{k}{2},\frac{x}{2}\right)}{\Gamma\left(\frac{k}{2}\right)}\label{eq:Chi2_CDF}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\gamma\left(s,t\right)$
+\end_inset
+
+ represents the lower incomplete gamma function and 
+\begin_inset Formula $\Gamma\left(s\right)$
+\end_inset
+
+ represents the gamma function itself.
+ We need to be able to evalate these functions for half-integral values
+ of 
+\begin_inset Formula $s\ge\frac{1}{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Gamma function
+\end_layout
+
+\begin_layout Standard
+\noindent
+The Gamma function has simple expressions for integral and half-integral
+ 
+\begin_inset Formula $s$
+\end_inset
+
+ (
+\begin_inset CommandInset citation
+LatexCommand cite
+key "AandS"
+
+\end_inset
+
+ 6.1.6, 6.1.8 and 6.1.12):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\Gamma\left(s\right)=\begin{cases}
+\sqrt{\pi} & s=\frac{1}{2}\\
+\left(s-1\right)! & s=1,2,3\dots\\
+\frac{\left(2\left(s-\frac{1}{2}\right)-1\right)!!}{2^{\left(s-\frac{1}{2}\right)}}\sqrt{\pi} & s=1\frac{1}{2},2\frac{1}{2},3\frac{1}{2}\dots
+\end{cases}\label{eq:Gamma}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $!!$
+\end_inset
+
+ is the double factorial function which for odd numbers is defined as:
+\begin_inset Formula $n!!=n\left(n-2\right)\left(n-4\right)\dots1$
+\end_inset
+
+ for odd values of 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\noindent
+This leads to the code given in Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Gamma(n/2)"
+
+\end_inset
+
+ which calculates 
+\begin_inset Formula $\Gamma\left(\frac{N}{2}\right)$
+\end_inset
+
+ given N.
+ In order to calculate the fraction for half-integral N the numerator and
+ denominator need to be periodically rescaled to ensure they remain within
+ the bounds of the machine's arithmetic.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "language=Ada,tabsize=3"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function Gamma_HalfN(N : Positive) return Long_Float is
+\end_layout
+
+\begin_layout Plain Layout
+
+   sqrt_pi : constant Long_Float 
+\end_layout
+
+\begin_layout Plain Layout
+
+              := 1.77245_38509_05516_02729;
+\end_layout
+
+\begin_layout Plain Layout
+
+begin
+\end_layout
+
+\begin_layout Plain Layout
+
+   if N = 1 then
+\end_layout
+
+\begin_layout Plain Layout
+
+      return sqrt_pi;
+\end_layout
+
+\begin_layout Plain Layout
+
+   elsif N mod 2 = 0 then
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- If N/2 is integral, 
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- gamma(N/2) is simply (N/2-1)!         
+\end_layout
+
+\begin_layout Plain Layout
+
+      declare
+\end_layout
+
+\begin_layout Plain Layout
+
+         Result : Long_Float := 1.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+      begin   
+\end_layout
+
+\begin_layout Plain Layout
+
+         for I in Integer range 1..(N/2-1) loop
+\end_layout
+
+\begin_layout Plain Layout
+
+            Result := Result * Long_Float(I);
+\end_layout
+
+\begin_layout Plain Layout
+
+         end loop;
+\end_layout
+
+\begin_layout Plain Layout
+
+         return Result;
+\end_layout
+
+\begin_layout Plain Layout
+
+      end;
+\end_layout
+
+\begin_layout Plain Layout
+
+   else
+\end_layout
+
+\begin_layout Plain Layout
+
+      -- If N/2 is half-integral, we use the formula
+\end_layout
+
+\begin_layout Plain Layout
+
+      -- gamma(N + 1/2) = sqrt(pi) * (2n-1)!!/(2**n)
+\end_layout
+
+\begin_layout Plain Layout
+
+      declare
+\end_layout
+
+\begin_layout Plain Layout
+
+         num : Long_Float := 1.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+         den : Long_Float := 2.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+      begin
+\end_layout
+
+\begin_layout Plain Layout
+
+         for I in Integer range 1..(N/2-1) loop
+\end_layout
+
+\begin_layout Plain Layout
+
+            num := num * (2.0 * Long_Float(I) + 1.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+            den := den * 2.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+            -- rescale the numerator and denominator
+\end_layout
+
+\begin_layout Plain Layout
+
+            -- to prevent overflow (not shown)
+\end_layout
+
+\begin_layout Plain Layout
+
+         end loop;
+\end_layout
+
+\begin_layout Plain Layout
+
+         return sqrt_pi * num / den;
+\end_layout
+
+\begin_layout Plain Layout
+
+      end;
+\end_layout
+
+\begin_layout Plain Layout
+
+   end if;
+\end_layout
+
+\begin_layout Plain Layout
+
+end Gamma_HalfN;
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Gamma(n/2)"
+
+\end_inset
+
+Computing 
+\begin_inset Formula $\Gamma\left(\frac{N}{2}\right)$
+\end_inset
+
+ given N
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A similar function can be used to find the logarithm of 
+\begin_inset Formula $\Gamma\left(\frac{N}{2}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Lower incomplete gamma function
+\end_layout
+
+\begin_layout Standard
+The lower incomplete gamma function is defined (
+\begin_inset CommandInset citation
+LatexCommand cite
+key "AandS"
+
+\end_inset
+
+ 6.5.2) as:
+\begin_inset Formula 
+\[
+\gamma\left(s,t\right)=\intop_{0}^{t}e^{-x}x^{s-1}dx
+\]
+
+\end_inset
+
+ and the cited reference also supplies (6.5.4 and 6.5.29):
+\begin_inset Formula 
+\begin{equation}
+\gamma\left(s,t\right)=\frac{\Gamma\left(s\right)}{t^{-s}}\gamma*\left(s,t\right)=t^{s}\Gamma\left(s\right)\left[e^{-s}\sum_{n=0}^{\infty}\frac{t^{n}}{\Gamma\left(s+n+1\right)}\right]\label{eq:lower_part_gamma}
+\end{equation}
+
+\end_inset
+
+ For calculating the 
+\begin_inset Formula $\chi_{k}^{2}$
+\end_inset
+
+ function it is not necessary to go further.
+\end_layout
+
+\begin_layout Section
+Calculating 
+\begin_inset Formula $\chi_{k}^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With the help of 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Chi2_CDF"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:lower_part_gamma"
+
+\end_inset
+
+ it is possible to produce an expression for the cumulative density function
+ of the 
+\begin_inset Formula $\chi_{k}^{2}$
+\end_inset
+
+ distribution:
+\begin_inset Formula 
+\begin{eqnarray}
+P\left(x,k\right) & = & \frac{\left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)}\Gamma\left(\frac{k}{2}\right)e^{-\left(\frac{k}{2}\right)}}{\Gamma\left(\frac{k}{2}\right)}\sum_{n=0}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\Gamma\left(\left(\frac{k}{2}\right)+n+1\right)}\nonumber \\
+ & = & \left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)}e^{-\left(\frac{k}{2}\right)}\sum_{n=0}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\Gamma\left(\left(\frac{k}{2}\right)+n+1\right)}\nonumber \\
+ & = & \left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)}e^{-\left(\frac{k}{2}\right)}\left[\frac{1}{\Gamma\left(\left(\frac{k}{2}\right)+1\right)}+\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\Gamma\left(\left(\frac{k}{2}\right)+n+1\right)}\right]
+\end{eqnarray}
+
+\end_inset
+
+ The summation is clearly convergent for the values of 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $k$
+\end_inset
+
+ that will be seen in statistical uses.
+ The next step is to consider the progression of the terms in the summation.
+ If the terms are represented as 
+\begin_inset Formula $\frac{f_{n}}{g_{n}}$
+\end_inset
+
+ then the progression is:
+\begin_inset Formula 
+\begin{eqnarray*}
+f_{n} & = & \left(\frac{x}{2}\right)f_{n}\\
+g_{n} & = & \begin{cases}
+\frac{\left(2\left(\left(\frac{k}{2}\right)+n+1-\frac{1}{2}\right)-1\right)}{2}g_{n}=\frac{2\left(\left\lfloor \frac{k}{2}\right\rfloor +n\right)+1}{2}g_{n} & k\mathrm{\,odd}\\
+\left(\left(\frac{k}{2}\right)+n\right)g_{n} & k\mathrm{\,even}
+\end{cases}
+\end{eqnarray*}
+
+\end_inset
+
+ which uses the result from 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Gamma"
+
+\end_inset
+
+.
+ The denominator of each will always have a factor of 
+\begin_inset Formula $\Gamma\left(\left(\frac{k}{2}\right)+1\right)$
+\end_inset
+
+ which can be taken out and combined with the initial constant.
+ The initial constant will then be the product of terms with greatly varying
+ magnitude, so to prevent overflow it may be advisable to take the exponential
+ of the sum the logarithm of the terms.
+ This algorithm is shown in Algorithm 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "alg:Chi2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset listings
+lstparams "language=Ada,breaklines=true,tabsize=3"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function Chi2_CDF(X : Long_Float;
+\end_layout
+
+\begin_layout Plain Layout
+
+                  df : Positive) return Long_Float is
+\end_layout
+
+\begin_layout Plain Layout
+
+   X_2 : Long_Float := X / 2.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+   df_2 : Long_Float := Long_Float(df) / 2.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+   c : Long_Float;
+\end_layout
+
+\begin_layout Plain Layout
+
+   num, den : Long_Float := 1.0; 
+\end_layout
+
+\begin_layout Plain Layout
+
+   sum : Long_Float := 1.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+   rescale : Integer;
+\end_layout
+
+\begin_layout Plain Layout
+
+begin
+\end_layout
+
+\begin_layout Plain Layout
+
+   c := exp(df_2 * Log(X_2) - X_2
+\end_layout
+
+\begin_layout Plain Layout
+
+           - Log_Gamma_HalfN(df + 2));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+   if ((df mod 2)=1) then
+\end_layout
+
+\begin_layout Plain Layout
+
+      -- df is odd
+\end_layout
+
+\begin_layout Plain Layout
+
+      for N in 1..Integer'Max(df, 25) loop
+\end_layout
+
+\begin_layout Plain Layout
+
+         num := num * X_2 * 2.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+         den := den * (2.0 * (Long_Float(N) +
+\end_layout
+
+\begin_layout Plain Layout
+
+                   Long_Float'Floor(df_2)) + 1.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+         sum := sum + num / den;
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- rescale the numerator and denominator
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- to prevent overflow (not shown)
+\end_layout
+
+\begin_layout Plain Layout
+
+      end loop;
+\end_layout
+
+\begin_layout Plain Layout
+
+   else
+\end_layout
+
+\begin_layout Plain Layout
+
+      -- df is even
+\end_layout
+
+\begin_layout Plain Layout
+
+      for N in 1..Integer'Max(df, 25) loop
+\end_layout
+
+\begin_layout Plain Layout
+
+         num := num * X_2;
+\end_layout
+
+\begin_layout Plain Layout
+
+         den := den * (Long_Float(N) + df_2);
+\end_layout
+
+\begin_layout Plain Layout
+
+         sum := sum + num / den;            
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- rescale the numerator and denominator
+\end_layout
+
+\begin_layout Plain Layout
+
+         -- to prevent overflow (not shown)
+\end_layout
+
+\begin_layout Plain Layout
+
+      end loop;
+\end_layout
+
+\begin_layout Plain Layout
+
+   end if;
+\end_layout
+
+\begin_layout Plain Layout
+
+   
+\end_layout
+
+\begin_layout Plain Layout
+
+   return c * sum;
+\end_layout
+
+\begin_layout Plain Layout
+
+end Chi2_CDF;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "alg:Chi2"
+
+\end_inset
+
+Computing the CDF of the 
+\begin_inset Formula $\chi_{k}^{2}$
+\end_inset
+
+ distribution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Outstanding work
+\end_layout
+
+\begin_layout Standard
+The primary outstanding task is to identify a proper condition for the number
+ of terms needed.
+ Currently a rough heuristic is used based on the number of degrees of freedom.
+ One way might be to consider the relative exponents of the numerator and
+ denominator and stop when the denominator has become so much greater than
+ the numerator that further terms will be insignificant.
+\end_layout
+
+\begin_layout Standard
+An alternative would be to change to using the approach described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "winitzki_incomplete_gamma"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "references"
+options "bibtotoc,plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
