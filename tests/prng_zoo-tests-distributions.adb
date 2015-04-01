@@ -13,7 +13,7 @@ package body PRNG_Zoo.Tests.Distributions is
    -- Run_Test --
    --------------
 
-   procedure Run_Test(G : in out Dist.P;
+   procedure Run_Test(G : in out PRNG'Class;
                       D : in out Dist.Distribution'Class;
                       T : in out Test_Distribution'Class;
                       iterations : Positive := 1_000_000) is
@@ -73,7 +73,7 @@ package body PRNG_Zoo.Tests.Distributions is
 
    function Result_Ready(T: NormalChi2) return Boolean is
    begin
-      return T.chi2_cdf_result >= 0.0;
+      return T.chi2_cdf_result /= -1.0;
    end Result_Ready;
 
    ------------

@@ -9,31 +9,35 @@ package body PRNG_Zoo.Distributions is
    -- Generate --
    --------------
 
-   function Generate (D: in out Uniform01; G : in out P) return Float_Type is
+   function Generate (D: in out Uniform01; G : in out PRNG'Class) return Float_Type is
+      X : U64 := Generate_Padded(G);
    begin
-      return Float_Type(Mod_Type'(Generate(G))) * scale;
+      return Float_Type(X) * scale;
    end Generate;
 
    --------------
    -- Generate --
    --------------
 
-   function Generate (D: in out Uniform; G : in out P) return Float_Type is
+   function Generate (D: in out Uniform; G : in out PRNG'Class) return Float_Type is
       a : Float_Type := D.a;
       b : Float_Type := D.b;
+      X : U64 := Generate_Padded(G);
    begin
-      return a + b * Float_Type(Mod_Type'(Generate(G))) * scale;
+      return a + b * Float_Type(X) * scale;
    end Generate;
 
    --------------
    -- Generate --
    --------------
 
-   function Generate (D: in out Normal_12_6; G : in out P) return Float_Type is
+   function Generate (D: in out Normal_12_6; G : in out PRNG'Class) return Float_Type is
       Result : Float_Type := 0.0;
+      X : U64;
    begin
       for I in 1..12 loop
-         Result := Result + Float_Type(Mod_Type'(Generate(G))) * scale;
+         X := Generate_Padded(G);
+         Result := Result + Float_Type(X) * scale;
       end loop;
       return Result - 6.0;
    end Generate;
@@ -51,10 +55,11 @@ package body PRNG_Zoo.Distributions is
    -- Generate --
    --------------
 
-   function Generate (D: in out Normal_Box_Mueller; G : in out P) return Float_Type is
+   function Generate (D: in out Normal_Box_Mueller; G : in out PRNG'Class) return Float_Type is
       t1, t2 : Float_Type;
       s : Float_Type;
       ss : Float_Type;
+      X, Y : U64;
    begin
       if D.Loaded then
          D.Loaded := False;
@@ -62,8 +67,10 @@ package body PRNG_Zoo.Distributions is
       end if;
 
       loop
-         t1 := 2.0 * Float_Type(Mod_Type'(Generate(G))) * scale - 1.0;
-         t2 := 2.0 * Float_Type(Mod_Type'(Generate(G))) * scale - 1.0;
+         X := Generate_Padded(G);
+         Y := Generate_Padded(G);
+         t1 := 2.0 * Float_Type(X) * scale - 1.0;
+         t2 := 2.0 * Float_Type(Y) * scale - 1.0;
          s := t1*t1 + t2*t2;
          exit when s <= 1.0;
       end loop;
@@ -77,7 +84,7 @@ package body PRNG_Zoo.Distributions is
    -- Generate --
    --------------
 
-   function Generate (D: in out Normal_Monty_Python; G : in out P) return Float_Type is
+   function Generate (D: in out Normal_Monty_Python; G : in out PRNG'Class) return Float_Type is
 
       a : constant Float_Type := 1.17741_00225_15474_69101; -- sqrt(log(4))
       b : constant Float_Type := 2.50662_82746_31000_50240; -- sqrt(2*pi)
@@ -85,17 +92,20 @@ package body PRNG_Zoo.Distributions is
       b_recip : constant Float_Type := 0.39894_22804_01432_67793; -- 1/b
       log_norm_c : constant Float_Type := -0.22579_13526_44727_43236; -- log(2/sqrt(2*pi))
 
-      v : Mod_Type := Generate(G);
+      v : U64 := Generate_Padded(G);
       sign : Float_Type := (if (v and 1) = 1 then +1.0 else -1.0);
       x : Float_Type := Float_Type(v) * scale * b;
       y : Float_Type;
+
+      TX, TY : U64;
 
    begin
       if x < a then
          return x * sign;
       end if;
 
-      y := Float_Type(Mod_Type'(Generate(G))) * scale * b_recip;
+      TX := Generate_Padded(G);
+      y := Float_Type(TX) * scale * b_recip;
       if log(y) < (log_norm_c - 0.5 * x * x) then
          return x * sign;
       end if;
@@ -107,8 +117,10 @@ package body PRNG_Zoo.Distributions is
       end if;
 
       loop
-         x := -log(Float_Type(Mod_Type'(Generate(G))) * scale) * b_recip;
-         y := -log(Float_Type(Mod_Type'(Generate(G))) * scale);
+         TX:= Generate_Padded(G);
+         TY:= Generate_Padded(G);
+         x := -log(Float_Type(TX) * scale) * b_recip;
+         y := -log(Float_Type(TY) * scale);
          exit when y+y > x*x;
       end loop;
 
@@ -120,9 +132,10 @@ package body PRNG_Zoo.Distributions is
    -- Generate --
    --------------
 
-   function Generate (D: in out Exponential; G : in out P) return Float_Type is
+   function Generate (D: in out Exponential; G : in out PRNG'Class) return Float_Type is
+      X : U64 := Generate_Padded(G);
    begin
-      return -D.theta * log(Float_Type(Mod_Type'(Generate(G))) * scale + Float_Type'Model_Small);
+      return -D.theta * log(Float_Type(X) * scale + Float_Type'Model_Small);
    end Generate;
 
 end PRNG_Zoo.Distributions;

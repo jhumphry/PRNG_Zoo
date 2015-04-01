@@ -14,7 +14,7 @@ package PRNG_Zoo.Tests.Distributions is
    procedure Feed(T : in out Test_Distribution; X : in Dist.Float_Type) is abstract;
    procedure Compute_Result(T : in out Test_Distribution) is abstract;
 
-   procedure Run_Test(G : in out Dist.P;
+   procedure Run_Test(G : in out PRNG'Class;
                       D : in out Dist.Distribution'Class;
                       T : in out Test_Distribution'Class;
                       iterations : Positive := 1_000_000);
