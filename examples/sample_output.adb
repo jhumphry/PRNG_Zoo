@@ -9,6 +9,7 @@ use PRNG_Zoo;
 with PRNG_Zoo.Register;
 
 with Parse_Args;
+use type Parse_Args.Integer_Array;
 
 with Common_CLI;
 
@@ -33,7 +34,7 @@ procedure sample_output is
    Seed : PRNG_Zoo.U64;
    Number : Natural;
    Columns : Natural;
-   Generate_32bit, Seed_From_Array : Boolean;
+   Generate_32bit: Boolean;
 
 begin
 
@@ -41,14 +42,14 @@ begin
 
    AP.Add_Option(Parse_Args.Make_Natural_Option(9753), "seed", 's',
                  Usage => "Specify a seed for the generators (default 9753)");
+    AP.Add_Option(Parse_Args.Make_Integer_Array_Option, "seed-from-array", 'a',
+                 Usage => "Seed using an array of integers, where possible");
    AP.Add_Option(Parse_Args.Make_Natural_Option(16), "number", 'n',
                  Usage => "Specify number of outputs per PRNG (default 16)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(2), "columns", 'c',
                  Usage => "Specify number of output columns (default 2)");
    AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "generate-32bit", 'g',
                  Usage => "Generate 32-bit outputs (default false)");
-   AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "seed-from-array", '-',
-                 Usage => "Seed using a one-element array, where applicable");
 
    Common_CLI(AP, PRNG_Names);
 
@@ -60,25 +61,39 @@ begin
    Number := AP.Natural_Value("number");
    Columns := AP.Natural_Value("columns");
    Generate_32bit := AP.Boolean_Value("generate-32bit");
-   Seed_From_Array := AP.Boolean_Value("seed-from-array");
 
    for Name of PRNG_Names loop
       declare
          G : PRNG'Class := Register.Make_PRNG(Name);
-         Seed_Array : U64_array(0..0) := (others => Seed);
+         Seed_From_Array : Parse_Args.Integer_Array
+           := AP.Integer_Array_Value("seed-from-array");
+         Seed_Array : U64_Array(Seed_From_Array'Range);
       begin
-         if Seed_From_Array and G in PRNG_Seed_From_Array'Class then
-            PRNG_Seed_From_Array'Class(G).Reset(Seed_Array);
-         else
-            G.Reset(Seed);
-         end if;
 
          Put(Number);
-         Put(" outputs from ");
-         Put(Name);
-         Put(" with seed: ");
-         Put(Seed);
-         Put(".");
+         Put(" outputs from " & Name);
+
+         if Seed_From_Array /= Parse_Args.Empty_Integer_Array
+           and G in PRNG_Seed_From_Array'Class then
+
+            for I in Seed_From_Array'Range loop
+               Seed_Array(I) := U64(Seed_From_Array(I));
+            end loop;
+
+            PRNG_Seed_From_Array'Class(G).Reset(Seed_Array);
+
+            Put(" seeded from an array.");
+
+         else
+
+            G.Reset(Seed);
+
+            Put(" with seed: ");
+            Put(Seed);
+            Put(".");
+
+         end if;
+
          New_Line;
 
          for I in 1..Number loop
