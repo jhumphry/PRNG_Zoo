@@ -109,33 +109,17 @@ package body PRNG_Zoo.Stats is
       -- leading constant term is computed this way to prevent overflow.
       c := exp(df_2 * Log(X_2) - X_2 - Log_Gamma_HalfN(df + 2));
 
-      if ((df mod 2)=1) then
-         -- df is odd
-         for N in 1..Integer'Max(df, 25) loop
-            f := f * X_2 * 2.0;
-            g := g * (2.0 * (Long_Float(N) + Long_Float'Floor(df_2)) + 1.0);
-            sum := sum + f / g;
+      for N in 1..Integer'Max(df, 25) loop
+         f := f * X_2;
+         g := g * (Long_Float(N) + df_2);
+         sum := sum + f / g;
 
-            -- rescale the numerator and denominator to prevent overflow
-            rescale := Integer'Min(Long_Float'Exponent(g),
-                                   Long_Float'Exponent(f));
-            f := Long_Float'Scaling(f, -rescale);
-            g := Long_Float'Scaling(g, -rescale);
-         end loop;
-      else
-         -- df is even
-         for N in 1..Integer'Max(df, 25) loop
-            f := f * X_2;
-            g := g * (Long_Float(N) + df_2);
-            sum := sum + f / g;
-
-            -- rescale the numerator and denominator to prevent overflow
-            rescale := Integer'Min(Long_Float'Exponent(g),
-                                   Long_Float'Exponent(f));
-            f := Long_Float'Scaling(f, -rescale);
-            g := Long_Float'Scaling(g, -rescale);
-         end loop;
-      end if;
+         -- rescale the numerator and denominator to prevent overflow
+         rescale := Integer'Min(Long_Float'Exponent(g),
+                                Long_Float'Exponent(f));
+         f := Long_Float'Scaling(f, -rescale);
+         g := Long_Float'Scaling(g, -rescale);
+      end loop;
 
       return c * sum;
    end Chi2_CDF;
