@@ -102,7 +102,7 @@ package body PRNG_Zoo.Stats is
       X_2 : Long_Float := X / 2.0;
       df_2 : Long_Float := Long_Float(df) / 2.0;
       c : Long_Float;
-      num, den : Long_Float := 1.0;
+      f, g : Long_Float := 1.0;
       sum : Long_Float := 1.0;
       rescale : Integer;
    begin
@@ -112,28 +112,28 @@ package body PRNG_Zoo.Stats is
       if ((df mod 2)=1) then
          -- df is odd
          for N in 1..Integer'Max(df, 25) loop
-            num := num * X_2 * 2.0;
-            den := den * (2.0 * (Long_Float(N) + Long_Float'Floor(df_2)) + 1.0);
-            sum := sum + num / den;
+            f := f * X_2 * 2.0;
+            g := g * (2.0 * (Long_Float(N) + Long_Float'Floor(df_2)) + 1.0);
+            sum := sum + f / g;
 
             -- rescale the numerator and denominator to prevent overflow
-            rescale := Integer'Min(Long_Float'Exponent(den),
-                                   Long_Float'Exponent(num));
-            num := Long_Float'Scaling(num, -rescale);
-            den := Long_Float'Scaling(den, -rescale);
+            rescale := Integer'Min(Long_Float'Exponent(g),
+                                   Long_Float'Exponent(f));
+            f := Long_Float'Scaling(f, -rescale);
+            g := Long_Float'Scaling(g, -rescale);
          end loop;
       else
          -- df is even
          for N in 1..Integer'Max(df, 25) loop
-            num := num * X_2;
-            den := den * (Long_Float(N) + df_2);
-            sum := sum + num / den;
+            f := f * X_2;
+            g := g * (Long_Float(N) + df_2);
+            sum := sum + f / g;
 
             -- rescale the numerator and denominator to prevent overflow
-            rescale := Integer'Min(Long_Float'Exponent(den),
-                                   Long_Float'Exponent(num));
-            num := Long_Float'Scaling(num, -rescale);
-            den := Long_Float'Scaling(den, -rescale);
+            rescale := Integer'Min(Long_Float'Exponent(g),
+                                   Long_Float'Exponent(f));
+            f := Long_Float'Scaling(f, -rescale);
+            g := Long_Float'Scaling(g, -rescale);
          end loop;
       end if;
 

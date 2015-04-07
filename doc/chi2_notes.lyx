@@ -567,13 +567,13 @@ P\left(x,k\right) & = & \frac{\left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)
 
  then the progression is:
 \begin_inset Formula 
-\begin{eqnarray*}
-f_{n} & = & \left(\frac{x}{2}\right)f_{n}\\
-g_{n} & = & \begin{cases}
+\begin{eqnarray}
+f_{n+1} & = & \left(\frac{x}{2}\right)f_{n}\\
+g_{n+1} & = & \begin{cases}
 \frac{\left(2\left(\left(\frac{k}{2}\right)+n+1-\frac{1}{2}\right)-1\right)}{2}g_{n}=\frac{2\left(\left\lfloor \frac{k}{2}\right\rfloor +n\right)+1}{2}g_{n} & k\mathrm{\,odd}\\
 \left(\left(\frac{k}{2}\right)+n\right)g_{n} & k\mathrm{\,even}
 \end{cases}
-\end{eqnarray*}
+\end{eqnarray}
 
 \end_inset
 
@@ -642,7 +642,7 @@ function Chi2_CDF(X : Long_Float;
 
 \begin_layout Plain Layout
 
-   num, den : Long_Float := 1.0; 
+   f, g : Long_Float := 1.0;
 \end_layout
 
 \begin_layout Plain Layout
@@ -691,12 +691,12 @@ begin
 
 \begin_layout Plain Layout
 
-         num := num * X_2 * 2.0;
+         f := f * X_2 * 2.0;
 \end_layout
 
 \begin_layout Plain Layout
 
-         den := den * (2.0 * (Long_Float(N) +
+         g := g * (2.0 * (Long_Float(N) +
 \end_layout
 
 \begin_layout Plain Layout
@@ -706,7 +706,7 @@ begin
 
 \begin_layout Plain Layout
 
-         sum := sum + num / den;
+         sum := sum + f / g;
 \end_layout
 
 \begin_layout Plain Layout
@@ -741,17 +741,17 @@ begin
 
 \begin_layout Plain Layout
 
-         num := num * X_2;
+         f := f * X_2;
 \end_layout
 
 \begin_layout Plain Layout
 
-         den := den * (Long_Float(N) + df_2);
+         g := g * (Long_Float(N) + df_2);
 \end_layout
 
 \begin_layout Plain Layout
 
-         sum := sum + num / den;            
+         sum := sum + f / g;
 \end_layout
 
 \begin_layout Plain Layout
