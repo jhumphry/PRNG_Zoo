@@ -155,11 +155,20 @@ buted random fluctuations.
 \end_layout
 
 \begin_layout Standard
-For statistical use, the cumulative distribution function 
+For statistical use, the 
+\begin_inset Formula $\chi_{k}^{2}$
+\end_inset
+
+ cumulative distribution function 
 \begin_inset Formula $P\left(x,k\right)$
 \end_inset
 
- is of more use than the probability density function.
+ (also known as the generalised, regularised, incomplete gamma function
+ 
+\begin_inset Formula $Q\left(\tfrac{k}{2},0,\frac{x}{2}\right)$
+\end_inset
+
+) is of more use than the probability density function.
  The cumulative distribution function is given in 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -193,7 +202,7 @@ where
 \end_layout
 
 \begin_layout Section
-Gamma function
+Gamma function0
 \end_layout
 
 \begin_layout Standard
@@ -568,11 +577,11 @@ P\left(x,k\right) & = & \frac{\left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)
  then the progression is:
 \begin_inset Formula 
 \begin{eqnarray}
-f_{n+1} & = & \left(\frac{x}{2}\right)f_{n}\\
+f_{n+1} & = & \left(\frac{x}{2}\right)f_{n}\label{eq:f_n+1}\\
 g_{n+1} & = & \begin{cases}
-\frac{\left(2\left(\left(\frac{k}{2}\right)+n+1-\frac{1}{2}\right)-1\right)}{2}g_{n}=\frac{2\left(\left\lfloor \frac{k}{2}\right\rfloor +n\right)+1}{2}g_{n} & k\mathrm{\,odd}\\
+\frac{2\left(\left(\frac{k}{2}\right)+n+1-\frac{1}{2}\right)-1}{2}g_{n}=\left(\left(\frac{k}{2}\right)+n\right)g_{n} & k\mathrm{\,odd}\\
 \left(\left(\frac{k}{2}\right)+n\right)g_{n} & k\mathrm{\,even}
-\end{cases}
+\end{cases}\label{eq:g_n+1}
 \end{eqnarray}
 
 \end_inset
@@ -593,7 +602,99 @@ reference "eq:Gamma"
  The initial constant will then be the product of terms with greatly varying
  magnitude, so to prevent overflow it may be advisable to take the exponential
  of the sum the logarithm of the terms.
- This algorithm is shown in Algorithm 
+ 
+\end_layout
+
+\begin_layout Standard
+The number of terms 
+\begin_inset Formula $m$
+\end_inset
+
+ of the sum necessary to achieve a desired degree of precision 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ in the final output is given by:
+\begin_inset Formula 
+\begin{equation}
+\epsilon\geq\frac{\left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)}e^{-\left(\frac{k}{2}\right)}}{\Gamma\left(\left(\frac{k}{2}\right)+1\right)}\:\sum_{n=m+1}^{\infty}\frac{f_{n}}{g_{n}}\label{eq:Gamma_termcond_exact}
+\end{equation}
+
+\end_inset
+
+ which suggests that a simple solution is to find a geometric series that
+ is an upper bound to the summation and to terminate the calculation when
+ the sum of the residual terms in that series would not be significant.
+ The revised summation can be written: 
+\begin_inset Formula 
+\begin{eqnarray}
+\sum_{n=m+1}^{\infty}\frac{f_{n}}{g_{n}} & = & \frac{f_{m}}{g_{m}}\:\sum_{n=m+1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n-m}}{\left(\left(\frac{k}{2}\right)+n\right)^{n-m}}\nonumber \\
+ & = & \frac{f_{m}}{g_{m}}\:\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\left(\left(\frac{k}{2}\right)+n+m\right)^{n}}\nonumber \\
+ & = & \frac{f_{m}}{g_{m}}\:\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\left(\left(\frac{k}{2}\right)+m\right)^{n}}\:\left[1+\frac{1}{\left(\frac{k}{2}\right)+m}n\right]^{-n}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As 
+\begin_inset Formula $x$
+\end_inset
+
+, and 
+\begin_inset Formula $k$
+\end_inset
+
+ are positive and on the real line for the uses we are addressing, this
+ expression can be bounded:
+\begin_inset Formula 
+\begin{eqnarray}
+\sum_{n=m+1}^{\infty}\frac{f_{n}}{g_{n}} & \leq & \frac{f_{m}}{g_{m}}\:\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\left(\left(\frac{k}{2}\right)+m\right)^{n}}\nonumber \\
+ & \leq & \frac{f_{m}}{g_{m}}\:\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\left(\frac{k}{2}\right)^{n}}\nonumber \\
+ & = & \frac{f_{m}}{g_{m}}\:\frac{\left(\frac{x}{k}\right)}{1-\left(\frac{x}{k}\right)}
+\end{eqnarray}
+
+\end_inset
+
+Putting this together with 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Gamma_termcond_exact"
+
+\end_inset
+
+ gives a conservative terminating condition:
+\begin_inset Formula 
+\begin{equation}
+\epsilon\geq\frac{\left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)}e^{-\left(\frac{k}{2}\right)}}{\Gamma\left(\left(\frac{k}{2}\right)+1\right)}\:\frac{f_{m}}{g_{m}}\:\frac{\left(\frac{x}{k}\right)}{1-\left(\frac{x}{k}\right)}\label{eq:Gamma_termcond_revised}
+\end{equation}
+
+\end_inset
+
+which can be re-written:
+\begin_inset Formula 
+\begin{equation}
+\frac{f_{m}}{g_{m}}\leq\epsilon\:\frac{1-\left(\frac{x}{k}\right)}{\left(\frac{x}{k}\right)}\;\frac{\Gamma\left(\left(\frac{k}{2}\right)+1\right)}{\left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)}e^{-\left(\frac{k}{2}\right)}}\label{eq:Gamma_termcond_final}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This has the advantage that the right-hand side is constant during the summation
+ of terms and 
+\begin_inset Formula $\tfrac{f_{m}}{g_{m}}$
+\end_inset
+
+ is being calculated anyway.
+\end_layout
+
+\begin_layout Standard
+This algorithm is shown in Algorithm 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "alg:Chi2"
@@ -601,6 +702,22 @@ reference "alg:Chi2"
 \end_inset
 
 .
+ Comparison with other references such as 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wolfram_Alpha"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "NIST_stats_handbook"
+
+\end_inset
+
+ suggests that it gives accurate results for up to several hundred degrees
+ of freedom.
 \end_layout
 
 \begin_layout Standard
@@ -611,7 +728,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset listings
-lstparams "language=Ada,breaklines=true,tabsize=3"
+lstparams "language=Ada,tabsize=3"
 inline false
 status open
 
@@ -622,7 +739,17 @@ function Chi2_CDF(X : Long_Float;
 
 \begin_layout Plain Layout
 
-                  df : Positive) return Long_Float is
+                  K : Positive;
+\end_layout
+
+\begin_layout Plain Layout
+
+                  epsilon : Long_Float := 1.0E-6)
+\end_layout
+
+\begin_layout Plain Layout
+
+      return Long_Float is
 \end_layout
 
 \begin_layout Plain Layout
@@ -632,7 +759,7 @@ function Chi2_CDF(X : Long_Float;
 
 \begin_layout Plain Layout
 
-   df_2 : Long_Float := Long_Float(df) / 2.0;
+   K_2 : Long_Float := Long_Float(K) / 2.0;
 \end_layout
 
 \begin_layout Plain Layout
@@ -652,6 +779,11 @@ function Chi2_CDF(X : Long_Float;
 
 \begin_layout Plain Layout
 
+   term_point : Long_Float;
+\end_layout
+
+\begin_layout Plain Layout
+
    rescale : Integer;
 \end_layout
 
@@ -662,12 +794,22 @@ begin
 
 \begin_layout Plain Layout
 
-   c := exp(df_2 * Log(X_2) - X_2
+   -- leading constant term is computed this way
 \end_layout
 
 \begin_layout Plain Layout
 
-           - Log_Gamma_HalfN(df + 2));
+   --to prevent overflow.
+\end_layout
+
+\begin_layout Plain Layout
+
+   c := exp(K_2 * Log(X_2) - X_2
+\end_layout
+
+\begin_layout Plain Layout
+
+           - Log_Gamma_HalfN(K + 2));
 \end_layout
 
 \begin_layout Plain Layout
@@ -676,107 +818,88 @@ begin
 
 \begin_layout Plain Layout
 
-   if ((df mod 2)=1) then
+   term_point := epsilon * 1.0 / c * 
 \end_layout
 
 \begin_layout Plain Layout
 
-      -- df is odd
+                    (1.0 - (X_2 / K_2)) / (X_2 / K_2);
 \end_layout
 
 \begin_layout Plain Layout
 
-      for N in 1..Integer'Max(df, 25) loop
 \end_layout
 
 \begin_layout Plain Layout
 
-         f := f * X_2 * 2.0;
+   for N in 1..Integer'Max(K, 25) loop
 \end_layout
 
 \begin_layout Plain Layout
 
-         g := g * (2.0 * (Long_Float(N) +
+      f := f * X_2;
 \end_layout
 
 \begin_layout Plain Layout
 
-                   Long_Float'Floor(df_2)) + 1.0);
+      g := g * (Long_Float(N) + K_2);
 \end_layout
 
 \begin_layout Plain Layout
 
-         sum := sum + f / g;
+      sum := sum + f / g;
 \end_layout
 
 \begin_layout Plain Layout
 
-         -- rescale the numerator and denominator
 \end_layout
 
 \begin_layout Plain Layout
 
-         -- to prevent overflow (not shown)
+      exit when f / g < term_point;
 \end_layout
 
 \begin_layout Plain Layout
 
-      end loop;
 \end_layout
 
 \begin_layout Plain Layout
 
-   else
+      -- rescale the numerator and denominator
 \end_layout
 
 \begin_layout Plain Layout
 
-      -- df is even
+      -- to prevent overflow
 \end_layout
 
 \begin_layout Plain Layout
 
-      for N in 1..Integer'Max(df, 25) loop
+      rescale := Integer'Min(Long_Float'Exponent(g),
 \end_layout
 
 \begin_layout Plain Layout
 
-         f := f * X_2;
+                             Long_Float'Exponent(f));
 \end_layout
 
 \begin_layout Plain Layout
 
-         g := g * (Long_Float(N) + df_2);
+      f := Long_Float'Scaling(f, -rescale);
 \end_layout
 
 \begin_layout Plain Layout
 
-         sum := sum + f / g;
+      g := Long_Float'Scaling(g, -rescale);
 \end_layout
 
 \begin_layout Plain Layout
 
-         -- rescale the numerator and denominator
+   end loop;
 \end_layout
 
 \begin_layout Plain Layout
 
-         -- to prevent overflow (not shown)
-\end_layout
-
-\begin_layout Plain Layout
-
-      end loop;
-\end_layout
-
-\begin_layout Plain Layout
-
-   end if;
-\end_layout
-
-\begin_layout Plain Layout
-
-   
 \end_layout
 
 \begin_layout Plain Layout
@@ -816,10 +939,6 @@ Computing the CDF of the
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -827,15 +946,6 @@ Computing the CDF of the
 
 \begin_layout Section
 Outstanding work
-\end_layout
-
-\begin_layout Standard
-The primary outstanding task is to identify a proper condition for the number
- of terms needed.
- Currently a rough heuristic is used based on the number of degrees of freedom.
- One way might be to consider the relative exponents of the numerator and
- denominator and stop when the denominator has become so much greater than
- the numerator that further terms will be insignificant.
 \end_layout
 
 \begin_layout Standard

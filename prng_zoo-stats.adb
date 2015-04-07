@@ -98,21 +98,27 @@ package body PRNG_Zoo.Stats is
    --------------
 
    function Chi2_CDF(X : Long_Float;
-                     df : Positive) return Long_Float is
+                     K : Positive;
+                     epsilon : Long_Float := 1.0E-6) return Long_Float is
       X_2 : Long_Float := X / 2.0;
-      df_2 : Long_Float := Long_Float(df) / 2.0;
+      K_2 : Long_Float := Long_Float(K) / 2.0;
       c : Long_Float;
       f, g : Long_Float := 1.0;
       sum : Long_Float := 1.0;
+      term_point : Long_Float;
       rescale : Integer;
    begin
       -- leading constant term is computed this way to prevent overflow.
-      c := exp(df_2 * Log(X_2) - X_2 - Log_Gamma_HalfN(df + 2));
+      c := exp(K_2 * Log(X_2) - X_2 - Log_Gamma_HalfN(K + 2));
 
-      for N in 1..Integer'Max(df, 25) loop
+      term_point := epsilon * 1.0 / c * (1.0 - (X_2 / K_2)) / (X_2 / K_2);
+
+      for N in 1..Integer'Max(K, 25) loop
          f := f * X_2;
-         g := g * (Long_Float(N) + df_2);
+         g := g * (Long_Float(N) + K_2);
          sum := sum + f / g;
+
+         exit when f / g < term_point;
 
          -- rescale the numerator and denominator to prevent overflow
          rescale := Integer'Min(Long_Float'Exponent(g),
@@ -123,7 +129,6 @@ package body PRNG_Zoo.Stats is
 
       return c * sum;
    end Chi2_CDF;
-
 
    -----------------
    -- Gamma_HalfN --

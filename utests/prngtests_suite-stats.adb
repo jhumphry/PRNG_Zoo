@@ -95,10 +95,10 @@ package body PRNGTests_Suite.Stats is
       Assert(not Chi2_Test(3.842, 1, 0.05),
              "Chi2 => 3.842 should not pass a 1df Chi2 at alpha => 0.05");
 
-      Assert(Chi2_Test(61.918, 100, 0.001),
-             "Chi2 => 61.917 should pass a 100df Chi2 at alpha => 0.001");
+      Assert(Chi2_Test(61.920, 100, 0.001),
+             "Chi2 => 61.920 should pass a 100df Chi2 at alpha => 0.001");
       Assert(not Chi2_Test(61.917, 100, 0.001),
-             "Chi2 => 61.918 should not pass a 100df Chi2 at alpha => 0.001");
+             "Chi2 => 61.917 should not pass a 100df Chi2 at alpha => 0.001");
       Assert(Chi2_Test(149.449, 100, 0.001),
              "Chi2 => 149.449 should pass a 100df Chi2 at alpha => 0.001");
       Assert(not Chi2_Test(149.450, 100, 0.001),

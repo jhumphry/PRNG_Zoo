@@ -34,7 +34,8 @@ package PRNG_Zoo.Stats is
                       alpha : Long_Float := 0.05) return Boolean;
 
    function Chi2_CDF(X : Long_Float;
-                     df : Positive) return Long_Float;
+                     K : Positive;
+                     epsilon : Long_Float := 1.0E-6) return Long_Float;
 
    -- Return the Gamma function for N/2
    function Gamma_HalfN(N : Positive) return Long_Float;

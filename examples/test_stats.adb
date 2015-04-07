@@ -54,11 +54,12 @@ begin
 
    New_Line(2);
 
-   Put_Line("Testing Chi2");
+   Put_Line("Testing Chi2 at epsilon = 1.0E-6");
    test_chi2_cdf(9.210340371976180, 2, 0.99);
    test_chi2_cdf(7.814727903251176, 3, 0.95);
    test_chi2_cdf(0.554298076728276, 5, 0.01);
    test_chi2_cdf(70.0, 50, 0.96762589022646417);
+   test_chi2_cdf(61.920, 100, 0.00100068);
    test_chi2_cdf(311.560343126936004, 256, 0.99);
    test_chi2_cdf(190.867048914205071, 255, 0.001);
    test_chi2_cdf(517.0, 511, 0.58230319349007631);
