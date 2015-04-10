@@ -22,6 +22,7 @@ package PRNG_Zoo.Misc is
 
    type glibc_random is new PRNG_32Only with private;
    function Strength (G : in glibc_random) return PRNG_Strength is (Low);
+   function Width(G: in glibc_random) return Positive is (31);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                         return glibc_random;
    procedure Reset (G : in out glibc_random; S : in U64);
