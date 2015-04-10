@@ -19,6 +19,13 @@ use Ada.Numerics, Ada.Numerics.Long_Elementary_Functions;
 
 package body PRNG_Zoo.Stats is
 
+   --------------------
+   -- Adjusted_alpha --
+   --------------------
+
+   function Adjusted_alpha(alpha : Long_Float; N : Positive) return Long_Float is
+      (1.0 - (1.0 - alpha) ** (1.0 / Long_Float(N)));
+
    ---------
    -- erf --
    ---------

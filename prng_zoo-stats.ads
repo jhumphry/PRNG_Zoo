@@ -18,6 +18,10 @@ with PRNG_Zoo.Tests;
 
 package PRNG_Zoo.Stats is
 
+   -- Returns the adjusted p-value to use for testing n results so that the
+   -- overall chance of a false positive is p.
+   function Adjusted_alpha(alpha : Long_Float; N : Positive) return Long_Float;
+
    -- Returns the error function
    -- Based on (Abramowitz and Stegun, 1972) 7.1.26
    function erf(x : Long_Float) return Long_Float;

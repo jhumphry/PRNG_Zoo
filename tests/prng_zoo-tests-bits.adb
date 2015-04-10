@@ -35,7 +35,8 @@ package body PRNG_Zoo.Tests.Bits is
             Ready => False,
             Total_Bits => 0,
             Total_Bits_p_value => 0.0,
-            Each_Bit_p_value => (others => 0.0));
+            Each_Bit_p_value => (others => 0.0)
+           );
    end Reset;
 
    ----------
@@ -99,7 +100,8 @@ package body PRNG_Zoo.Tests.Bits is
    begin
 
       return T.Total_Bits_p_value > p and
-        (for all I in 1..T.Width => T.Each_Bit_p_value(I) > p);
+        (for all I in 1..T.Width =>
+           T.Each_Bit_p_value(I) > Stats.Adjusted_alpha(p, T.Width));
    end Passed;
 
    -------
@@ -129,7 +131,7 @@ package body PRNG_Zoo.Tests.Bits is
          elsif p_value < 0.01 then
             Bits(I) := 'b';
          elsif p_value < 0.05 then
-            Bits(I) := 'b';
+            Bits(I) := 'a';
          else
             Bits(I) := '-';
          end if;
