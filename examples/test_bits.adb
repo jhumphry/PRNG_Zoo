@@ -58,12 +58,14 @@ begin
       declare
          G : PRNG'Class := Register.Make_PRNG(Name);
          BC : Tests.Bits.Bit_Counter(G.Width);
+         WW : Tests.Bits.WW_Runs(G.Width);
          ED : Tests.EquiDist.EquiDist(t => AP.Natural_Value("dimensions"),
                                       l => AP.Natural_Value("divisions"),
                                       n => G.Width);
       begin
          G.Reset(Seed);
          BC.Reset;
+         WW.Reset;
          ED.Reset;
          Put_Line("Testing " & Name);
          New_Line;
@@ -71,6 +73,7 @@ begin
          for I in 1..Iterations loop
             X := G.Generate;
             BC.Feed(X);
+            WW.Feed(X);
             ED.Feed(X);
          end loop;
 
@@ -79,6 +82,12 @@ begin
                   (if BC.Passed then " passed " else " failed " ) &
                     "Bit-Counter test:");
          Put_Line(BC.Describe_Result); New_Line;
+
+         WW.Compute_Result;
+         Put_Line(Name &
+                  (if WW.Passed then " passed " else " failed " ) &
+                    "WW Runs test:");
+         Put_Line(WW.Describe_Result); New_Line;
 
          ED.Compute_Result;
          Put_Line(Name &

@@ -28,6 +28,16 @@ package PRNG_Zoo.Tests.Bits is
 
    type Bit_Counter_64 is new Bit_Counter(64) with private;
 
+   type WW_Runs(Width : Positive) is new PRNG_Test with private;
+   procedure Reset(T : in out WW_Runs);
+   procedure Feed(T : in out WW_Runs; X : in U64) with Inline;
+   procedure Compute_Result(T : in out WW_Runs);
+   function Result_Ready(T: WW_Runs) return Boolean
+     with Inline;
+   function Passed(T : in WW_Runs; p : in Long_Float := 0.01) return Boolean;
+   function p(T : in WW_Runs) return Long_Float;
+   function Describe_Result(T : in WW_Runs) return String;
+
 private
 
    type p_Array is array (Integer range <>) of Long_Float;
@@ -43,5 +53,16 @@ private
       end record;
 
    type Bit_Counter_64 is new Bit_Counter(64) with null record;
+
+   type WW_Runs(Width : Positive) is new PRNG_Test with
+      record
+         N : Counter := 0;
+         Current_Run : U64;
+         Total_0 : Counter_array(1..Width);
+         Total_1 : Counter_array(1..Width);
+         Runs : Counter_array(1..Width);
+         Ready : Boolean := False;
+         Each_Bit_p_value : p_Array(1..Width); -- LSB is at index 1
+      end record;
 
 end PRNG_Zoo.Tests.Bits;
