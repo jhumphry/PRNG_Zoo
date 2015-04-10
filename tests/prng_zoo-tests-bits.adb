@@ -29,12 +29,13 @@ package body PRNG_Zoo.Tests.Bits is
 
    procedure Reset (T: in out Bit_Counter) is
    begin
-      T.N := 0;
-      T.B := (others => 0);
-      T.Ready := False;
-      T.Total_Bits := 0;
-      T.Total_Bits_p_value := 0.0;
-      T.Each_Bit_p_value := (others => 0.0);
+      T := (Width => T.Width,
+            N => 0,
+            B => (others => 0),
+            Ready => False,
+            Total_Bits => 0,
+            Total_Bits_p_value => 0.0,
+            Each_Bit_p_value => (others => 0.0));
    end Reset;
 
    ----------
@@ -85,10 +86,7 @@ package body PRNG_Zoo.Tests.Bits is
    -- Result_Ready --
    ------------------
 
-   function Result_Ready(T: Bit_Counter) return Boolean is
-   begin
-      return T.Ready;
-   end Result_Ready;
+   function Result_Ready (T: Bit_Counter) return Boolean is (T.Ready);
 
    ------------
    -- Passed --
@@ -108,11 +106,7 @@ package body PRNG_Zoo.Tests.Bits is
    -- p --
    -------
 
-   function p(T : in Bit_Counter) return Long_Float
-   is
-   begin
-      return T.Total_Bits_p_value;
-   end p;
+   function p (T : in Bit_Counter) return Long_Float is (T.Total_Bits_p_value);
 
    --------------
    -- Describe --
