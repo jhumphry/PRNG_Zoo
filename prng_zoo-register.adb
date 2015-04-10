@@ -18,6 +18,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Fixed;
 use Ada.Strings.Fixed;
 
+with PRNG_Zoo.Filters;
 with PRNG_Zoo.LFib;
 with PRNG_Zoo.Linear_Congruential, PRNG_Zoo.Linear_Congruential.Examples;
 with PRNG_Zoo.Misc;
@@ -68,6 +69,12 @@ package body PRNG_Zoo.Register is
    end Display_Register;
 
 begin
+
+   Register.Insert
+   ("Incrementer", PRNG_Details'
+      (Tag         => Filters.Incrementer'Tag,
+       Params      => No_Parameters'Access,
+       Description => To_Bounded_String ("Dummy generator: Output is incremented by 1 each time")));
 
    Register.Insert
    ("LFib_107_378", PRNG_Details'
