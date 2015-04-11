@@ -68,9 +68,9 @@ begin
       goto Finish;
    end if;
 
-   Seed := PRNG_Zoo.U64(AP.Natural_Value("seed"));
-   Number := AP.Natural_Value("number");
-   Columns := AP.Natural_Value("columns");
+   Seed := PRNG_Zoo.U64(AP.Integer_Value("seed"));
+   Number := AP.Integer_Value("number");
+   Columns := AP.Integer_Value("columns");
    Generate_32bit := AP.Boolean_Value("generate-32bit");
 
    for Name of PRNG_Names loop

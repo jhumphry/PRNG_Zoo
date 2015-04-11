@@ -58,8 +58,8 @@ begin
       goto Finish;
    end if;
 
-   Seed := PRNG_Zoo.U64(AP.Natural_Value("seed"));
-   Iterations := AP.Natural_Value("iterations") * 1_000_000;
+   Seed := PRNG_Zoo.U64(AP.Integer_Value("seed"));
+   Iterations := AP.Integer_Value("iterations") * 1_000_000;
 
    Put("Standard error at " & Integer'Image(Iterations) & " iterations: ");
    Put(1.0 / Ada.Numerics.Long_Elementary_Functions.Sqrt(Long_Float(Iterations)));

@@ -50,8 +50,8 @@ begin
 
    Common_CLI(AP, PRNG_Names);
 
-   Seed := PRNG_Zoo.U64(AP.Natural_Value("seed"));
-   Iterations := AP.Natural_Value("iterations") * 1_000_000;
+   Seed := PRNG_Zoo.U64(AP.Integer_Value("seed"));
+   Iterations := AP.Integer_Value("iterations") * 1_000_000;
 
    for Name of PRNG_Names loop
 
@@ -59,8 +59,8 @@ begin
          G : PRNG'Class := Register.Make_PRNG(Name);
          BC : Tests.Bits.Bit_Counter(G.Width);
          WW : Tests.Bits.WW_Runs(G.Width);
-         ED : Tests.EquiDist.EquiDist(t => AP.Natural_Value("dimensions"),
-                                      l => AP.Natural_Value("divisions"),
+         ED : Tests.EquiDist.EquiDist(t => AP.Integer_Value("dimensions"),
+                                      l => AP.Integer_Value("divisions"),
                                       n => G.Width);
       begin
          G.Reset(Seed);

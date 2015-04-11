@@ -75,12 +75,12 @@ begin
       goto Finish;
    end if;
 
-   Seed := PRNG_Zoo.U64(AP.Natural_Value("seed"));
-   Iterations := AP.Natural_Value("iterations") * 1_000_000;
-   Subsets := AP.Natural_Value("sub-sets");
+   Seed := PRNG_Zoo.U64(AP.Integer_Value("seed"));
+   Iterations := AP.Integer_Value("iterations") * 1_000_000;
+   Subsets := AP.Integer_Value("sub-sets");
    Iterations_Per_Subset := Iterations / Subsets;
-   Tolerance := AP.Natural_Value("tolerance");
-   Attempts := AP.Natural_Value("attempts");
+   Tolerance := AP.Integer_Value("tolerance");
+   Attempts := AP.Integer_Value("attempts");
 
    PRNG_Zoo.Register.PRNG_Column_Widths(Names, Descriptions);
    Put ("PRNG");
