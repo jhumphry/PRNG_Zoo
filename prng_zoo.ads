@@ -24,11 +24,13 @@ package PRNG_Zoo is
 
    subtype U64 is Interfaces.Unsigned_64;
    type U64_array is array (Integer range <>) of U64;
+   type U64_array_access is access U64_array;
    subtype U64_Nonzero is
      Interfaces.Unsigned_64 range 1..Interfaces.Unsigned_64'Last - 1;
 
    subtype U32 is Interfaces.Unsigned_32;
    type U32_array is array (Integer range <>) of U32;
+   type U32_array_access is access U32_array;
    subtype U32_Nonzero is
      Interfaces.Unsigned_32 range 1..Interfaces.Unsigned_32'Last - 1;
 

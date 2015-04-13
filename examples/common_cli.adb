@@ -24,6 +24,9 @@ with Parse_Args;
 with PRNG_Zoo.Register;
 use PRNG_Zoo.Register;
 
+with Common_CLI_Options;
+use Common_CLI_Options;
+
 procedure Common_CLI(AP : in out Parse_Args.Argument_Parser;
                      PRNG_Names : in out Parse_Args.String_Doubly_Linked_Lists.List) is
    I : Register_Cursor;
@@ -31,6 +34,12 @@ begin
 
    PRNG_Names := Parse_Args.String_Doubly_Linked_Lists.Empty_List;
 
+   AP.Add_Option(U64_Options.Make_Option(Default => 9753), "seed", 's',
+                 Usage => "Specify a seed for the generators (default 9753)",
+                 Prepend_Usage => True);
+   AP.Add_Option(U64_array_Options.Make_Option, "seed-from-array", 'a',
+                 Usage => "Seed using an array of unsigned integers, where possible",
+                 Prepend_Usage => True);
    AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "list-prng", 'p',
                  Usage => "List available PRNG", Prepend_Usage => True);
    AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "help", 'h',

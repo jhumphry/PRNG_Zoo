@@ -23,7 +23,8 @@ with PRNG_Zoo.Tests, PRNG_Zoo.Tests.Bits, PRNG_Zoo.Tests.EquiDist;
 
 with Parse_Args;
 
-with Common_CLI;
+with Common_CLI, Common_CLI_Options;
+use Common_CLI_Options;
 
 with Ada.Text_IO;
 use Ada.Text_IO;
@@ -32,6 +33,7 @@ procedure test_bits is
    AP : Parse_Args.Argument_Parser;
    PRNG_Names : Parse_Args.String_Doubly_Linked_Lists.List;
    Seed : PRNG_Zoo.U64;
+   Seed_From_Array : U64_array_access;
    Iterations : Natural;
    X : U64;
 
@@ -39,8 +41,6 @@ begin
 
    AP.Set_Prologue("Test bit distributions of PRNG.");
 
-   AP.Add_Option(Parse_Args.Make_Natural_Option(9753), "seed", 's',
-                 Usage => "Specify a seed for the generators (default 9753)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(1), "iterations", 'i',
                  Usage => "Specify iterations (in millions) (default 1)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(2), "dimensions", 't',
@@ -50,7 +50,8 @@ begin
 
    Common_CLI(AP, PRNG_Names);
 
-   Seed := PRNG_Zoo.U64(AP.Integer_Value("seed"));
+   Seed := U64_Options.Value(AP, "seed");
+   Seed_From_Array := U64_array_Options.Value(AP, "seed-from-array");
    Iterations := AP.Integer_Value("iterations") * 1_000_000;
 
    for Name of PRNG_Names loop
@@ -63,7 +64,11 @@ begin
                                       l => AP.Integer_Value("divisions"),
                                       n => G.Width);
       begin
-         G.Reset(Seed);
+         if Seed_From_Array /= null and G in PRNG_Seed_From_Array'Class then
+            PRNG_Seed_From_Array'Class(G).Reset(Seed_From_Array.all);
+         else
+            G.Reset(Seed);
+         end if;
          BC.Reset;
          WW.Reset;
          ED.Reset;

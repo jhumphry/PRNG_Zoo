@@ -22,7 +22,8 @@ with PRNG_Zoo.Register;
 
 with Parse_Args;
 
-with Common_CLI;
+with Common_CLI, Common_CLI_Options;
+use Common_CLI_Options;
 
 with Ada.Text_IO;
 use Ada.Text_IO;
@@ -51,6 +52,7 @@ procedure speedtest is
    PRNG_Names : Parse_Args.String_Doubly_Linked_Lists.List;
 
    Seed : PRNG_Zoo.U64;
+   Seed_From_Array : U64_array_access;
    Iterations, Subsets, Iterations_Per_Subset, Tolerance, Attempts : Natural;
    Names, Descriptions : Natural := 0;
 
@@ -58,15 +60,13 @@ begin
 
    AP.Set_Prologue("Test the speed of different PRNG.");
 
-   AP.Add_Option(Parse_Args.Make_Natural_Option(9753), "seed", 's',
-                 Usage => "Specify a seed for the generators (default 9753)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(4), "iterations", 'i',
                  Usage => "Specify iterations (in millions) (default 4)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(8), "sub-sets", 'j',
                  Usage => "Specify number of sub-sets to split iterations into (default 8)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(5), "tolerance", 't',
                  Usage => "Specify tolerance % between median sub-set and min/max subset results (default 5%)");
-   AP.Add_Option(Parse_Args.Make_Natural_Option(4), "attempts", 'a',
+   AP.Add_Option(Parse_Args.Make_Natural_Option(4), "attempts", 'u',
                  Usage => "Specify number of attempts to make to get subsets results within tolerance (default 4)");
 
    Common_CLI(AP, PRNG_Names);
@@ -75,7 +75,8 @@ begin
       goto Finish;
    end if;
 
-   Seed := PRNG_Zoo.U64(AP.Integer_Value("seed"));
+   Seed := U64_Options.Value(AP, "seed");
+   Seed_From_Array := U64_array_Options.Value(AP, "seed-from-array");
    Iterations := AP.Integer_Value("iterations") * 1_000_000;
    Subsets := AP.Integer_Value("sub-sets");
    Iterations_Per_Subset := Iterations / Subsets;
@@ -117,7 +118,11 @@ begin
 
 
       begin
-         G.Reset(Seed);
+         if Seed_From_Array /= null and G in PRNG_Seed_From_Array'Class then
+            PRNG_Seed_From_Array'Class(G).Reset(Seed_From_Array.all);
+         else
+            G.Reset(Seed);
+         end if;
 
          Put(Name);
          Set_Col (Ada.Text_IO.Count(Names + 1));

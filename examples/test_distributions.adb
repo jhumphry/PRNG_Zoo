@@ -32,7 +32,9 @@ with PRNG_Zoo.Tests;
 with PRNG_Zoo.Tests.Distributions;
 
 with Parse_Args;
-with Common_CLI;
+
+with Common_CLI, Common_CLI_Options;
+use Common_CLI_Options;
 
 procedure test_distributions is
 
@@ -41,14 +43,13 @@ procedure test_distributions is
    AP : Parse_Args.Argument_Parser;
    PRNG_Names : Parse_Args.String_Doubly_Linked_Lists.List;
    Seed : PRNG_Zoo.U64;
+   Seed_From_Array : U64_array_access;
    Iterations : Natural;
 
 begin
 
    AP.Set_Prologue("Test use of PRNG to generate variates.");
 
-   AP.Add_Option(Parse_Args.Make_Natural_Option(9753), "seed", 's',
-                 Usage => "Specify a seed for the generators (default 9753)");
    AP.Add_Option(Parse_Args.Make_Natural_Option(1), "iterations", 'i',
                  Usage => "Specify iterations (in millions) (default 1)");
 
@@ -58,7 +59,8 @@ begin
       goto Finish;
    end if;
 
-   Seed := PRNG_Zoo.U64(AP.Integer_Value("seed"));
+   Seed := U64_Options.Value(AP, "seed");
+   Seed_From_Array := U64_array_Options.Value(AP, "seed-from-array");
    Iterations := AP.Integer_Value("iterations") * 1_000_000;
 
    Put("Standard error at " & Integer'Image(Iterations) & " iterations: ");
@@ -89,7 +91,11 @@ begin
          T_Chi2Normal : LFD_Tests.NormalChi2(200);
 
       begin
-         G.Reset(Seed);
+         if Seed_From_Array /= null and G in PRNG_Seed_From_Array'Class then
+            PRNG_Seed_From_Array'Class(G).Reset(Seed_From_Array.all);
+         else
+            G.Reset(Seed);
+         end if;
          D_Normal_12_6.Reset;
          T_Chi2Normal.Reset;
          Put_Line("12-6 method with " & Name & " generator:");
@@ -103,7 +109,11 @@ begin
          Put(T_Chi2Normal.Describe_Result);
          New_Line(2);
 
-         G.Reset(Seed);
+         if Seed_From_Array /= null and G in PRNG_Seed_From_Array'Class then
+            PRNG_Seed_From_Array'Class(G).Reset(Seed_From_Array.all);
+         else
+            G.Reset(Seed);
+         end if;
          D_Normal_BM.Reset;
          T_Chi2Normal.Reset;
          Put_Line("Box-Mueller method with " & Name & " generator:");
@@ -117,7 +127,11 @@ begin
          Put(T_Chi2Normal.Describe_Result);
          New_Line(2);
 
-         G.Reset(Seed);
+         if Seed_From_Array /= null and G in PRNG_Seed_From_Array'Class then
+            PRNG_Seed_From_Array'Class(G).Reset(Seed_From_Array.all);
+         else
+            G.Reset(Seed);
+         end if;
          D_Normal_MP.Reset;
          T_Chi2Normal.Reset;
          Put_Line("Monty-Python method with " & Name & " generator:");
