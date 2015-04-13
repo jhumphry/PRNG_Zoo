@@ -20,7 +20,6 @@ use PRNG_Zoo;
 with PRNG_Zoo.Register;
 
 with Parse_Args;
-use type Parse_Args.Integer_Array;
 
 with Common_CLI, Common_CLI_Options;
 use Common_CLI_Options;
