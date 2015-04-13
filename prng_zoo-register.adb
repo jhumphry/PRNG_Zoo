@@ -144,7 +144,7 @@ begin
 
    Register.Insert
    ("xor64", PRNG_Details'
-      (Tag         => xorshift.SHR3'Tag,
+      (Tag         => xorshift.xor64'Tag,
        Params      => No_Parameters'Access,
        Description => To_Bounded_String ("Marsaglia's xor64 xorshift generator")));
 
