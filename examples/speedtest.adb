@@ -36,7 +36,7 @@ use type Ada.Containers.Count_Type;
 
 with Ada.Containers.Generic_Array_Sort;
 
-with Ada.Calendar, Ada.Real_Time, Ada.Execution_Time;
+with Ada.Real_Time, Ada.Execution_Time;
 use all type Ada.Execution_Time.CPU_Time;
 use all type Ada.Real_Time.Time_Span;
 

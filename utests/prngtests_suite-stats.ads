@@ -17,8 +17,6 @@
 with AUnit; use Aunit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
-with PRNG_Zoo.Stats;
-
 package PRNGTests_Suite.Stats is
 
    type Stats_Test is new Test_Cases.Test_Case with null record;

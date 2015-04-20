@@ -27,9 +27,6 @@ use Common_CLI_Options;
 with Ada.Text_IO, Ada.Integer_Text_IO;
 use Ada.Text_IO, Ada.Integer_Text_IO;
 
-with Ada.Strings.Fixed;
-use Ada.Strings.Fixed;
-
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
 

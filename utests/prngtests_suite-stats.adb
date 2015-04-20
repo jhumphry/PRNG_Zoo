@@ -16,6 +16,8 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
 
+with PRNG_Zoo.Stats;
+
 package body PRNGTests_Suite.Stats is
 
    --------------------

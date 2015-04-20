@@ -14,8 +14,6 @@
 -- OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 -- PERFORMANCE OF THIS SOFTWARE.
 
-with AUnit.Assertions; use AUnit.Assertions;
-
 package body PRNGTests_Suite.LFib_Tests is
 
    --------------------

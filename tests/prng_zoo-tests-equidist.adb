@@ -16,8 +16,6 @@
 
 with PRNG_Zoo.Stats;
 
-with Ada.Text_IO;
-
 package body PRNG_Zoo.Tests.EquiDist is
 
    -----------
