@@ -23,7 +23,7 @@ package body PRNG_Zoo.Tests.EquiDist is
    -----------
 
    procedure Reset (T : in out EquiDist) is
-      Num_Bins : Natural := 2**(T.t * T.l);
+      Num_Bins : constant Natural := 2**(T.t * T.l);
    begin
 
       if T.l >= T.n then
@@ -75,7 +75,7 @@ package body PRNG_Zoo.Tests.EquiDist is
    --------------------
 
    procedure Compute_Result(T : in out EquiDist) is
-      N : Positive := 2 ** (T.t * T.l);
+      N : constant Positive := 2 ** (T.t * T.l);
       Expected : Long_Float := 1.0 / Long_Float(N);
       B : Binned(N);
    begin
@@ -133,7 +133,7 @@ package body PRNG_Zoo.Tests.EquiDist is
    -------------------
 
    function Make_EquiDist (t, l: Positive; n : Positive := 64) return EquiDist is
-      Num_Bins : Natural := 2**(t * l);
+      Num_Bins : constant Natural := 2**(t * l);
    begin
       if l >= n then
          raise Constraint_Error

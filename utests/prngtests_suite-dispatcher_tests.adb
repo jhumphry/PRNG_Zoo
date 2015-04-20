@@ -116,8 +116,8 @@ package body PRNGTests_Suite.Dispatcher_Tests is
    procedure Test_Split_32 (T : in out Test_Cases.Test_Case'Class) is
       IG : aliased Filters.Incrementer;
       G : Filters.Split_32(IG => IG'Access);
-      Expected_Array : U32_array := (16#33333334#, 16#22222222#,
-                                      16#33333335#, 16#22222222#);
+      Expected_Array : constant U32_array := (16#33333334#, 16#22222222#,
+                                              16#33333335#, 16#22222222#);
    begin
       G.Reset(16#2222222233333333#);
       for E of Expected_Array loop
@@ -133,12 +133,12 @@ package body PRNGTests_Suite.Dispatcher_Tests is
    procedure Test_Bit_Reverse (T : in out Test_Cases.Test_Case'Class) is
       IG : aliased Filters.Incrementer;
       G : Filters.Bit_Reverse(IG => IG'Access);
-      Expected_Array_32 : U32_array := (16#2CCCCCCC#, 16#ACCCCCCC#,
-                                        16#6CCCCCCC#, 16#ECCCCCCC#);
-      Expected_Array_64 : U64_array := (16#2CCCCCCC44444444#,
-                                        16#ACCCCCCC44444444#,
-                                        16#6CCCCCCC44444444#,
-                                        16#ECCCCCCC44444444#);
+      Expected_Array_32 : constant U32_array := (16#2CCCCCCC#, 16#ACCCCCCC#,
+                                                 16#6CCCCCCC#, 16#ECCCCCCC#);
+      Expected_Array_64 : constant U64_array := (16#2CCCCCCC44444444#,
+                                                 16#ACCCCCCC44444444#,
+                                                 16#6CCCCCCC44444444#,
+                                                 16#ECCCCCCC44444444#);
    begin
       G.Reset(16#33333333#);
       for E of Expected_Array_32 loop

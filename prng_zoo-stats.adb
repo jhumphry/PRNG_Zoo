@@ -38,8 +38,8 @@ package body PRNG_Zoo.Stats is
       a3 : constant Long_Float := 1.42141_3741;
       a4 : constant Long_Float := -1.45315_2027;
       a5 : constant Long_Float := 1.06140_5429;
-      z : Long_Float := abs(x);
-      t : Long_Float := 1.0 / (1.0 + p * z);
+      z : constant Long_Float := abs(x);
+      t : constant Long_Float := 1.0 / (1.0 + p * z);
       u : Long_Float := t;
       s : Long_Float;
    begin
@@ -106,7 +106,7 @@ package body PRNG_Zoo.Stats is
    function Chi2_Test(Chi2 : Long_Float;
                       df : Positive;
                       alpha : Long_Float := 0.05) return Boolean is
-      cdf : Long_Float := Chi2_CDF(Chi2, df);
+      cdf : constant Long_Float := Chi2_CDF(Chi2, df);
    begin
       return cdf > alpha and cdf < (1.0-alpha);
    end Chi2_Test;
@@ -266,7 +266,7 @@ package body PRNG_Zoo.Stats is
 
    function Chi2_Bins_Test(B : Tests.Binned;
                            alpha : Long_Float := 0.05) return Boolean is
-      cdf : Long_Float := Chi2_CDF_Bins(B);
+      cdf : constant Long_Float := Chi2_CDF_Bins(B);
    begin
       return cdf > alpha and cdf < (1.0-alpha);
    end Chi2_Bins_Test;

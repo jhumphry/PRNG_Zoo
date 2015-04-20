@@ -68,7 +68,7 @@ package body PRNGTests_Suite.Lin_Con_Tests is
 
    procedure Test_RANDU (T : in out Test_Cases.Test_Case'Class) is
       G : Linear_Congruential.Examples.RANDU;
-      Expected : U32_Array := (65539, 393225, 1769499, 7077969,
+      Expected : constant U32_Array := (65539, 393225, 1769499, 7077969,
                                26542323, 95552217, 334432395, 1146624417,
                                1722371299, 14608041);
    begin

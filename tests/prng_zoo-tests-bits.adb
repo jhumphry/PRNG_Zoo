@@ -115,8 +115,9 @@ package body PRNG_Zoo.Tests.Bits is
    --------------
 
    function Describe_Result (T : in Bit_Counter) return String is
-      Totals : String := Counter'Image(T.Total_Bits) & " of " & Counter'Image(T.N * T.Width);
-      Total_Result : String := Long_Float'Image(T.Total_Bits_p_value);
+      Totals : constant String := Counter'Image(T.Total_Bits) &
+        " of " & Counter'Image(T.N * T.Width);
+      Total_Result : constant String := Long_Float'Image(T.Total_Bits_p_value);
       Bits : String(1..T.Width);
       p_value : Long_Float;
       LF : Character renames Ada.Characters.Latin_1.LF;

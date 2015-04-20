@@ -59,8 +59,8 @@ package body PRNG_Zoo.Misc is
    -----------
 
    procedure Reset (G : in out KISS; S : in U64) is
-      S1 : U32 := U32(S and 16#FFFFFFFF#);
-      S2 : U32 := U32(Shift_Right(S, 32));
+      S1 : constant U32 := U32(S and 16#FFFFFFFF#);
+      S2 : constant U32 := U32(Shift_Right(S, 32));
    begin
       G.z := 362436069 xor S1;
       G.w := 521288629 xor S2;

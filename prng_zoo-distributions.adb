@@ -21,7 +21,7 @@ package body PRNG_Zoo.Distributions is
    --------------
 
    function Generate (D: in out Uniform01; G : in out PRNG'Class) return Float_Type is
-      X : U64 := Generate_Padded(G);
+      X : constant U64 := Generate_Padded(G);
    begin
       return Float_Type(X) * scale;
    end Generate;
@@ -31,11 +31,9 @@ package body PRNG_Zoo.Distributions is
    --------------
 
    function Generate (D: in out Uniform; G : in out PRNG'Class) return Float_Type is
-      a : Float_Type := D.a;
-      b : Float_Type := D.b;
-      X : U64 := Generate_Padded(G);
+      X : constant U64 := Generate_Padded(G);
    begin
-      return a + b * Float_Type(X) * scale;
+      return D.a + D.b * Float_Type(X) * scale;
    end Generate;
 
    --------------
@@ -103,8 +101,8 @@ package body PRNG_Zoo.Distributions is
       b_recip : constant Float_Type := 0.39894_22804_01432_67793; -- 1/b
       log_norm_c : constant Float_Type := -0.22579_13526_44727_43236; -- log(2/sqrt(2*pi))
 
-      v : U64 := Generate_Padded(G);
-      sign : Float_Type := (if (v and 1) = 1 then +1.0 else -1.0);
+      v : constant U64 := Generate_Padded(G);
+      sign : constant Float_Type := (if (v and 1) = 1 then +1.0 else -1.0);
       x : Float_Type := Float_Type(v) * scale * b;
       y : Float_Type;
 
@@ -144,7 +142,7 @@ package body PRNG_Zoo.Distributions is
    --------------
 
    function Generate (D: in out Exponential; G : in out PRNG'Class) return Float_Type is
-      X : U64 := Generate_Padded(G);
+      X : constant U64 := Generate_Padded(G);
    begin
       return -D.theta * log(Float_Type(X) * scale + Float_Type'Model_Small);
    end Generate;

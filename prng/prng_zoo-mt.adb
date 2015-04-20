@@ -124,7 +124,7 @@ package body PRNG_Zoo.MT is
    end Reset;
 
    procedure Reset (G: in out MT19937; S: in U64_array) is
-      key : U64_array(0..S'Length-1) := S;
+      key : constant U64_array(0..S'Length-1) := S;
       i : MT_Index;
       j : Integer;
    begin
@@ -200,7 +200,7 @@ package body PRNG_Zoo.MT is
    end Reset;
 
    procedure Reset (G: in out MT19937_64; S: in U64_array) is
-      key : U64_array(0..S'Length-1) := S;
+      key : constant U64_array(0..S'Length-1) := S;
       i : MT_Index_64;
       j : Integer;
    begin

@@ -21,8 +21,8 @@ package body PRNG_Zoo is
    --------------
 
    function Generate (G: in out PRNG_32Only) return U64 is
-      R1 : U32 := Generate(PRNG_32Only'Class(G));
-      R2 : U32 := Generate(PRNG_32Only'Class(G));
+      R1 : constant U32 := Generate(PRNG_32Only'Class(G));
+      R2 : constant U32 := Generate(PRNG_32Only'Class(G));
    begin
       return Shift_Left(U64(R1), 32) or U64(R2);
    end Generate;
