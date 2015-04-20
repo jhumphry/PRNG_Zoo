@@ -32,7 +32,6 @@ package body PRNG_Zoo.Register is
    package LFIB_107_378 is new LFIB.Generic_LFib(107,378,"+");
 
    procedure PRNG_Column_Widths(Names, Descriptions : in out Natural) is
-      I : Register_Cursor;
    begin
       Names := 0;
       Descriptions := 0;
@@ -48,7 +47,6 @@ package body PRNG_Zoo.Register is
 
 
    procedure Display_Register is
-      I : Register_Cursor;
       Names, Descriptions : Natural := 0;
    begin
       PRNG_Column_Widths(Names, Descriptions);

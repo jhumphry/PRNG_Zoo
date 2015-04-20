@@ -29,7 +29,6 @@ use Common_CLI_Options;
 
 procedure Common_CLI(AP : in out Parse_Args.Argument_Parser;
                      PRNG_Names : in out Parse_Args.String_Doubly_Linked_Lists.List) is
-   I : Register_Cursor;
 begin
 
    PRNG_Names := Parse_Args.String_Doubly_Linked_Lists.Empty_List;

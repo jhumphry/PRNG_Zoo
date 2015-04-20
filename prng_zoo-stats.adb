@@ -240,7 +240,7 @@ package body PRNG_Zoo.Stats is
       end loop;
 
       for I in B.Bin_Counts'Range loop
-         Expected := Long_Float(B.Bin_Expected(I)) * Total_Count;
+         Expected := B.Bin_Expected(I) * Total_Count;
          Z := Z + ((Long_Float(B.Bin_Counts(I)) - Expected) **2) / Expected;
       end loop;
 
