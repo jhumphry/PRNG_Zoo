@@ -117,6 +117,12 @@ begin
        Description => To_Bounded_String ("Generator based on Murmurhash3")));
 
    Register.Insert
+    ("SplitMix", PRNG_Details'
+      (Tag         => Misc.SplitMix'Tag,
+       Params      => No_Parameters'Access,
+       Description => To_Bounded_String ("SplitMix generator")));
+
+   Register.Insert
    ("mt", PRNG_Details'
       (Tag         => MT.MT19937'Tag,
        Params      => No_Parameters'Access,

@@ -60,6 +60,17 @@ package PRNG_Zoo.Misc is
    procedure Reset (G : in out MurmurHash3; S : in U64);
    function Generate(G : in out MurmurHash3) return U64 with inline;
 
+   -- Fast Splittable Pseudorandom Number Generators
+   -- based on the C version by Vigna
+
+   type SplitMix is new PRNG_64Only with private;
+   function Strength (G : in SplitMix) return PRNG_Strength is (High);
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                           return SplitMix;
+   procedure Reset (G : in out SplitMix; S : in U64);
+   function Generate(G : in out SplitMix) return U64 with inline;
+
+
 private
 
    type glibc_random_index is mod 34;
@@ -95,5 +106,14 @@ private
    function Constructor(Params : not null access PRNG_Parameters'Class)
                             return MurmurHash3 is
      (MurmurHash3'(others => <>));
+
+   type SplitMix is new PRNG_64Only with
+      record
+         s : U64 := 314159263;
+      end record;
+
+   function Constructor(Params : not null access PRNG_Parameters'Class)
+                            return SplitMix is
+     (SplitMix'(others => <>));
 
 end PRNG_Zoo.Misc;

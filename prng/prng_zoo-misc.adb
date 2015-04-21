@@ -109,4 +109,27 @@ package body PRNG_Zoo.Misc is
       return G.s;
    end Generate;
 
+   -----------
+   -- Reset --
+   -----------
+
+   procedure Reset (G : in out SplitMix; S : in U64) is
+   begin
+      G.s := S;
+   end Reset;
+
+   --------------
+   -- Generate --
+   --------------
+
+   function Generate (G : in out SplitMix) return U64 is
+      Z : U64;
+   begin
+      G.s := G.s + 16#9E3779B97F4A7C15#;
+      Z := G.s;
+      Z := (Z xor Shift_Right(Z, 30)) * 16#BF58476D1CE4E5B9#;
+      Z := (Z xor Shift_Right(Z, 27)) * 16#94D049BB133111EB#;
+      return Z xor Shift_Right(Z, 31);
+   end Generate;
+
 end PRNG_Zoo.Misc;

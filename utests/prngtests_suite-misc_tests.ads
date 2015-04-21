@@ -37,5 +37,6 @@ package PRNGTests_Suite.Misc_Tests is
    procedure Sanity_Check_GLib_Random is new PRNGTests_Suite.Sanity_Checks32(P => Misc.glibc_random);
    procedure Sanity_Check_KISS is new PRNGTests_Suite.Sanity_Checks32(P => Misc.KISS);
    procedure Sanity_Check_MurmurHash3 is new PRNGTests_Suite.Sanity_Checks(P => Misc.MurmurHash3);
+   procedure Sanity_Check_SplitMix is new PRNGTests_Suite.Sanity_Checks(P => Misc.SplitMix);
 
 end PRNGTests_Suite.Misc_Tests;
