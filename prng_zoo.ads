@@ -37,7 +37,7 @@ package PRNG_Zoo is
    type PRNG_Strength is (Crypto, High, Medium, Low, Dummy);
 
    type PRNG_Parameters is tagged null record;
-   No_Parameters : aliased PRNG_Parameters := (others => <>);
+   No_Parameters : aliased constant PRNG_Parameters := (others => <>);
    Invalid_Parameters : exception;
 
    type PRNG is interface;
