@@ -49,7 +49,7 @@ procedure speedtest is
                                        Array_Type   => Duration_Array);
 
    AP : Parse_Args.Argument_Parser;
-   PRNG_Names : Parse_Args.String_Doubly_Linked_Lists.List;
+   PRNG_Specs : Common_CLI_Options.PRNG_Spec_Lists.List;
 
    Seed : PRNG_Zoo.U64;
    Seed_From_Array : U64_array_access;
@@ -69,9 +69,9 @@ begin
    AP.Add_Option(Parse_Args.Make_Natural_Option(4), "attempts", 'u',
                  Usage => "Specify number of attempts to make to get subsets results within tolerance (default 4)");
 
-   Common_CLI(AP, PRNG_Names);
+   Common_CLI(AP, PRNG_Specs);
 
-   if PRNG_Names.Length = 0 then
+   if PRNG_Specs.Length = 0 then
       goto Finish;
    end if;
 
@@ -95,10 +95,10 @@ begin
    Put(13 * "-");
    New_Line;
 
-   for Name of PRNG_Names loop
+   for Spec of PRNG_Specs loop
 
       declare
-         G : PRNG'Class := Register.Make_PRNG(Name);
+         G : PRNG'Class := Register.Make_PRNG(Spec);
 
          Timings : Duration_Array(1..Subsets);
          Median_Per_Subset : Duration;
@@ -124,7 +124,7 @@ begin
             G.Reset(Seed);
          end if;
 
-         Put(Name);
+         Put(Register.Name(Spec));
          Set_Col (Ada.Text_IO.Count(Names + 1));
          Put("| ");
 

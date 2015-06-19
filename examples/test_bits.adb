@@ -31,7 +31,7 @@ use Ada.Text_IO;
 
 procedure test_bits is
    AP : Parse_Args.Argument_Parser;
-   PRNG_Names : Parse_Args.String_Doubly_Linked_Lists.List;
+   PRNG_Specs : Common_CLI_Options.PRNG_Spec_Lists.List;
    Seed : PRNG_Zoo.U64;
    Seed_From_Array : U64_array_access;
    Iterations : Natural;
@@ -48,16 +48,16 @@ begin
    AP.Add_Option(Parse_Args.Make_Natural_Option(2), "divisions", 'l',
                  Usage => "Log_{2} Divisions in each dimension (default 2)");
 
-   Common_CLI(AP, PRNG_Names);
+   Common_CLI(AP, PRNG_Specs);
 
    Seed := U64_Options.Value(AP, "seed");
    Seed_From_Array := U64_array_Options.Value(AP, "seed-from-array");
    Iterations := AP.Integer_Value("iterations") * 1_000_000;
 
-   for Name of PRNG_Names loop
+   for Spec of PRNG_Specs loop
 
       declare
-         G : PRNG'Class := Register.Make_PRNG(Name);
+         G : PRNG'Class := Register.Make_PRNG(Spec);
          BC : Tests.Bits.Bit_Counter(G.Width);
          WW : Tests.Bits.WW_Runs(G.Width);
          ED : Tests.EquiDist.EquiDist(t => AP.Integer_Value("dimensions"),
@@ -72,7 +72,7 @@ begin
          BC.Reset;
          WW.Reset;
          ED.Reset;
-         Put_Line("Testing " & Name);
+         Put_Line("Testing " & Register.Name(Spec));
          New_Line;
 
          for I in 1..Iterations loop
@@ -83,19 +83,19 @@ begin
          end loop;
 
          BC.Compute_Result;
-         Put_Line(Name &
+         Put_Line(Register.Name(Spec) &
                   (if BC.Passed then " passed " else " failed " ) &
                     "Bit-Counter test:");
          Put_Line(BC.Describe_Result); New_Line;
 
          WW.Compute_Result;
-         Put_Line(Name &
+         Put_Line(Register.Name(Spec) &
                   (if WW.Passed then " passed " else " failed " ) &
                     "WW Runs test:");
          Put_Line(WW.Describe_Result); New_Line;
 
          ED.Compute_Result;
-         Put_Line(Name &
+         Put_Line(Register.Name(Spec) &
                   (if ED.Passed then " passed " else " failed " ) &
                     "Equidistribution test:");
          Put_Line(ED.Describe_Result); New_Line;

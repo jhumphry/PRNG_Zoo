@@ -14,8 +14,11 @@
 -- OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 -- PERFORMANCE OF THIS SOFTWARE.
 
-with PRNG_Zoo;
+with Ada.Containers.Indefinite_Doubly_Linked_Lists;
+
+with PRNG_Zoo, PRNG_Zoo.Register;
 use PRNG_Zoo;
+use type PRNG_Zoo.Register.PRNG_Spec;
 
 with Parse_Args;
 use Parse_Args;
@@ -25,6 +28,8 @@ with Parse_Args.Generic_Discrete_Array_Options;
 with Parse_Args.Split_CSV;
 
 package Common_CLI_Options is
+
+   package PRNG_Spec_Lists is new Ada.Containers.Indefinite_Doubly_Linked_Lists(PRNG_Zoo.Register.PRNG_Spec);
 
    package U64_Options is new Parse_Args.Generic_Options(Element => PRNG_Zoo.U64,
                                                         Fallback_Default => 0,

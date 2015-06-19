@@ -38,7 +38,7 @@ procedure sample_output is
    use U32_IO;
 
    AP : Parse_Args.Argument_Parser;
-   PRNG_Names : Parse_Args.String_Doubly_Linked_Lists.List;
+   PRNG_Specs : Common_CLI_Options.PRNG_Spec_Lists.List;
    Seed : PRNG_Zoo.U64;
    Seed_From_Array : U64_array_access;
    Number : Natural;
@@ -56,9 +56,9 @@ begin
    AP.Add_Option(Parse_Args.Make_Boolean_Option(False), "generate-32bit", 'g',
                  Usage => "Generate 32-bit outputs (default false)");
 
-   Common_CLI(AP, PRNG_Names);
+   Common_CLI(AP, PRNG_Specs);
 
-   if PRNG_Names.Length = 0 then
+   if PRNG_Specs.Length = 0 then
       goto Finish;
    end if;
 
@@ -68,13 +68,13 @@ begin
    Columns := AP.Integer_Value("columns");
    Generate_32bit := AP.Boolean_Value("generate-32bit");
 
-   for Name of PRNG_Names loop
+   for Spec of PRNG_Specs loop
       declare
-         G : PRNG'Class := Register.Make_PRNG(Name);
+         G : PRNG'Class := Register.Make_PRNG(Spec);
       begin
 
          Put(Number);
-         Put(" outputs from " & Name);
+         Put(" outputs from " & Register.Name(Spec));
 
          if Seed_From_Array /= null
            and G in PRNG_Seed_From_Array'Class then

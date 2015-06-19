@@ -17,6 +17,9 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
 
+with Ada.Strings.Fixed, Ada.Strings.Unbounded;
+use Ada.Strings.Fixed, Ada.Strings.Unbounded;
+
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
 
@@ -28,10 +31,10 @@ with Common_CLI_Options;
 use Common_CLI_Options;
 
 procedure Common_CLI(AP : in out Parse_Args.Argument_Parser;
-                     PRNG_Names : in out Parse_Args.String_Doubly_Linked_Lists.List) is
+                     PRNG_Specs : in out Common_CLI_Options.PRNG_Spec_Lists.List) is
 begin
 
-   PRNG_Names := Parse_Args.String_Doubly_Linked_Lists.Empty_List;
+   PRNG_Specs := Common_CLI_Options.PRNG_Spec_Lists.Empty_List;
 
    AP.Add_Option(U64_Options.Make_Option(Default => 9753), "seed", 's',
                  Usage => "Specify a seed for the generators (default 9753)",
@@ -58,16 +61,35 @@ begin
       Put_Line("At least one PRNG must be specified.");
    elsif AP.Tail.First_Element = "all" then
       for I in Register.Iterate loop
-         PRNG_Names.Append (PRNG_Registries.Key (I));
+         PRNG_Specs.Append (PRNG_Spec'(Name => To_Unbounded_String(PRNG_Registries.Key (I)),
+                                       Params => Null_Unbounded_String));
       end loop;
    else
       for J of AP.Tail loop
-         if not PRNG_Zoo.Register.PRNG_Exists(J) then
-            PRNG_Names := Parse_Args.String_Doubly_Linked_Lists.Empty_List;
-            Put_Line("No such PRNG: '" & J & "'");
-            exit;
+
+         if Ada.Strings.Fixed.Count(J, ":") = 0 then
+            if not PRNG_Zoo.Register.PRNG_Exists(J) then
+               PRNG_Specs := Common_CLI_Options.PRNG_Spec_Lists.Empty_List;
+               Put_Line("No such PRNG: '" & J & "'");
+               exit;
+            end if;
+            PRNG_Specs.Append(PRNG_Spec'(Name => To_Unbounded_String(J),
+                                         Params => Null_Unbounded_String));
+         else
+            declare
+               Name : constant String := J(J'First .. Ada.Strings.Fixed.Index(J, ":")-1);
+               Parameters : constant String := J(Ada.Strings.Fixed.Index(J, ":")+1 .. J'Last);
+            begin
+               if not PRNG_Zoo.Register.PRNG_Exists(Name) then
+                  PRNG_Specs := Common_CLI_Options.PRNG_Spec_Lists.Empty_List;
+                  Put_Line("No such PRNG: '" & Name & "'");
+                  exit;
+               end if;
+            PRNG_Specs.Append(PRNG_Spec'(Name => To_Unbounded_String(Name),
+                                         Params => To_Unbounded_String(Parameters)));
+            end;
          end if;
-         PRNG_Names.Append (J);
+
       end loop;
 
    end if;

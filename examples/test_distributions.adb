@@ -38,10 +38,8 @@ use Common_CLI_Options;
 
 procedure test_distributions is
 
-
-
    AP : Parse_Args.Argument_Parser;
-   PRNG_Names : Parse_Args.String_Doubly_Linked_Lists.List;
+   PRNG_Specs : Common_CLI_Options.PRNG_Spec_Lists.List;
    Seed : PRNG_Zoo.U64;
    Seed_From_Array : U64_array_access;
    Iterations : Natural;
@@ -53,9 +51,9 @@ begin
    AP.Add_Option(Parse_Args.Make_Natural_Option(1), "iterations", 'i',
                  Usage => "Specify iterations (in millions) (default 1)");
 
-   Common_CLI(AP, PRNG_Names);
+   Common_CLI(AP, PRNG_Specs);
 
-   if PRNG_Names.Length = 0 then
+   if PRNG_Specs.Length = 0 then
       goto Finish;
    end if;
 
@@ -67,10 +65,10 @@ begin
    Put(1.0 / Ada.Numerics.Long_Elementary_Functions.Sqrt(Long_Float(Iterations)));
    New_Line; New_Line;
 
-   for Name of PRNG_Names loop
+   for Spec of PRNG_Specs loop
 
       declare
-         G : PRNG'Class := Register.Make_PRNG(Name);
+         G : PRNG'Class := Register.Make_PRNG(Spec);
 
          package LFD is new Distributions(Float_Type => Long_Float,
                                           scale => (
@@ -98,12 +96,11 @@ begin
          end if;
          D_Normal_12_6.Reset;
          T_Chi2Normal.Reset;
-         Put_Line("12-6 method with " & Name & " generator:");
+         Put_Line("12-6 method with " & Register.Name(Spec) & " generator:");
          LFD_Tests.Run_Test(G => G,
                             D => D_Normal_12_6,
                             T => T_Chi2Normal,
                             iterations => Iterations);
-
 
          Put_Line("Chi2 test: " & (if T_Chi2Normal.Passed then "Passed" else "Failed"));
          Put(T_Chi2Normal.Describe_Result);
@@ -116,7 +113,7 @@ begin
          end if;
          D_Normal_BM.Reset;
          T_Chi2Normal.Reset;
-         Put_Line("Box-Mueller method with " & Name & " generator:");
+         Put_Line("Box-Mueller method with " & Register.Name(Spec) & " generator:");
          LFD_Tests.Run_Test(G => G,
                             D => D_Normal_BM,
                             T => T_Chi2Normal,
@@ -134,7 +131,7 @@ begin
          end if;
          D_Normal_MP.Reset;
          T_Chi2Normal.Reset;
-         Put_Line("Monty-Python method with " & Name & " generator:");
+         Put_Line("Monty-Python method with " & Register.Name(Spec) & " generator:");
          LFD_Tests.Run_Test(G => G,
                             D => D_Normal_MP,
                             T => T_Chi2Normal,
