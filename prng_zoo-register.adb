@@ -46,6 +46,17 @@ package body PRNG_Zoo.Register is
       end;
    end Parameter;
 
+   function Parameter(Container : PRNG_Parameters_Map; Key : String) return Integer is
+      S : constant String := Parameters_Maps.Element(Container.Params, Key);
+   begin
+      begin
+         return Integer'Value(S);
+      exception
+         when Constraint_Error =>
+            raise Invalid_Parameters with "Value: " & S & " is not a valid Integer value";
+      end;
+   end Parameter;
+
    function Split_Parameters(S : String) return PRNG_Parameters_Map is
       Result : PRNG_Parameters_Map;
       U, V, W : Natural;

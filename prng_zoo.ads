@@ -54,6 +54,13 @@ package PRNG_Zoo is
                       Key : String;
                       Default : U64) return U64 is
      (if Contains(Container, Key) then Parameter(Container, Key) else Default);
+   function Parameter(Container : PRNG_Parameters;
+                      Key : String) return Integer is
+     (raise Constraint_Error);
+   function Parameter(Container : PRNG_Parameters;
+                      Key : String;
+                      Default : Integer) return Integer is
+     (if Contains(Container, Key) then Parameter(Container, Key) else Default);
    No_Parameters : aliased constant PRNG_Parameters := (others => <>);
    Invalid_Parameters : exception;
 

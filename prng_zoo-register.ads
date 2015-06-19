@@ -34,6 +34,7 @@ package PRNG_Zoo.Register is
    function Contains(Container : PRNG_Parameters_Map; Key : String) return Boolean;
    function Parameter(Container : PRNG_Parameters_Map; Key : String) return String;
    function Parameter(Container : PRNG_Parameters_Map; Key : String) return U64;
+   function Parameter(Container : PRNG_Parameters_Map; Key : String) return Integer;
    function Split_Parameters(S : String) return PRNG_Parameters_Map;
 
    type PRNG_Details is
