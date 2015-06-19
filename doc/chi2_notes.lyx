@@ -202,7 +202,7 @@ where
 \end_layout
 
 \begin_layout Section
-Gamma function0
+Gamma function
 \end_layout
 
 \begin_layout Standard
@@ -238,7 +238,7 @@ where
 \begin_inset Formula $!!$
 \end_inset
 
- is the double factorial function which for odd numbers is defined as:
+ is the double factorial function which for odd numbers is defined as: 
 \begin_inset Formula $n!!=n\left(n-2\right)\left(n-4\right)\dots1$
 \end_inset
 
@@ -630,7 +630,7 @@ The number of terms
 \begin{eqnarray}
 \sum_{n=m+1}^{\infty}\frac{f_{n}}{g_{n}} & = & \frac{f_{m}}{g_{m}}\:\sum_{n=m+1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n-m}}{\left(\left(\frac{k}{2}\right)+n\right)^{n-m}}\nonumber \\
  & = & \frac{f_{m}}{g_{m}}\:\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\left(\left(\frac{k}{2}\right)+n+m\right)^{n}}\nonumber \\
- & = & \frac{f_{m}}{g_{m}}\:\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\left(\left(\frac{k}{2}\right)+m\right)^{n}}\:\left[1+\frac{1}{\left(\frac{k}{2}\right)+m}n\right]^{-n}
+ & = & \frac{f_{m}}{g_{m}}\:\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\left(\left(\frac{k}{2}\right)+m\right)^{n}}\:\left[\frac{\left(\frac{k}{2}\right)+m}{\left(\frac{k}{2}\right)+n+m}\right]^{n}
 \end{eqnarray}
 
 \end_inset
@@ -639,16 +639,18 @@ The number of terms
 \end_layout
 
 \begin_layout Standard
-As 
 \begin_inset Formula $x$
 \end_inset
 
-, and 
+ and 
 \begin_inset Formula $k$
 \end_inset
 
- are positive and on the real line for the uses we are addressing, this
- expression can be bounded:
+ are positive and real for the region in which we need to evalute this expressio
+n.
+ Both factors of each term in the summation are therefore positive and the
+ second factor is always less than one.
+ This expression can therefore be bounded above by:
 \begin_inset Formula 
 \begin{eqnarray}
 \sum_{n=m+1}^{\infty}\frac{f_{n}}{g_{n}} & \leq & \frac{f_{m}}{g_{m}}\:\sum_{n=1}^{\infty}\frac{\left(\frac{x}{2}\right)^{n}}{\left(\left(\frac{k}{2}\right)+m\right)^{n}}\nonumber \\
