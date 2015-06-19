@@ -63,7 +63,7 @@ package body PRNG_Zoo.Register is
             raise Constraint_Error with
               "Parameters should be in the form name=value: " & S(U..(V-1));
          end if;
-         Result.Params.Insert(S(U..U+W-2), S(U+W..V-1));
+         Result.Params.Insert(S(U..W-1), S(W+1..V-1));
          U := V + 1;
       end loop;
 
