@@ -15,8 +15,6 @@
 -- OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 -- PERFORMANCE OF THIS SOFTWARE.
 
-with PRNG_Zoo.Register;
-
 package body PRNG_Zoo.Filters is
 
    --------------
@@ -100,30 +98,6 @@ package body PRNG_Zoo.Filters is
       V := Shift_Right(V, 16)  or Shift_Left(V, 16);
       return V;
    end Generate;
-
-   -----------------
-   -- Constructor --
-   -----------------
-
-   function Constructor(Params : not null access PRNG_Parameters'Class)
-                        return Incrementer is
-   begin
-      if Params.all in PRNG_Zoo.Register.PRNG_Parameters_Map'Class then
-         declare
-            Params_Map : constant PRNG_Zoo.Register.PRNG_Parameters_Map
-              := PRNG_Zoo.Register.PRNG_Parameters_Map(Params.all);
-         begin
-            if Params_Map.Contains("incr") then
-               return Incrementer'(incr => Params_Map.Parameter("incr"),
-                                   others => <>);
-            else
-               raise Constraint_Error with "No value for Increment parameter incr given";
-            end if;
-         end;
-      else
-         return Incrementer'(others => <>);
-      end if;
-   end Constructor;
 
    -----------
    -- Reset --

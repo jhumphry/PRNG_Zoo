@@ -37,6 +37,23 @@ package PRNG_Zoo is
    type PRNG_Strength is (Crypto, High, Medium, Low, Dummy);
 
    type PRNG_Parameters is tagged null record;
+   function Contains(Container : PRNG_Parameters;
+                     Key : String) return Boolean is
+     (False);
+   function Parameter(Container : PRNG_Parameters
+                      ; Key : String) return String is
+     (raise Constraint_Error);
+   function Parameter(Container : PRNG_Parameters;
+                      Key : String;
+                      Default : String) return String is
+     (if Contains(Container, Key) then Parameter(Container, Key) else Default);
+   function Parameter(Container : PRNG_Parameters;
+                      Key : String) return U64 is
+     (raise Constraint_Error);
+   function Parameter(Container : PRNG_Parameters;
+                      Key : String;
+                      Default : U64) return U64 is
+     (if Contains(Container, Key) then Parameter(Container, Key) else Default);
    No_Parameters : aliased constant PRNG_Parameters := (others => <>);
    Invalid_Parameters : exception;
 

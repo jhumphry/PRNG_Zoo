@@ -54,7 +54,9 @@ package PRNG_Zoo.Filters is
    function Strength(G: in Incrementer) return PRNG_Strength is (Dummy);
    function Width(G: in Incrementer) return Positive is (64);
    function Constructor(Params : not null access PRNG_Parameters'Class)
-                           return Incrementer;
+                        return Incrementer is
+     (Incrementer'(incr => Params.Parameter("incr",1),
+                   others => <>));
    procedure Reset(G: in out Incrementer; S: in U64);
    function Generate(G: in out Incrementer) return U64 with inline;
    function Generate_Padded(G : in out Incrementer) return U64 renames Generate;
