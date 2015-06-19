@@ -135,13 +135,25 @@ begin
    ("Incrementer", PRNG_Details'
       (Tag         => Filters.Incrementer'Tag,
        Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Dummy generator: Output is incremented by parameter inc (default=1) each time")));
+       Description => To_Unbounded_String ("Dummy generator: Output is incremented by param incr each time")));
 
    Register.Insert
    ("LFib_107_378", PRNG_Details'
       (Tag         => LFIB_107_378.LFib'Tag,
        Params      => No_Parameters'Access,
        Description => To_Unbounded_String ("Additive Lagged Fibbonacci S_n = S_{n-107} + S_{n-378}")));
+
+   Register.Insert
+   ("LCG", PRNG_Details'
+      (Tag         => Linear_Congruential.LCG'Tag,
+       Params      => No_Parameters'Access,
+       Description => To_Unbounded_String ("Generic 64-bit Linear Conguential Generator")));
+
+   Register.Insert
+   ("LCG32", PRNG_Details'
+      (Tag         => Linear_Congruential.LCG_32Only'Tag,
+       Params      => No_Parameters'Access,
+       Description => To_Unbounded_String ("Generic 32-bit Linear Conguential Generator")));
 
    Register.Insert
    ("MINSTD", PRNG_Details'

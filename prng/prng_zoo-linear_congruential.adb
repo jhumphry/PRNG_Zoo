@@ -82,8 +82,17 @@ package body PRNG_Zoo.Linear_Congruential is
                      Increment    => P.Increment,
                      Usable_Width => P.Usable_Width,
                      s            => P.s);
+      elsif Params.Contains("Modulus") and
+        Params.Contains("Multiplier") and
+        Params.Contains("Increment") and
+        Params.Contains("Usable_Width") then
+         return LCG'(Modulus      => Params.Parameter("Modulus"),
+                     Multiplier   => Params.Parameter("Multiplier"),
+                     Increment    => Params.Parameter("Increment"),
+                     Usable_Width => Params.Parameter("Usable_Width"),
+                     s            => 1);
       else
-         raise Invalid_Parameters;
+         raise Invalid_Parameters with "Must specify Modulus, Multiplier, Increment and Usable_Width for LCG generator";
       end if;
    end Constructor;
 
@@ -120,8 +129,17 @@ package body PRNG_Zoo.Linear_Congruential is
                             Increment    => P.Increment,
                             Usable_Width => P.Usable_Width,
                             s            => P.s);
+      elsif Params.Contains("Modulus") and
+        Params.Contains("Multiplier") and
+        Params.Contains("Increment") and
+        Params.Contains("Usable_Width") then
+         return LCG_32Only'(Modulus      => U32(U64'(Params.Parameter("Modulus"))),
+                            Multiplier   => U32(U64'(Params.Parameter("Multiplier"))),
+                            Increment    => U32(U64'(Params.Parameter("Increment"))),
+                            Usable_Width => Params.Parameter("Usable_Width"),
+                            s            => 1);
       else
-         raise Invalid_Parameters;
+         raise Invalid_Parameters with "Must specify Modulus, Multiplier, Increment and Usable_Width for LCG32 generator";
       end if;
    end Constructor;
 
