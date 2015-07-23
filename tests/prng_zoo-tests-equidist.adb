@@ -76,7 +76,7 @@ package body PRNG_Zoo.Tests.EquiDist is
 
    procedure Compute_Result(T : in out EquiDist) is
       N : constant Positive := 2 ** (T.t * T.l);
-      Expected : Long_Float := 1.0 / Long_Float(N);
+      Expected : constant Long_Float := 1.0 / Long_Float(N);
       B : Binned(N);
    begin
       B.Bin_Counts := T.bins.all;

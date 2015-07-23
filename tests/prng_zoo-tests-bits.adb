@@ -59,8 +59,8 @@ package body PRNG_Zoo.Tests.Bits is
    --------------------
 
    procedure Compute_Result (T : in out Bit_Counter) is
-      Recip_Sqrt_N : Long_Float := 1.0 / Sqrt(Long_Float(T.N));
-      Expected_Ones : Long_Float := Long_Float(T.N) / 2.0;
+      Recip_Sqrt_N : constant Long_Float := 1.0 / Sqrt(Long_Float(T.N));
+      Expected_Ones : constant Long_Float := Long_Float(T.N) / 2.0;
       Z : Long_Float;
    begin
 

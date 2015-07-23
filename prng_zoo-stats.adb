@@ -118,8 +118,8 @@ package body PRNG_Zoo.Stats is
    function Chi2_CDF(X : Long_Float;
                      K : Positive;
                      epsilon : Long_Float := 1.0E-6) return Long_Float is
-      X_2 : Long_Float := X / 2.0;
-      K_2 : Long_Float := Long_Float(K) / 2.0;
+      X_2 : constant Long_Float := X / 2.0;
+      K_2 : constant Long_Float := Long_Float(K) / 2.0;
       c : Long_Float;
       f, g : Long_Float := 1.0;
       sum : Long_Float := 1.0;
