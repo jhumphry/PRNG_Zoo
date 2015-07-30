@@ -560,6 +560,14 @@ P\left(x,k\right) & = & \frac{\left(\frac{x}{2}\right)^{\left(\frac{k}{2}\right)
 
 \end_inset
 
+ This expression is ultimately a rearrangement of 26.4.6 from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "AandS"
+
+\end_inset
+
+.
  The summation is clearly convergent for the values of 
 \begin_inset Formula $x$
 \end_inset

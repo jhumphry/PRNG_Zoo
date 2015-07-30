@@ -44,6 +44,7 @@ package PRNG_Zoo.Stats is
 
    -- Returns True if the test statistic Chi2 indicates that the null hypothesis
    -- is not ruled out to a confidence level of alpha with df degrees of freedom
+   -- Based on a version of (Abramowitz and Stegun, 1972) 26.4.6, see notes
    function Chi2_Test(Chi2 : Long_Float;
                       df : Positive;
                       alpha : Long_Float := 0.05) return Boolean;
