@@ -117,7 +117,7 @@ package body PRNG_Zoo.MT is
    begin
       G.s(0) := U32(S and 16#FFFFFFFF#);
       G.p := 0;
-      For I in MT_Index range 1..MT_Index(N-1) loop
+      for I in MT_Index range 1..MT_Index(N-1) loop
          G.s(I) := 1812433253 * (G.s(I-1) xor Shift_Right(G.s(I-1), 30))
            + U32(I);
       end loop;
@@ -184,7 +184,6 @@ package body PRNG_Zoo.MT is
 
    end Generate;
 
-
    -----------
    -- Reset --
    -----------
@@ -193,7 +192,7 @@ package body PRNG_Zoo.MT is
    begin
       G.s(0) := S;
       G.p := 0;
-      For I in MT_Index_64 range 1..MT_Index_64(NN-1) loop
+      for I in MT_Index_64 range 1..MT_Index_64(NN-1) loop
          G.s(I) := 6364136223846793005 * (G.s(I-1) xor Shift_Right(G.s(I-1), 62))
            + U64(I);
       end loop;

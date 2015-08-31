@@ -70,7 +70,6 @@ package PRNG_Zoo.Misc is
    procedure Reset (G : in out SplitMix; S : in U64);
    function Generate(G : in out SplitMix) return U64 with inline;
 
-
 private
 
    type glibc_random_index is mod 34;

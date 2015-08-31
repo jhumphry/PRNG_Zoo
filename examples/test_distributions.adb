@@ -119,7 +119,6 @@ begin
                             T => T_Chi2Normal,
                             iterations => Iterations);
 
-
          Put_Line("Chi2 test: " & (if T_Chi2Normal.Passed then "Passed" else "Failed"));
          Put(T_Chi2Normal.Describe_Result);
          New_Line(2);
@@ -136,7 +135,6 @@ begin
                             D => D_Normal_MP,
                             T => T_Chi2Normal,
                             iterations => Iterations);
-
 
          Put_Line("Chi2 test: " & (if T_Chi2Normal.Passed then "Passed" else "Failed"));
          Put(T_Chi2Normal.Describe_Result);

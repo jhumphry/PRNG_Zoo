@@ -62,7 +62,7 @@ package body PRNG_Zoo.Tests.Distributions is
             exit;
          end if;
       end loop;
-      if not success then
+      if not Success then
          T.Bin_Counts(T.Bin_Counts'Last) := T.Bin_Counts(T.Bin_Counts'Last) + 1;
       end if;
    end Feed;

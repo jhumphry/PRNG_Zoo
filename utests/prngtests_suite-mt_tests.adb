@@ -68,7 +68,7 @@ package body PRNGTests_Suite.MT_Tests is
       -- {0x123, 0x234, 0x345, 0x456}, as used in the demonstration code
       -- from the authors
 
-      Expected_Array : constant U32_Array := (
+      Expected_Array : constant U32_array := (
                                               1067595299,  955945823,  477289528, 4107218783,
                                               4228976476, 3344332714, 3355579695,  227628506,
                                               810200273, 2591290167, 2560260675, 3242736208,
@@ -87,12 +87,11 @@ package body PRNGTests_Suite.MT_Tests is
                                               2762534237, 4161807854, 3351099340,  181129879
                                              );
 
-
       -- This array was generated from a quick C program using the
       -- canonical C version of MT19937 (2002 version) with initial seed
       -- 5489.
 
-      Expected_5489 : constant U32_Array := (
+      Expected_5489 : constant U32_array := (
                                              3499211612,  581869302, 3890346734, 3586334585,
                                              545404204, 4161255391, 3922919429,  949333985,
                                              2715962298, 1323567403,  418932835, 2350294565,
@@ -137,7 +136,7 @@ package body PRNGTests_Suite.MT_Tests is
       -- array {0x12345ULL, 0x23456ULL, 0x34567ULL, 0x45678ULL},  as used in the
       -- demonstration code from the authors
 
-      Expected_Array : constant U64_Array := (
+      Expected_Array : constant U64_array := (
                                               7266447313870364031,  4946485549665804864,
                                               16945909448695747420, 16394063075524226720,
                                               4873882236456199058, 14877448043947020171,
@@ -172,7 +171,6 @@ package body PRNGTests_Suite.MT_Tests is
                                               1924700483125896976,  7171619684536160599
                                              );
 
-
    begin
 
       Reset(G, U64_array'(16#012345#, 16#023456#, 16#034567#, 16#045678#));
@@ -196,7 +194,7 @@ package body PRNGTests_Suite.MT_Tests is
       -- as used in the demonstration code (check64.c) from the authors
 
       Seed : constant U64 := 1;
-      Expected_Array : constant U64_Array := (
+      Expected_Array : constant U64_array := (
                                               15503804787016557143,17280942441431881838, 2177846447079362065,
                                               10087979609567186558, 8925138365609588954,13030236470185662861,
                                               4821755207395923002,11414418928600017220,18168456707151075513,
@@ -210,7 +208,7 @@ package body PRNGTests_Suite.MT_Tests is
                                              );
 
       Seed_Array : constant U64_array(0..0) := (others => 1);
-      Expected_Array_2 : constant U64_Array := (
+      Expected_Array_2 : constant U64_array := (
                                                 2316304586286922237, 15094277089150361724,  5685675787316092711,
                                                 15229481068059623199,  4714098425347676722, 16281862982583854132,
                                                 3901922025624662484,  5886484389080126014, 16107583395258923453,

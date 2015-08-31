@@ -63,5 +63,4 @@ package body PRNG_Zoo is
       Reset(G.IG.all, S);
    end Reset;
 
-
 end PRNG_Zoo;

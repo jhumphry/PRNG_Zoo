@@ -31,7 +31,7 @@ package body PRNGTests_Suite.Misc_Tests is
    begin
       Register_Routine (T, Sanity_Check_GLib_Random'Access, "Basic sanity checks on GLib Random() generator.");
       Register_Routine (T, Sanity_Check_KISS'Access, "Basic sanity checks on Marsaglia KISS generator.");
-      Register_Routine (T, Test_GLib_Random'Access, "Test GLib Random() generator against expected (initial) output");
+      Register_Routine (T, Test_Glib_Random'Access, "Test GLib Random() generator against expected (initial) output");
       Register_Routine (T, Sanity_Check_MurmurHash3'Access, "Basic sanity checks on generator based on MurmurHash3.");
       Register_Routine (T, Sanity_Check_SplitMix'Access, "Basic sanity checks on SplitMix generator.");
    end Register_Tests;
@@ -58,10 +58,10 @@ package body PRNGTests_Suite.Misc_Tests is
    -- Test_Glib_Random --
    ----------------------
 
-   procedure Test_GLib_Random (T : in out Test_Cases.Test_Case'Class) is
+   procedure Test_Glib_Random (T : in out Test_Cases.Test_Case'Class) is
       G : Misc.glibc_random;
 
-      Expected_Array : constant U32_Array := (
+      Expected_Array : constant U32_array := (
                                               1804289383,  846930886, 1681692777, 1714636915,
                                               1957747793,  424238335,  719885386, 1649760492,
                                               596516649, 1189641421, 1025202362, 1350490027,
@@ -87,6 +87,6 @@ package body PRNGTests_Suite.Misc_Tests is
                 "GLib Random() implementation produces unexpected result for seed 1");
       end loop;
 
-   end Test_GLib_Random;
+   end Test_Glib_Random;
 
 end PRNGTests_Suite.Misc_Tests;

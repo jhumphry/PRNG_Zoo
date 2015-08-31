@@ -72,7 +72,7 @@ package body PRNG_Zoo.Tests.Bits is
       for I in T.B'Range loop
          T.Total_Bits := T.Total_Bits + T.B(I);
       end loop;
-      Z := (Long_Float(T.Total_Bits) - Long_Float(T.N*T.Width / 2)) / sqrt(Long_Float(T.N*T.Width));
+      Z := (Long_Float(T.Total_Bits) - Long_Float(T.N*T.Width / 2)) / Sqrt(Long_Float(T.N*T.Width));
       T.Total_Bits_p_value := Stats.Z_Score(Z, True);
 
       for I in T.B'Range loop
@@ -143,7 +143,6 @@ package body PRNG_Zoo.Tests.Bits is
         "Individual bit Z-score results MSB->LSB, failures ranked a (@ 5%) to d (@ 1E-6): "
         & LF & Bits;
    end Describe_Result;
-
 
    -----------
    -- Reset --

@@ -77,7 +77,8 @@ begin
          Put(" outputs from " & Register.Name(Spec));
 
          if Seed_From_Array /= null
-           and G in PRNG_Seed_From_Array'Class then
+           and G in PRNG_Seed_From_Array'Class
+         then
 
             PRNG_Seed_From_Array'Class(G).Reset(Seed_From_Array.all);
             Put(" seeded from an array length: "
@@ -115,6 +116,6 @@ begin
 
    New_Line;
 
-   <<finish>>
+   <<Finish>>
    null;
 end sample_output;

@@ -110,7 +110,7 @@ package PRNG_Zoo is
      (Width(G.IG.all));
    function Constructor(Params : not null access PRNG_Parameters'Class)
                         return Dispatcher is
-     (if true then raise Program_Error else raise Program_Error);
+     (if True then raise Program_Error else raise Program_Error);
    procedure Reset(G: in out Dispatcher; S: in U64);
    function Generate(G: in out Dispatcher) return U64 is
      (Generate(G.IG.all)) with inline;

@@ -143,5 +143,4 @@ package body PRNGTests_Suite.Stats is
 
    end Check_Erf;
 
-
 end PRNGTests_Suite.Stats;

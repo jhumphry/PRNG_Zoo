@@ -33,7 +33,7 @@ package body PRNG_Zoo.Stats is
    function erf(x : Long_Float) return Long_Float is
       -- uses Abramowitz and Stegun 7.1.26 page 299
       p : constant Long_Float  := 0.32759_11;
-      a1 : constant Long_float := 0.25482_9592;
+      a1 : constant Long_Float := 0.25482_9592;
       a2 : constant Long_Float := -0.28449_6736;
       a3 : constant Long_Float := 1.42141_3741;
       a4 : constant Long_Float := -1.45315_2027;
@@ -52,7 +52,7 @@ package body PRNG_Zoo.Stats is
       s := s + a4 * u;
       u := u * t;
       s := s + a5 * u;
-      return Long_Float'Copy_Sign(1.0 - s * exp(-z*z), x);
+      return Long_Float'Copy_Sign(1.0 - s * Exp(-z*z), x);
    end erf;
 
    ----------
@@ -63,9 +63,9 @@ package body PRNG_Zoo.Stats is
       a : constant Long_Float := 0.147;
       u, v : Long_Float;
    begin
-      u := 2.0 / (Pi * a) + log(1.0 - x**2) / 2.0;
-      v := u**2 - 1.0/a * log(1.0 - x**2);
-      return Long_Float'Copy_Sign(sqrt(-u + sqrt(v)), x);
+      u := 2.0 / (Pi * a) + Log(1.0 - x**2) / 2.0;
+      v := u**2 - 1.0/a * Log(1.0 - x**2);
+      return Long_Float'Copy_Sign(Sqrt(-u + Sqrt(v)), x);
    end erfi;
 
    -------------
@@ -127,7 +127,7 @@ package body PRNG_Zoo.Stats is
       rescale : Integer;
    begin
       -- leading constant term is computed this way to prevent overflow.
-      c := exp(K_2 * Log(X_2) - X_2 - Log_Gamma_HalfN(K + 2));
+      c := Exp(K_2 * Log(X_2) - X_2 - Log_Gamma_HalfN(K + 2));
 
       term_point := epsilon * 1.0 / c * (1.0 - (X_2 / K_2)) / (X_2 / K_2);
 
@@ -208,7 +208,7 @@ package body PRNG_Zoo.Stats is
             Result : Long_Float := 0.0;
          begin
             for I in Integer range 1..(N/2-1) loop
-               Result := Result + log(Long_Float(I));
+               Result := Result + Log(Long_Float(I));
             end loop;
             return Result;
          end;
@@ -219,7 +219,7 @@ package body PRNG_Zoo.Stats is
             num : Long_Float := 0.0;
          begin
             for I in Integer range 1..(N/2-1) loop
-               num := num + log(2.0 * Long_Float(I) + 1.0);
+               num := num + Log(2.0 * Long_Float(I) + 1.0);
             end loop;
             return log_sqrt_pi + num - log_2 * Long_Float(N/2);
          end;
@@ -247,7 +247,6 @@ package body PRNG_Zoo.Stats is
       return Z;
 
    end Chi2_Value_Bins;
-
 
    -------------------
    -- Chi2_CDF_Bins --

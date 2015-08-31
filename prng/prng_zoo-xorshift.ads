@@ -57,10 +57,10 @@ package PRNG_Zoo.xorshift is
    type xorshift_array_32_Parameters is new PRNG_Parameters with
       record
          N : Positive;
-         a, b, c : Shift_32;
+         a, b, c : shift_32;
       end record;
 
-   type xorshift_array_32(N : Positive; a, b, c : Shift_32) is
+   type xorshift_array_32(N : Positive; a, b, c : shift_32) is
      new PRNG_32Only and xorshift with private;
    function Strength(G: in xorshift_array_32) return PRNG_Strength is (Low);
    function Constructor(Params : not null access PRNG_Parameters'Class)
@@ -92,7 +92,7 @@ private
                         return xorshift_3 is
      (xorshift_3'(others => <>));
 
-   type xorshift_array_32(N : Positive; a, b, c : Shift_32) is
+   type xorshift_array_32(N : Positive; a, b, c : shift_32) is
      new PRNG_32Only and xorshift with
       record
          s : U32_array(1..N);

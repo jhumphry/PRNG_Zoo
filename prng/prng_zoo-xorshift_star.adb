@@ -16,7 +16,6 @@
 
 package body PRNG_Zoo.xorshift_star is
 
-
    -----------
    -- Reset --
    -----------
@@ -66,7 +65,7 @@ package body PRNG_Zoo.xorshift_star is
       s1 := s1 xor Shift_Left(s1, 31);
       s1 := s1 xor Shift_Right(s1, 11);
       s0 := s0 xor Shift_Right(s1, 30);
-      G.s(G.p) := S0 xor S1;
+      G.s(G.p) := s0 xor s1;
 
       return G.s(G.p) * M8;
    end Generate;
@@ -99,7 +98,7 @@ package body PRNG_Zoo.xorshift_star is
       s1 := s1 xor Shift_Left(s1, 25);
       s1 := s1 xor Shift_Right(s1, 3);
       s0 := s0 xor Shift_Right(s1, 49);
-      G.s(G.p) := S0 xor S1;
+      G.s(G.p) := s0 xor s1;
 
       return G.s(G.p) * M2;
    end Generate;

@@ -16,10 +16,6 @@
 
 with AUnit.Assertions; use AUnit.Assertions;
 
---with PRNG_Zoo;
---use PRNG_Zoo;
---use all type PRNG_Zoo.U32;
-
 with PRNG_Zoo.Linear_Congruential;
 with PRNG_Zoo.Linear_Congruential.Examples;
 use all type PRNG_Zoo.Linear_Congruential.Examples.RANDU;
@@ -68,7 +64,7 @@ package body PRNGTests_Suite.Lin_Con_Tests is
 
    procedure Test_RANDU (T : in out Test_Cases.Test_Case'Class) is
       G : Linear_Congruential.Examples.RANDU;
-      Expected : constant U32_Array := (65539, 393225, 1769499, 7077969,
+      Expected : constant U32_array := (65539, 393225, 1769499, 7077969,
                                26542323, 95552217, 334432395, 1146624417,
                                1722371299, 14608041);
    begin
@@ -105,7 +101,7 @@ package body PRNGTests_Suite.Lin_Con_Tests is
       Reset(G_MINSTD0, 1);
       Reset(G_MINSTD0_P, 1);
 
-      for I In 1..1024 loop
+      for I in 1..1024 loop
          Assert(U32'(Generate(G_MINSTD)) = U32'(Generate(G_MINSTD_P)),
                 "MINSTD outputs from generic LCG don't match that from parametised LCG.");
 
@@ -118,7 +114,7 @@ package body PRNGTests_Suite.Lin_Con_Tests is
       Reset(G_MINSTD0, 1);
       Reset(G_MINSTD0_Dynamic, 1);
 
-      for I In 1..1024 loop
+      for I in 1..1024 loop
          Assert(U32'(Generate(G_MINSTD)) = U32'(Generate(G_MINSTD_Dynamic)),
                 "MINSTD outputs from generic LCG don't match that from dynamically constructed LCG.");
 
@@ -127,6 +123,5 @@ package body PRNGTests_Suite.Lin_Con_Tests is
       end loop;
 
    end Test_MINSTD;
-
 
 end PRNGTests_Suite.Lin_Con_Tests;

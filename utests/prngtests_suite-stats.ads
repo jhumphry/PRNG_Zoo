@@ -14,7 +14,7 @@
 -- OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 -- PERFORMANCE OF THIS SOFTWARE.
 
-with AUnit; use Aunit;
+with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
 package PRNGTests_Suite.Stats is

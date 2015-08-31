@@ -127,7 +127,6 @@ package body PRNG_Zoo.Tests.EquiDist is
         Long_Float'Image(T.chi2_cdf_result);
    end Describe_Result;
 
-
    -------------------
    -- Make_EquiDist --
    -------------------

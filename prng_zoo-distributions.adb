@@ -83,7 +83,7 @@ package body PRNG_Zoo.Distributions is
          s := t1*t1 + t2*t2;
          exit when s <= 1.0;
       end loop;
-      ss := sqrt(-2.0 * log(s + Float_Type'Model_Small) / s);
+      ss := Sqrt(-2.0 * Log(s + Float_Type'Model_Small) / s);
       D.Loaded := True;
       D.r2 := t2 * ss;
       return t1 * ss;
@@ -115,21 +115,21 @@ package body PRNG_Zoo.Distributions is
 
       TX := Generate_Padded(G);
       y := Float_Type(TX) * scale * b_recip;
-      if log(y) < (log_norm_c - 0.5 * x * x) then
+      if Log(y) < (log_norm_c - 0.5 * x * x) then
          return x * sign;
       end if;
 
       x := s*(b-x);
       y := b_recip + ( b_recip - y) / s;
-      if log(y) <  (log_norm_c - 0.5 * x * x) then
+      if Log(y) <  (log_norm_c - 0.5 * x * x) then
          return x * sign;
       end if;
 
       loop
          TX:= Generate_Padded(G);
          TY:= Generate_Padded(G);
-         x := -log(Float_Type(TX) * scale) * b_recip;
-         y := -log(Float_Type(TY) * scale);
+         x := -Log(Float_Type(TX) * scale) * b_recip;
+         y := -Log(Float_Type(TY) * scale);
          exit when y+y > x*x;
       end loop;
 
@@ -144,7 +144,7 @@ package body PRNG_Zoo.Distributions is
    function Generate (D: in out Exponential; G : in out PRNG'Class) return Float_Type is
       X : constant U64 := Generate_Padded(G);
    begin
-      return -D.theta * log(Float_Type(X) * scale + Float_Type'Model_Small);
+      return -D.theta * Log(Float_Type(X) * scale + Float_Type'Model_Small);
    end Generate;
 
 end PRNG_Zoo.Distributions;

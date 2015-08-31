@@ -75,7 +75,8 @@ package body PRNG_Zoo.Linear_Congruential is
    function Constructor(Params : not null access PRNG_Parameters'Class) return LCG is
       P : LCG_Parameters;
    begin
-      if Params.all in LCG_Parameters then
+      if Params.all in LCG_Parameters
+      then
          P := LCG_Parameters(Params.all);
          return LCG'(Modulus      => P.Modulus,
                      Multiplier   => P.Multiplier,
@@ -85,7 +86,8 @@ package body PRNG_Zoo.Linear_Congruential is
       elsif Params.Contains("Modulus") and
         Params.Contains("Multiplier") and
         Params.Contains("Increment") and
-        Params.Contains("Usable_Width") then
+        Params.Contains("Usable_Width")
+      then
          return LCG'(Modulus      => Params.Parameter("Modulus"),
                      Multiplier   => Params.Parameter("Multiplier"),
                      Increment    => Params.Parameter("Increment"),
@@ -132,7 +134,8 @@ package body PRNG_Zoo.Linear_Congruential is
       elsif Params.Contains("Modulus") and
         Params.Contains("Multiplier") and
         Params.Contains("Increment") and
-        Params.Contains("Usable_Width") then
+        Params.Contains("Usable_Width")
+      then
          return LCG_32Only'(Modulus      => U32(U64'(Params.Parameter("Modulus"))),
                             Multiplier   => U32(U64'(Params.Parameter("Multiplier"))),
                             Increment    => U32(U64'(Params.Parameter("Increment"))),

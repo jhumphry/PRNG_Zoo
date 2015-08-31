@@ -14,13 +14,13 @@
 -- OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 -- PERFORMANCE OF THIS SOFTWARE.
 
-with PRNGtests_Suite;
+with PRNGTests_Suite;
 
 with AUnit.Run;
 with AUnit.Reporter.Text;
 
 procedure PRNGtests is
-   procedure Run is new AUnit.Run.Test_Runner (PRNGtests_Suite.Suite);
+   procedure Run is new AUnit.Run.Test_Runner (PRNGTests_Suite.Suite);
    Reporter : AUnit.Reporter.Text.Text_Reporter;
 begin
    Run (Reporter);

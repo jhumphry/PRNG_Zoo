@@ -81,5 +81,4 @@ private
                               return TinyMT_64 is
      (TinyMT_64'(others => <>));
 
-
 end PRNG_Zoo.MT;

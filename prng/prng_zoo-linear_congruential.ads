@@ -122,5 +122,3 @@ private
       end record;
 
 end PRNG_Zoo.Linear_Congruential;
-
-

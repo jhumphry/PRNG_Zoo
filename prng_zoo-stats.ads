@@ -56,7 +56,6 @@ package PRNG_Zoo.Stats is
    -- Return the Gamma function for N/2
    function Gamma_HalfN(N : Positive) return Long_Float;
 
-
    -- Return the logarithm of the Gamma function for N/2
    function Log_Gamma_HalfN(N : Positive) return Long_Float;
 

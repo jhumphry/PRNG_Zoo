@@ -30,7 +30,7 @@ package PRNG_Zoo.Filters is
    function Width(G: in Split_32) return Positive is (32);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return Split_32 is
-     (if true then raise Program_Error else raise Program_Error);
+     (if True then raise Program_Error else raise Program_Error);
    function Generate_Padded(G: in out Split_32) return U64 is
       (U64(U32'(Generate(G)))) with inline;
    function Generate(G: in out Split_32) return U32;
@@ -40,7 +40,7 @@ package PRNG_Zoo.Filters is
    type Bit_Reverse(IG : access PRNG'Class) is new Dispatcher(IG) with null record;
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return Bit_Reverse is
-     (if true then raise Program_Error else raise Program_Error);
+     (if True then raise Program_Error else raise Program_Error);
    function Generate(G: in out Bit_Reverse) return U64;
    function Generate_Padded(G: in out Bit_Reverse) return U64;
    function Generate(G: in out Bit_Reverse) return U32;
@@ -49,13 +49,13 @@ package PRNG_Zoo.Filters is
    type Incrementer is new PRNG with
       record
          S : U64 := 0;
-         incr : U64 := 1;
+         Incr : U64 := 1;
       end record;
    function Strength(G: in Incrementer) return PRNG_Strength is (Dummy);
    function Width(G: in Incrementer) return Positive is (64);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                         return Incrementer is
-     (Incrementer'(incr => Params.Parameter("incr",1),
+     (Incrementer'(Incr => Params.Parameter("incr",1),
                    others => <>));
    procedure Reset(G: in out Incrementer; S: in U64);
    function Generate(G: in out Incrementer) return U64 with inline;

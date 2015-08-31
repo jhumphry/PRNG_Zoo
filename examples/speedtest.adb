@@ -116,7 +116,6 @@ begin
             return To_Duration(End_Time-Start_Time);
          end Run_Subset;
 
-
       begin
          if Seed_From_Array /= null and G in PRNG_Seed_From_Array'Class then
             PRNG_Seed_From_Array'Class(G).Reset(Seed_From_Array.all);
@@ -142,7 +141,8 @@ begin
             end if;
 
             if Timings(1) > Median_Per_Subset * (100 - Tolerance) / 100 and
-              Timings(Subsets) < Median_Per_Subset * (100 + Tolerance) / 100 then
+              Timings(Subsets) < Median_Per_Subset * (100 + Tolerance) / 100
+            then
                Put(Duration'Image(Median_Per_Subset * Subsets));
                Put(" " & Duration'Image(Timings(1) * Subsets));
                Put(" - " & Duration'Image(Timings(Subsets) * Subsets));
@@ -154,11 +154,10 @@ begin
          New_Line;
       end;
 
-
    end loop;
 
    New_Line;
 
-   <<finish>>
+   <<Finish>>
    null;
 end speedtest;

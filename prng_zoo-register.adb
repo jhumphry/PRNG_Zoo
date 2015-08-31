@@ -251,5 +251,4 @@ begin
        Params      => No_Parameters'Access,
        Description => To_Unbounded_String ("xorshift4096* generator")));
 
-
 end PRNG_Zoo.Register;
