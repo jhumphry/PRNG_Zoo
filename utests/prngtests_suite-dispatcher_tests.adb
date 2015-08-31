@@ -42,6 +42,7 @@ package body PRNGTests_Suite.Dispatcher_Tests is
    ----------
 
    function Name (T : Dispatcher_Test) return Test_String is
+      pragma Unreferenced (T);
    begin
       return Format ("Test Dispatcher holding types and filters");
    end Name;
@@ -60,6 +61,7 @@ package body PRNGTests_Suite.Dispatcher_Tests is
    ---------------------
 
    procedure Test_Dispatcher (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       G1: aliased xorshift_star.xorshift64_star;
       G2 : xorshift_star.xorshift64_star;
       G : Dispatcher(G1'Access);
@@ -87,6 +89,7 @@ package body PRNGTests_Suite.Dispatcher_Tests is
    ------------------------
 
    procedure Test_Dispatcher_32 (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       G1: aliased Linear_Congruential.Examples.MINSTD;
       G2 : Linear_Congruential.Examples.MINSTD;
       G : Dispatcher(G1'Access);
@@ -114,6 +117,7 @@ package body PRNGTests_Suite.Dispatcher_Tests is
    -------------------
 
    procedure Test_Split_32 (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       IG : aliased Filters.Incrementer;
       G : Filters.Split_32(IG => IG'Access);
       Expected_Array : constant U32_array := (16#33333334#, 16#22222222#,
@@ -131,6 +135,7 @@ package body PRNGTests_Suite.Dispatcher_Tests is
    ----------------------
 
    procedure Test_Bit_Reverse (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       IG : aliased Filters.Incrementer;
       G : Filters.Bit_Reverse(IG => IG'Access);
       Expected_Array_32 : constant U32_array := (16#2CCCCCCC#, 16#ACCCCCCC#,

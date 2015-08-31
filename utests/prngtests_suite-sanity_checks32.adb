@@ -18,6 +18,7 @@ with AUnit.Assertions; use AUnit.Assertions;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
 procedure PRNGTests_Suite.Sanity_Checks32(T : in out Test_Case'Class) is
+   pragma Unreferenced(T);
    G : P;
    Output : U32_array(1..N);
    Mask : constant U64 := Shift_Left(16#FFFFFFFF#, G.Width);

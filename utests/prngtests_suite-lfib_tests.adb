@@ -31,6 +31,7 @@ package body PRNGTests_Suite.LFib_Tests is
    ----------
 
    function Name (T : LFib_Test) return Test_String is
+      pragma Unreferenced (T);
    begin
       return Format ("Lagged Fibonacci PRNG Tests");
    end Name;

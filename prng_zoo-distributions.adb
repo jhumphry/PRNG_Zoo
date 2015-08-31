@@ -21,6 +21,7 @@ package body PRNG_Zoo.Distributions is
    --------------
 
    function Generate (D: in out Uniform01; G : in out PRNG'Class) return Float_Type is
+      pragma Unreferenced (D);
       X : constant U64 := Generate_Padded(G);
    begin
       return Float_Type(X) * scale;
@@ -41,6 +42,7 @@ package body PRNG_Zoo.Distributions is
    --------------
 
    function Generate (D: in out Normal_12_6; G : in out PRNG'Class) return Float_Type is
+      pragma Unreferenced (D);
       Result : Float_Type := 0.0;
       X : U64;
    begin
@@ -94,6 +96,7 @@ package body PRNG_Zoo.Distributions is
    --------------
 
    function Generate (D: in out Normal_Monty_Python; G : in out PRNG'Class) return Float_Type is
+      pragma Unreferenced (D);
 
       a : constant Float_Type := 1.17741_00225_15474_69101; -- sqrt(log(4))
       b : constant Float_Type := 2.50662_82746_31000_50240; -- sqrt(2*pi)

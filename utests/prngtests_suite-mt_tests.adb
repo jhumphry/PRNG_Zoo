@@ -43,6 +43,7 @@ package body PRNGTests_Suite.MT_Tests is
    ----------
 
    function Name (T : MT_Test) return Test_String is
+      pragma Unreferenced (T);
    begin
       return Format ("Mersenne Twister PRNG Tests");
    end Name;
@@ -61,6 +62,7 @@ package body PRNGTests_Suite.MT_Tests is
    ------------------
 
    procedure Test_MT19937 (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       G : MT.MT19937;
 
       -- This array was generated from a quick C program using the
@@ -129,6 +131,7 @@ package body PRNGTests_Suite.MT_Tests is
    ---------------------
 
    procedure Test_MT19937_64 (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       G : MT.MT19937_64;
 
       -- This array was generated from a quick C program using the
@@ -186,6 +189,7 @@ package body PRNGTests_Suite.MT_Tests is
    --------------------
 
    procedure Test_TinyMT_64 (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       G : MT.TinyMT_64;
 
       -- This array was generated from a quick C program using the

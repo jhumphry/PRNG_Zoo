@@ -41,6 +41,7 @@ package body PRNGTests_Suite.Misc_Tests is
    ----------
 
    function Name (T : Misc_Test) return Test_String is
+      pragma Unreferenced (T);
    begin
       return Format ("Test miscellaneous PRNGs");
    end Name;
@@ -59,6 +60,7 @@ package body PRNGTests_Suite.Misc_Tests is
    ----------------------
 
    procedure Test_Glib_Random (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       G : Misc.glibc_random;
 
       Expected_Array : constant U32_array := (

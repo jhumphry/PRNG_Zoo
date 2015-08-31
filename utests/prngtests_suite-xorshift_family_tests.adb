@@ -40,6 +40,7 @@ package body PRNGTests_Suite.xorshift_Family_Tests is
    ----------
 
    function Name (T : xorshift_Family_Test) return Test_String is
+      pragma Unreferenced (T);
    begin
       return Format ("Tests on the xorshift[+|*] family of PRNG");
    end Name;
@@ -54,6 +55,7 @@ package body PRNGTests_Suite.xorshift_Family_Tests is
    end Set_Up;
 
    procedure Sanity_Check_xorshift_array_32(T : in out Test_Case'Class) is
+      pragma Unreferenced (T);
       use all type PRNG_Zoo.xorshift.xorshift_array_32;
       G : PRNG_Zoo.xorshift.xorshift_array_32(4, 13, 17, 5);
       Output : U32_array(1..32);

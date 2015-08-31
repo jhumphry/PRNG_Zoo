@@ -37,6 +37,7 @@ package body PRNGTests_Suite.Stats is
    ----------
 
    function Name (T : Stats_Test) return Test_String is
+      pragma Unreferenced (T);
    begin
       return Format ("Tests of statistical routines");
    end Name;
@@ -55,6 +56,7 @@ package body PRNGTests_Suite.Stats is
    -------------------
 
    procedure Check_Z_Score (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       use PRNG_Zoo.Stats;
    begin
       -- SciPy and the NIST/Sematech Stats handbook were used to validate
@@ -95,6 +97,7 @@ package body PRNGTests_Suite.Stats is
    ----------------
 
    procedure Check_Chi2 (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       use PRNG_Zoo.Stats;
    begin
       -- SciPy and the NIST/Sematech Stats handbook were used to validate
@@ -124,6 +127,7 @@ package body PRNGTests_Suite.Stats is
    ---------------
 
    procedure Check_Erf (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       use PRNG_Zoo.Stats;
       X : Long_Float;
    begin

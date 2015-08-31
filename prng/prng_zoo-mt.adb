@@ -109,6 +109,8 @@ package body PRNG_Zoo.MT is
    TINYMT64_MASK : constant U64 := 16#7fffffffffffffff#;
    MIN_LOOP : constant := 8;
 
+   pragma Unreferenced(TINYMT64_MEXP);
+
    -----------
    -- Reset --
    -----------

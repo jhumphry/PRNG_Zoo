@@ -45,6 +45,7 @@ package body PRNGTests_Suite.Lin_Con_Tests is
    ----------
 
    function Name (T : Lin_Con_Test) return Test_String is
+      pragma Unreferenced (T);
    begin
       return Format ("Linear Congruential PRNG Tests");
    end Name;
@@ -63,6 +64,7 @@ package body PRNGTests_Suite.Lin_Con_Tests is
    ----------------
 
    procedure Test_RANDU (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       G : Linear_Congruential.Examples.RANDU;
       Expected : constant U32_array := (65539, 393225, 1769499, 7077969,
                                26542323, 95552217, 334432395, 1146624417,
@@ -79,6 +81,7 @@ package body PRNGTests_Suite.Lin_Con_Tests is
    -----------------
 
    procedure Test_MINSTD (T : in out Test_Cases.Test_Case'Class) is
+      pragma Unreferenced (T);
       G_MINSTD : Linear_Congruential.Examples.MINSTD;
       G_MINSTD_P : Linear_Congruential.LCG_32Only(Modulus => 2147483647,
                                                   Multiplier => 48271,
