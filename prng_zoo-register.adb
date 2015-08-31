@@ -132,123 +132,143 @@ package body PRNG_Zoo.Register is
 begin
 
    Register.Insert
-   ("Incrementer", PRNG_Details'
-      (Tag         => Filters.Incrementer'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Dummy generator: Output is incremented by param incr each time")));
+     ("Incrementer", PRNG_Details'
+        (Tag         => Filters.Incrementer'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Dummy generator: Output is incremented by param incr each time")));
 
    Register.Insert
-   ("LFib_107_378", PRNG_Details'
-      (Tag         => LFIB_107_378.LFib'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Additive Lagged Fibbonacci S_n = S_{n-107} + S_{n-378}")));
+     ("LFib_107_378", PRNG_Details'
+        (Tag         => LFIB_107_378.LFib'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Additive Lagged Fibbonacci S_n = S_{n-107} + S_{n-378}")));
 
    Register.Insert
-   ("LCG", PRNG_Details'
-      (Tag         => Linear_Congruential.LCG'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Generic 64-bit Linear Conguential Generator")));
+     ("LCG", PRNG_Details'
+        (Tag         => Linear_Congruential.LCG'Tag,
+         Params_Req  => True,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Generic 64-bit Linear Conguential Generator")));
 
    Register.Insert
-   ("LCG32", PRNG_Details'
-      (Tag         => Linear_Congruential.LCG_32Only'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Generic 32-bit Linear Conguential Generator")));
+     ("LCG32", PRNG_Details'
+        (Tag         => Linear_Congruential.LCG_32Only'Tag,
+         Params_Req  => True,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Generic 32-bit Linear Conguential Generator")));
 
    Register.Insert
-   ("MINSTD", PRNG_Details'
-      (Tag         => Linear_Congruential.LCG_32Only'Tag,
-       Params      => Linear_Congruential.Examples.MINSTD0_Parameters'Access,
-       Description => To_Unbounded_String ("MINSTD Linear Congruential generator (as per C++ spec)")));
+     ("MINSTD", PRNG_Details'
+        (Tag         => Linear_Congruential.LCG_32Only'Tag,
+         Params_Req  => False,
+         Params      => Linear_Congruential.Examples.MINSTD0_Parameters'Access,
+         Description => To_Unbounded_String ("MINSTD Linear Congruential generator (as per C++ spec)")));
 
    Register.Insert
-   ("MINSTD0", PRNG_Details'
-      (Tag         => Linear_Congruential.LCG_32Only'Tag,
-       Params      => Linear_Congruential.Examples.MINSTD0_Parameters'Access,
-       Description => To_Unbounded_String ("MINSTD0, a slightly older varient of MINSTD")));
+     ("MINSTD0", PRNG_Details'
+        (Tag         => Linear_Congruential.LCG_32Only'Tag,
+         Params_Req  => False,
+         Params      => Linear_Congruential.Examples.MINSTD0_Parameters'Access,
+         Description => To_Unbounded_String ("MINSTD0, a slightly older varient of MINSTD")));
 
    Register.Insert
-   ("RANDU", PRNG_Details'
-      (Tag         => Linear_Congruential.LCG_32Only'Tag,
-       Params      => Linear_Congruential.Examples.RANDU_Parameters'Access,
-       Description => To_Unbounded_String ("RANDU, a very poor but traditional LCG PRNG")));
+     ("RANDU", PRNG_Details'
+        (Tag         => Linear_Congruential.LCG_32Only'Tag,
+         Params_Req  => False,
+         Params      => Linear_Congruential.Examples.RANDU_Parameters'Access,
+         Description => To_Unbounded_String ("RANDU, a very poor but traditional LCG PRNG")));
 
    Register.Insert
-   ("glibc", PRNG_Details'
-      (Tag         => Misc.glibc_random'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("GLibc random() generator")));
+     ("glibc", PRNG_Details'
+        (Tag         => Misc.glibc_random'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("GLibc random() generator")));
 
    Register.Insert
-   ("KISS", PRNG_Details'
-      (Tag         => Misc.KISS'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Marsaglia's KISS generator")));
+     ("KISS", PRNG_Details'
+        (Tag         => Misc.KISS'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Marsaglia's KISS generator")));
 
    Register.Insert
-   ("Murmurhash3", PRNG_Details'
-      (Tag         => Misc.MurmurHash3'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Generator based on Murmurhash3")));
+     ("Murmurhash3", PRNG_Details'
+        (Tag         => Misc.MurmurHash3'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Generator based on Murmurhash3")));
 
    Register.Insert
-    ("SplitMix", PRNG_Details'
-      (Tag         => Misc.SplitMix'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("SplitMix generator")));
+     ("SplitMix", PRNG_Details'
+        (Tag         => Misc.SplitMix'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("SplitMix generator")));
 
    Register.Insert
-   ("mt", PRNG_Details'
-      (Tag         => MT.MT19937'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Mersenne Twister (mt19937)")));
+     ("mt", PRNG_Details'
+        (Tag         => MT.MT19937'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Mersenne Twister (mt19937)")));
 
    Register.Insert
-   ("mt64", PRNG_Details'
-      (Tag         => MT.MT19937_64'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("64-bit varient of the Mersenne Twister (mt19937_64)")));
+     ("mt64", PRNG_Details'
+        (Tag         => MT.MT19937_64'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("64-bit varient of the Mersenne Twister (mt19937_64)")));
 
    Register.Insert
-   ("TinyMT64", PRNG_Details'
-      (Tag         => MT.TinyMT_64'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("64-bit varient of the TinyMT generator")));
+     ("TinyMT64", PRNG_Details'
+        (Tag         => MT.TinyMT_64'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("64-bit varient of the TinyMT generator")));
 
    Register.Insert
-   ("SHR3", PRNG_Details'
-      (Tag         => xorshift.SHR3'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Marsaglia's SHR3 xorshift generator")));
+     ("SHR3", PRNG_Details'
+        (Tag         => xorshift.SHR3'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Marsaglia's SHR3 xorshift generator")));
 
    Register.Insert
-   ("xor64", PRNG_Details'
-      (Tag         => xorshift.xor64'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("Marsaglia's xor64 xorshift generator")));
+     ("xor64", PRNG_Details'
+        (Tag         => xorshift.xor64'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("Marsaglia's xor64 xorshift generator")));
 
    Register.Insert
-   ("xorshift128+", PRNG_Details'
-      (Tag         => xorshift_plus.xorshift128_plus'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("xorshift128+ generator")));
+     ("xorshift128+", PRNG_Details'
+        (Tag         => xorshift_plus.xorshift128_plus'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("xorshift128+ generator")));
 
    Register.Insert
-   ("xorshift64*", PRNG_Details'
-      (Tag         => xorshift_star.xorshift64_star'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("xorshift64* generator")));
+     ("xorshift64*", PRNG_Details'
+        (Tag         => xorshift_star.xorshift64_star'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("xorshift64* generator")));
 
    Register.Insert
-   ("xorshift1024*", PRNG_Details'
-      (Tag         => xorshift_star.xorshift1024_star'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("xorshift1024* generator")));
+     ("xorshift1024*", PRNG_Details'
+        (Tag         => xorshift_star.xorshift1024_star'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("xorshift1024* generator")));
 
    Register.Insert
-   ("xorshift4096*", PRNG_Details'
-      (Tag         => xorshift_star.xorshift4096_star'Tag,
-       Params      => No_Parameters'Access,
-       Description => To_Unbounded_String ("xorshift4096* generator")));
+     ("xorshift4096*", PRNG_Details'
+        (Tag         => xorshift_star.xorshift4096_star'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("xorshift4096* generator")));
 
 end PRNG_Zoo.Register;

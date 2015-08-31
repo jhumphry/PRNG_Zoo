@@ -40,6 +40,7 @@ package PRNG_Zoo.Register is
    type PRNG_Details is
       record
          Tag : Ada.Tags.Tag;
+         Params_Req : Boolean;
          Params : not null access constant PRNG_Parameters'Class;
          Description : PRNG_Description;
       end record;

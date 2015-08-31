@@ -61,8 +61,10 @@ begin
       Put_Line("At least one PRNG must be specified.");
    elsif AP.Tail.First_Element = "all" then
       for I in Register.Iterate loop
-         PRNG_Specs.Append (PRNG_Spec'(Name => To_Unbounded_String(PRNG_Registries.Key (I)),
-                                       Params => Null_Unbounded_String));
+         if not PRNG_Registries.Element (I).Params_Req then
+            PRNG_Specs.Append (PRNG_Spec'(Name => To_Unbounded_String(PRNG_Registries.Key (I)),
+                                          Params => Null_Unbounded_String));
+         end if;
       end loop;
    else
       for J of AP.Tail loop
@@ -71,6 +73,10 @@ begin
             if not PRNG_Zoo.Register.PRNG_Exists(J) then
                PRNG_Specs := Common_CLI_Options.PRNG_Spec_Lists.Empty_List;
                Put_Line("No such PRNG: '" & J & "'");
+               exit;
+            end if;
+            if PRNG_Zoo.Register.Register.Element(J).Params_Req then
+               Put_Line("PRNG: " & J & " requires parameters.");
                exit;
             end if;
             PRNG_Specs.Append(PRNG_Spec'(Name => To_Unbounded_String(J),
