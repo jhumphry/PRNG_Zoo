@@ -21,9 +21,12 @@ package PRNG_Zoo.Tests is
 
    type Test is limited interface;
    function Result_Ready(T: Test) return Boolean is abstract;
-   function Passed(T : in Test; p : in Long_Float := 0.01) return Boolean is abstract;
-   function p(T : in Test) return Long_Float is abstract;
-   function Describe_Result(T : in Test) return String is abstract;
+   function Passed(T : in Test; p : in Long_Float := 0.01) return Boolean is abstract
+     with Pre'Class => Result_Ready(T);
+   function p(T : in Test) return Long_Float is abstract
+     with Pre'Class => Result_Ready(T);
+   function Describe_Result(T : in Test) return String is abstract
+     with Pre'Class => Result_Ready(T);
 
    type Test_Ptr is access all Test'Class;
 
