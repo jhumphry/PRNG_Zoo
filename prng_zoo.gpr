@@ -2,7 +2,7 @@
 -- Relies on GPR_PROJECT_PATH containing the project files for AUnit and Parse_Args
 
 with "aunit";
-with "parse_args_dynamic";
+with "parse_args_static";
 
 project PRNG_Zoo is
 
