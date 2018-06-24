@@ -23,6 +23,7 @@ with PRNG_Zoo.LFib;
 with PRNG_Zoo.Linear_Congruential, PRNG_Zoo.Linear_Congruential.Examples;
 with PRNG_Zoo.Misc;
 with PRNG_Zoo.MT;
+with PRNG_Zoo.xoroshiro;
 with PRNG_Zoo.xorshift;
 with PRNG_Zoo.xorshift_plus;
 with PRNG_Zoo.xorshift_star;
@@ -242,6 +243,13 @@ begin
          Params_Req  => False,
          Params      => No_Parameters'Access,
          Description => To_Unbounded_String ("Marsaglia's xor64 xorshift generator")));
+
+   Register.Insert
+     ("xoroshiro128+", PRNG_Details'
+        (Tag         => xoroshiro.xoroshiro128_plus'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("xoroshiro128+ generator")));
 
    Register.Insert
      ("xorshift128+", PRNG_Details'
