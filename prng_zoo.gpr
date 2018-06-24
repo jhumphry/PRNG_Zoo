@@ -1,4 +1,9 @@
--- Example project file for use with GNATmake or GPRbuild
+--
+-- PRNG Zoo
+-- Copyright (c) 2014 - 2018, James Humphry
+--
+
+-- Project file for use with GPRbuild
 -- Relies on GPR_PROJECT_PATH containing the project files for AUnit and Parse_Args
 
 with "aunit";
@@ -35,17 +40,10 @@ project PRNG_Zoo is
                                               "-gnata", "-gnateF", "-gnatf",
                                               "-gnato", "-gnatVa", "-gnatwa",
                                               "-gnatyaAbCdfhiknprux");
-            for Switches ("speedtest.adb") use ("-fstack-check", "-g", "-gnat2012",
-                                                "-gnata", "-gnateF", "-gnatf",
-                                                "-gnato", "-gnatVa", "-gnatwa",
-                                                "-gnatyaAbCdfhiknprux",
-                                                "-fno-move-loop-invariants", "-fno-unroll-loops");
 
          when "optimize" =>
-            for Default_Switches ("ada") use ("-gnat2012", "-O3", "-gnatn");
-            for Switches ("speedtest.adb") use ("-gnat2012", "-O3", "-gnatn",
-                                                "-fno-move-loop-invariants",
-                                                "-fno-unroll-loops");
+            for Default_Switches ("ada") use ("-gnat2012", "-O3",
+                                              "-gnatn", "-gnatp");
       end case;
    end Compiler;
 
