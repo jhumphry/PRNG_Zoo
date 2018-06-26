@@ -17,24 +17,24 @@
 with AUnit; use AUnit;
 with AUnit.Test_Cases; use AUnit.Test_Cases;
 
-with PRNG_Zoo.xoroshiro;
+with PRNG_Zoo.xoshiro;
 with PRNGTests_Suite.Sanity_Checks;
 
-package PRNGTests_Suite.xoroshiro_Tests is
+package PRNGTests_Suite.xoshiro_Tests is
 
-   type xoroshiro_Family_Test is new Test_Cases.Test_Case with null record;
+   type xoshiro_Family_Test is new Test_Cases.Test_Case with null record;
 
-   procedure Register_Tests (T: in out xoroshiro_Family_Test);
+   procedure Register_Tests (T: in out xoshiro_Family_Test);
 
-   function Name (T : xoroshiro_Family_Test) return Test_String;
+   function Name (T : xoshiro_Family_Test) return Test_String;
 
-   procedure Set_Up (T : in out xoroshiro_Family_Test);
+   procedure Set_Up (T : in out xoshiro_Family_Test);
 
    -- Test Routines:
-   procedure Sanity_Check_xoroshiro128_plus is
-     new PRNGTests_Suite.Sanity_Checks(P => xoroshiro.xoroshiro128_plus);
+   procedure Sanity_Check_xoshiro256_plus is
+     new PRNGTests_Suite.Sanity_Checks(P => xoshiro.xoshiro256_plus);
 
-    procedure Sanity_Check_xoroshiro128_star_star is
-     new PRNGTests_Suite.Sanity_Checks(P => xoroshiro.xoroshiro128_star_star);
+    procedure Sanity_Check_xoshiro256_star_star is
+     new PRNGTests_Suite.Sanity_Checks(P => xoshiro.xoshiro256_star_star);
 
-end PRNGTests_Suite.xoroshiro_Tests;
+end PRNGTests_Suite.xoshiro_Tests;

@@ -18,6 +18,7 @@ with PRNGTests_Suite.Lin_Con_Tests;
 with PRNGTests_Suite.MT_Tests;
 with PRNGTests_Suite.xorshift_Family_Tests;
 with PRNGTests_Suite.xoroshiro_Tests;
+with PRNGTests_Suite.xoshiro_Tests;
 with PRNGTests_Suite.LFib_Tests;
 with PRNGTests_Suite.Misc_Tests;
 with PRNGTests_Suite.Dispatcher_Tests;
@@ -32,6 +33,7 @@ package body PRNGTests_Suite is
    Test_MT : aliased MT_Tests.MT_Test;
    Test_xorshift : aliased xorshift_Family_Tests.xorshift_Family_Test;
    Test_xoroshiro : aliased xoroshiro_Tests.xoroshiro_Family_Test;
+   Test_xoshiro : aliased xoshiro_Tests.xoshiro_Family_Test;
    Test_LFib : aliased LFib_Tests.LFib_Test;
    Test_Misc : aliased Misc_Tests.Misc_Test;
    Test_Dispatcher : aliased Dispatcher_Tests.Dispatcher_Test;
@@ -46,6 +48,7 @@ package body PRNGTests_Suite is
       Add_Test (Result'Access, Test_MT'Access);
       Add_Test (Result'Access, Test_xorshift'Access);
       Add_Test (Result'Access, Test_xoroshiro'Access);
+      Add_Test (Result'Access, Test_xoshiro'Access);
       Add_Test (Result'Access, Test_LFib'Access);
       Add_Test (Result'Access, Test_Misc'Access);
       Add_Test (Result'Access, Test_Dispatcher'Access);

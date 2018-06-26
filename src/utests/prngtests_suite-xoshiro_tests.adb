@@ -14,38 +14,38 @@
 -- OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 -- PERFORMANCE OF THIS SOFTWARE.
 
-package body PRNGTests_Suite.xoroshiro_Tests is
+package body PRNGTests_Suite.xoshiro_Tests is
 
    --------------------
    -- Register_Tests --
    --------------------
 
-   procedure Register_Tests (T: in out xoroshiro_Family_Test) is
+   procedure Register_Tests (T: in out xoshiro_Family_Test) is
       use AUnit.Test_Cases.Registration;
    begin
-      Register_Routine (T, Sanity_Check_xoroshiro128_plus'Access,
-                        "Basic sanity checks on xoroshiro128+ generator.");
-      Register_Routine (T, Sanity_Check_xoroshiro128_star_star'Access,
-                        "Basic sanity checks on xoroshiro128** generator.");
+      Register_Routine (T, Sanity_Check_xoshiro256_plus'Access,
+                        "Basic sanity checks on xoshiro256+ generator.");
+      Register_Routine (T, Sanity_Check_xoshiro256_star_star'Access,
+                        "Basic sanity checks on xoshiro256** generator.");
    end Register_Tests;
 
    ----------
    -- Name --
    ----------
 
-   function Name (T : xoroshiro_Family_Test) return Test_String is
+   function Name (T : xoshiro_Family_Test) return Test_String is
       pragma Unreferenced (T);
    begin
-      return Format ("Tests on the xoroshiro family of PRNG");
+      return Format ("Tests on the xoshiro family of PRNG");
    end Name;
 
    ------------
    -- Set_Up --
    ------------
 
-   procedure Set_Up (T : in out xoroshiro_Family_Test) is
+   procedure Set_Up (T : in out xoshiro_Family_Test) is
    begin
       null;
    end Set_Up;
 
-end PRNGTests_Suite.xoroshiro_Tests;
+end PRNGTests_Suite.xoshiro_Tests;
