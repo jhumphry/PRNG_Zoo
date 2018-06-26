@@ -20,17 +20,15 @@ package PRNG_Zoo.xoroshiro is
    procedure Reset(G: in out xoroshiro; S: in U64);
 
    -- Suggested for a 64 bit generator in Blackman and Vigna 2017
-   -- using parameters (a=24, b=16, b=37) in preference to the parameters
+   -- using parameters (a=24, b=16, c=37) in preference to the parameters
    -- (a=55, b=14, c=37) used in an early version proposed by B&V.
    type xoroshiro128_plus is new xoroshiro with private;
-   function Strength(G: in xoroshiro128_plus) return PRNG_Strength is (High);
+   function Strength(G: in xoroshiro128_plus) return PRNG_Strength is (Medium);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return xoroshiro128_plus;
    function Generate(G: in out xoroshiro128_plus) return U64 with inline;
 
    -- Suggested for a 64 bit generator in Blackman and Vigna 2017
-   -- using parameters (a=24, b=16, b=37) in preference to the parameters
-   -- (a=55, b=14, c=37) used in an early version.
    type xoroshiro128_star_star is new xoroshiro with private;
    function Strength(G: in xoroshiro128_star_star) return PRNG_Strength is (High);
    function Constructor(Params : not null access PRNG_Parameters'Class)
