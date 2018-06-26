@@ -38,8 +38,8 @@ package body PRNG_Zoo.xoroshiro is
       result : constant U64 := t0 + t1;
    begin
       t1 := t1 xor t0;
-      G.s0 := Rotate_Left(t0, 55) xor t1 xor (Shift_Left(t1, 14));
-      G.s1 := Rotate_Left(t1, 36);
+      G.s0 := Rotate_Left(t0, 24) xor t1 xor (Shift_Left(t1, 16));
+      G.s1 := Rotate_Left(t1, 37);
       return result;
    end Generate;
 

@@ -20,6 +20,8 @@ package PRNG_Zoo.xoroshiro is
 
    -- Suggested for a 64 bit generator in Blackman and Vigna 2017
    type xoroshiro128_plus is new PRNG_64Only and xoroshiro with private;
+   -- using parameters (a=24, b=16, b=37) in preference to the parameters
+   -- (a=55, b=14, c=37) used in an early version proposed by B&V.
    function Strength(G: in xoroshiro128_plus) return PRNG_Strength is (High);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return xoroshiro128_plus;
