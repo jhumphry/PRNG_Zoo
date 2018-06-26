@@ -20,7 +20,7 @@ package body PRNG_Zoo.xoroshiro is
    -- Reset --
    -----------
 
-   procedure Reset (G: in out xoroshiro128_plus; S: in U64) is
+   procedure Reset (G: in out xoroshiro; S: in U64) is
    begin
       -- This is an ad-hoc expedient for now.
 
@@ -36,6 +36,21 @@ package body PRNG_Zoo.xoroshiro is
       t0: constant U64 := G.s0;
       t1: U64 := G.s1;
       result : constant U64 := t0 + t1;
+   begin
+      t1 := t1 xor t0;
+      G.s0 := Rotate_Left(t0, 24) xor t1 xor (Shift_Left(t1, 16));
+      G.s1 := Rotate_Left(t1, 37);
+      return result;
+   end Generate;
+
+   --------------
+   -- Generate --
+   --------------
+
+   function Generate (G: in out xoroshiro128_star_star) return U64 is
+      t0: constant U64 := G.s0;
+      t1: U64 := G.s1;
+      result : constant U64 := Rotate_Left(t0 * 5, 7) * 9;
    begin
       t1 := t1 xor t0;
       G.s0 := Rotate_Left(t0, 24) xor t1 xor (Shift_Left(t1, 16));

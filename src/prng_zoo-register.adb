@@ -252,6 +252,13 @@ begin
          Description => To_Unbounded_String ("xoroshiro128+ generator")));
 
    Register.Insert
+     ("xoroshiro128**", PRNG_Details'
+        (Tag         => xoroshiro.xoroshiro128_star_star'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("xoroshiro128** generator")));
+
+   Register.Insert
      ("xorshift128+", PRNG_Details'
         (Tag         => xorshift_plus.xorshift128_plus'Tag,
          Params_Req  => False,
