@@ -20,7 +20,7 @@ package body PRNG_Zoo.xoroshiro is
    -- Reset --
    -----------
 
-   procedure Reset (G: in out xoroshiro; S: in U64) is
+   procedure Reset (G: in out xoroshiro128; S: in U64) is
    begin
       -- This is an ad-hoc expedient for now.
 

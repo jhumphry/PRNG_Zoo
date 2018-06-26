@@ -16,20 +16,20 @@
 
 package PRNG_Zoo.xoroshiro is
 
-   type xoroshiro is abstract new PRNG_64Only with private;
-   procedure Reset(G: in out xoroshiro; S: in U64);
+   type xoroshiro128 is abstract new PRNG_64Only with private;
+   procedure Reset(G: in out xoroshiro128; S: in U64);
 
    -- Suggested for a 64 bit generator in Blackman and Vigna 2017
    -- using parameters (a=24, b=16, c=37) in preference to the parameters
    -- (a=55, b=14, c=37) used in an early version proposed by B&V.
-   type xoroshiro128_plus is new xoroshiro with private;
+   type xoroshiro128_plus is new xoroshiro128 with private;
    function Strength(G: in xoroshiro128_plus) return PRNG_Strength is (Medium);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return xoroshiro128_plus;
    function Generate(G: in out xoroshiro128_plus) return U64 with inline;
 
    -- Suggested for a 64 bit generator in Blackman and Vigna 2017
-   type xoroshiro128_star_star is new xoroshiro with private;
+   type xoroshiro128_star_star is new xoroshiro128 with private;
    function Strength(G: in xoroshiro128_star_star) return PRNG_Strength is (High);
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return xoroshiro128_star_star;
@@ -37,21 +37,21 @@ package PRNG_Zoo.xoroshiro is
 
 private
 
-   type xoroshiro is abstract new PRNG_64Only with
+   type xoroshiro128 is abstract new PRNG_64Only with
       record
          s0, s1 : U64 ;
       end record;
 
-   type xoroshiro128_plus is new xoroshiro with null record;
+   type xoroshiro128_plus is new xoroshiro128 with null record;
 
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return xoroshiro128_plus is
-     (xoroshiro128_plus'(xoroshiro with others => <>));
+     (xoroshiro128_plus'(xoroshiro128 with others => <>));
 
-   type xoroshiro128_star_star is new xoroshiro with null record;
+   type xoroshiro128_star_star is new xoroshiro128 with null record;
 
    function Constructor(Params : not null access PRNG_Parameters'Class)
                            return xoroshiro128_star_star is
-     (xoroshiro128_star_star'(xoroshiro with others => <>));
+     (xoroshiro128_star_star'(xoroshiro128 with others => <>));
 
 end PRNG_Zoo.xoroshiro;
