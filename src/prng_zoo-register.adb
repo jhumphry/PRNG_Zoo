@@ -27,6 +27,7 @@ with PRNG_Zoo.xoroshiro;
 with PRNG_Zoo.xorshift;
 with PRNG_Zoo.xorshift_plus;
 with PRNG_Zoo.xorshift_star;
+with PRNG_Zoo.xoshiro;
 
 package body PRNG_Zoo.Register is
 
@@ -285,5 +286,19 @@ begin
          Params_Req  => False,
          Params      => No_Parameters'Access,
          Description => To_Unbounded_String ("xorshift4096* generator")));
+
+   Register.Insert
+     ("xoshiro256+", PRNG_Details'
+        (Tag         => xoroshiro.xoroshiro128_plus'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("xoshiro256+ generator")));
+
+   Register.Insert
+     ("xoshiro256**", PRNG_Details'
+        (Tag         => xoroshiro.xoroshiro128_star_star'Tag,
+         Params_Req  => False,
+         Params      => No_Parameters'Access,
+         Description => To_Unbounded_String ("xoshiro256** generator")));
 
 end PRNG_Zoo.Register;
